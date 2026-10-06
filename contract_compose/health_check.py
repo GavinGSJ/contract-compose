@@ -8,7 +8,7 @@
 程序只“发现”，不“判断”：报告里标【需处理】的是几乎肯定有问题的，
 标【请核对】的需要结合合同语义判断（交给 AI + 你确认）。
 """
-import os, re, sys, json, argparse, collections
+import os, re, json, argparse, collections
 from .master_parser import parse, classify, label_level, cjk
 from . import paths
 

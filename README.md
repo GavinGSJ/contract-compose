@@ -201,12 +201,14 @@ FA 与 PO 的条款原文、配方、样式模板各自独立；组装器、表�
 
 也可以不用表单，直接运行：`python -m contract_compose configs/你的配置.yaml`（配置中写 `合同类型: FA` 或 `PO`）。
 
+修改代码或内容库后，运行 `python -m pytest tests`（需先 `pip install -r requirements-dev.txt`）确认生成结果与快照一致；有意修改条款或模板导致的差异，确认后用 `python tests/test_regression.py --update` 更新快照。
+
 ### 目录结构
 | 路径 | 内容 |
 |---|---|
 | `app.py`、`启动表单.bat`、`安装依赖.bat`、`体检.bat` | 双击入口：表单（左侧切换：合同生成 / 预存信息管理）、安装依赖、母本体检 |
 | `requirements.txt`、`requirements-dev.txt` | 运行依赖；开发/测试依赖（pytest） |
-| `contract_compose/` | Python 引擎包：`assembler.py` 组装器、`paths.py` 全部路径、`master_parser.py` 母本解析、`health_check.py` 体检、`atom_index.py` 原子总览 |
+| `contract_compose/` | Python 引擎包：`assembler.py` 组装流程（编号、不适用标注）、`library.py` 读取内容库、`options.py` 选项取值、`payment.py` 付款条款、`values.py` 变量替换与派生变量、`money.py` 价款与大写、`docx_writer.py` 写 Word、`presets.py` 预存库读写、`paths.py` 全部路径、`constants.py` 常量、`cli.py` 命令行；新增类型工具：`master_parser.py` 母本解析、`health_check.py` 体检、`atom_index.py` 原子总览 |
 | `ui/` | 表单页面：`contract_form.py` 合同生成、`preset_manager.py` 预存信息管理 |
 | `library/common/` | 共用内容：`variables.yaml` 变量字典、`payment_terms.yaml` 付款条款库、`options/` 选项库（付款方式、质保方式、质保期）、`presets/` 预存库（买方主体、项目信息；`backups/` 为自动备份，不进 git） |
 | `library/FA/`、`library/PO/` | 各类型：`atoms/` 原子、`recipe.yaml` 配方、`variables.yaml` 专属变量、`options/` 专属选项、`templates/` 样式模板、`blocks/` 封面/目录附件行/前言等、`tables/` 表格、`reference/` 母本原件、`原子总览.md` |

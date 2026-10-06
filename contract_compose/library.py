@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+"""读取内容库：library/common/ + library/<合同类型>/ → Library 对象。"""
+import os, glob
+from dataclasses import dataclass, field
+import yaml
+
+from . import paths
+from .constants import TYPES
+from .options import merge_preset_options
+from .presets import load_presets
+
+
+@dataclass
+class Library:
+    """一种合同类型的全部内容（读取后不再改动）"""
+    ctype: str
+    atoms: dict                                    # {原子ID: {'meta': 头信息, 'body': 正文}}
+    opts: dict                                     # 选项库（公共 + 类型专属，已按类型过滤）
+    V: dict                                        # 变量字典（类型专属覆盖公共的同名项）
+    recipe: dict                                   # 配方
+    entities: dict                                 # 预存库“买方主体”的条目
+    pay: dict = field(default_factory=dict)        # 付款条款库
+
+    @property
+    def dir(self):
+        return paths.type_dir(self.ctype)
+
+
+def load_yaml(p, default=None):
+    return (yaml.safe_load(open(p, encoding='utf-8')) or default) if os.path.exists(p) else default
+
+
+def load_atoms(td):
+    """读取 <类型目录>/atoms/*.md → {原子ID: {'meta', 'body', 'file'}}"""
+    atoms = {}
+    for p in glob.glob(os.path.join(td, paths.ATOMS, '*.md')):
+        _, fm, body = open(p, encoding='utf-8').read().split('---', 2)
+        m = yaml.safe_load(fm)
+        atoms[m['id']] = {'meta': m, 'body': body.strip('\n'), 'file': os.path.basename(p)}
+    return atoms
+
+
+def for_type(x, ctype):
+    """取按合同类型区分的值：{FA: ..., PO: ...} → 当前类型的值；其他值原样返回"""
+    if isinstance(x, dict) and set(x) and set(x) <= set(TYPES):
+        return x.get(ctype)
+    return x
+
+
+def load_library(ctype='FA'):
+    """读取 library/common/ + library/<合同类型>/；类型专属的选项库、变量字典覆盖公共的同名项"""
+    td = paths.type_dir(ctype)
+    atoms = load_atoms(td)
+    opts = {}
+    for d in (paths.COMMON, td):
+        for p in sorted(glob.glob(os.path.join(d, paths.OPTIONS, '*.yaml'))):
+            opts[os.path.splitext(os.path.basename(p))[0]] = load_yaml(p, {})
+    for o in opts.values():                      # 选项按合同类型过滤，默认值/节点可按类型区分
+        o['默认'] = for_type(o.get('默认'), ctype)
+        o['选项'] = {k: v for k, v in (o.get('选项') or {}).items()
+                     if ctype in (v.get('适用') or TYPES)}
+        for v in o['选项'].values():
+            if '节点' in v: v['节点'] = for_type(v['节点'], ctype) or []
+    V = dict(load_yaml(os.path.join(paths.COMMON, paths.VARIABLES), {}))
+    for k, v in (load_yaml(os.path.join(td, paths.VARIABLES), {}) or {}).items():
+        V[k] = {**V.get(k, {}), **v}
+    recipe = load_yaml(os.path.join(td, paths.RECIPE), {})
+    pay = load_yaml(os.path.join(paths.COMMON, paths.PAYMENT_TERMS), {})
+    presets = load_presets()
+    entities = (presets.get('买方主体') or {}).get('条目') or {}
+    merge_preset_options(opts, presets)
+    return Library(ctype, atoms, opts, V, recipe, entities, pay)

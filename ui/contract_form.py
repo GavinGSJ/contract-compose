@@ -4,14 +4,19 @@ import os, re, io, glob, datetime
 import yaml
 import streamlit as st
 
-from contract_compose import assembler as asm, paths
+from contract_compose import paths, payment, money
+from contract_compose.assembler import build, numbering
+from contract_compose.constants import TYPES as ALL_TYPES, NA_EXCLUDE
+from contract_compose.library import load_library, for_type
+from contract_compose.options import choose
 
 # ---------------- 读取原子库（按所选合同类型） ----------------
 TYPE_NAMES = {'FA': 'FA 框架合同', 'PO': 'PO 实采合同'}
-TYPES = [t for t in asm.TYPES if os.path.exists(os.path.join(paths.type_dir(t), paths.RECIPE))]
+TYPES = [t for t in ALL_TYPES if os.path.exists(os.path.join(paths.type_dir(t), paths.RECIPE))]
 if st.session_state.get('ctype') not in TYPES: st.session_state['ctype'] = TYPES[0]
 CT = st.session_state['ctype']
-atoms, opts, V, recipe, entities = asm.load_library(CT)
+lib = load_library(CT)
+atoms, opts, V, recipe, entities = lib.atoms, lib.opts, lib.V, lib.recipe, lib.entities
 conditions = sorted({it['条件'] for it in recipe['顺序'] if it.get('条件')})
 
 GROUPS = {
@@ -24,9 +29,8 @@ LABEL = {'预付款_文件数': '预付款前需收到的文件数', '预付款_
          '交货期天数': '每批订单生效后交货天数', '签订日期': '签订日期'}
 PCT = {'履约保函比例'}
 PAY_VARS = [k for k, v in V.items() if v.get('类别') == '付款' and v.get('类型') == '值']
-PAY = asm.PAY
-_auto_node = asm.for_type(PAY.get('质保金模式追加'), CT)
-PAY_NODE_NAMES = {n: asm.pay_node(n)['名称'] for n in asm.pay_nodes_available() if n != _auto_node}
+_auto_node = for_type(lib.pay.get('质保金模式追加'), CT)
+PAY_NODE_NAMES = {n: payment.pay_node(lib, n)['名称'] for n in payment.pay_nodes_available(lib) if n != _auto_node}
 PAY_NAME_TO_ID = {v: k for k, v in PAY_NODE_NAMES.items()}
 
 BOND = '履约保函比例'; BOND_ATOM = recipe.get('履约保函条款')     # 该类型合同没有履约保函条款时为 None
@@ -41,10 +45,10 @@ option_vars = sorted([k for k, v in V.items() if v.get('类型') == '选项' and
 
 # 可标注“不适用”的条款（付款条款与履约保函单独处理）
 ALL_ORDER = [it['原子'] for it in recipe['顺序'] if '原子' in it]
-REFS = asm.numbering(atoms, ALL_ORDER, recipe.get('编号起始', 1))
+REFS = numbering(atoms, ALL_ORDER, recipe.get('编号起始', 1))
 COND_ATOMS = {it['原子'] for it in recipe['顺序'] if it.get('条件') or it.get('仅当选项')}
 NA_LABEL = {f"{REFS[a]}　{atoms[a]['meta']['名称']}": a for a in ALL_ORDER
-            if a not in asm.NA_EXCLUDE and a != BOND_ATOM and a not in COND_ATOMS}
+            if a not in NA_EXCLUDE and a != BOND_ATOM and a not in COND_ATOMS}
 NA_ID_TO_LABEL = {v: k for k, v in NA_LABEL.items()}
 
 CFG_DIR = paths.CONFIGS; OUT_DIR = paths.OUTPUT
@@ -155,22 +159,22 @@ with tabs[0]:
     # ---------------- 合同价款 ----------------
     st.subheader('合同价款')
     ss = st.session_state
-    CUR = list(asm.CURRENCIES); RATES = [AUTO] + asm.TAX_RATES
+    CUR = list(money.CURRENCIES); RATES = [AUTO] + money.TAX_RATES
     if ss.get(key('币种')) not in CUR: ss[key('币种')] = 'RMB'
     if ss.get(key('增值税率')) not in RATES: ss[key('增值税率')] = AUTO
     c1, c2, c3 = st.columns(3)
     c1.selectbox('币种', CUR, key=key('币种'), help='RMB 人民币 / USD 美元 / EUR 欧元 / GBP 英镑')
     c2.selectbox('增值税率', RATES, key=key('增值税率'), help='（自动）= 人民币 13%，外币不涉及增值税')
     c3.text_input('含税总价', key=key('含税总价'), placeholder='如 1130000 或 1,130,000.00')
-    _pc = asm.price_calc(ss.get(key('含税总价')), ss[key('币种')], ss[key('增值税率')])
+    _pc = money.price_calc(ss.get(key('含税总价')), ss[key('币种')], ss[key('增值税率')])
     if str(ss.get(key('含税总价'), '')).strip():
         if '含税' in _pc:
-            _sym = asm.CURRENCIES[_pc['币种']][0]
-            st.info(f"不含税：{asm.fmt_money(_pc['不含税'], _sym)}　｜　"
-                    f"增值税（{_pc['税率'] if _pc['计税'] else 'N/A'}）：{asm.fmt_money(_pc['税额'], _sym) if _pc['计税'] else 'N/A'}　｜　"
-                    f"含税：{asm.fmt_money(_pc['含税'], _sym)}\n\n"
-                    f"{asm.CURRENCIES[_pc['币种']][1]}大写：{asm.cn_upper(_pc['含税'])}\n\n"
-                    f"{_pc['币种']} {asm.en_words(_pc['含税'])}")
+            _sym = money.CURRENCIES[_pc['币种']][0]
+            st.info(f"不含税：{money.fmt_money(_pc['不含税'], _sym)}　｜　"
+                    f"增值税（{_pc['税率'] if _pc['计税'] else 'N/A'}）：{money.fmt_money(_pc['税额'], _sym) if _pc['计税'] else 'N/A'}　｜　"
+                    f"含税：{money.fmt_money(_pc['含税'], _sym)}\n\n"
+                    f"{money.CURRENCIES[_pc['币种']][1]}大写：{money.cn_upper(_pc['含税'])}\n\n"
+                    f"{_pc['币种']} {money.en_words(_pc['含税'])}")
         else:
             st.error('含税总价只能填数字（可带千分位逗号）。')
 
@@ -203,9 +207,9 @@ with tabs[0]:
         st.multiselect('选择付款节点（按合同顺序自动排列）', list(PAY_NODE_NAMES.values()), key='pay_nodes')
     pay_choice = {'付款方式': plan, '质保方式': mode,
                   '付款节点': [PAY_NAME_TO_ID[x] for x in st.session_state.get('pay_nodes', [])]}
-    nodes, _ = asm.payment_nodes(opts['付款方式'], plan, opts, {}, pay_choice)
-    st.caption('付款顺序：' + ' → '.join(asm.pay_node(n)['名称'] for n in nodes) if nodes else '请选择付款节点')
-    _opt_docs = asm.pay_optional_docs(nodes)
+    nodes, _ = payment.payment_nodes(lib, opts['付款方式'], plan, {}, pay_choice)
+    st.caption('付款顺序：' + ' → '.join(payment.pay_node(lib, n)['名称'] for n in nodes) if nodes else '请选择付款节点')
+    _opt_docs = payment.pay_optional_docs(lib, nodes)
     if _opt_docs:
         _dl = {t[:70]: d for d, t in _opt_docs}
         if '_pending_docs' in st.session_state:
@@ -213,7 +217,7 @@ with tabs[0]:
         st.session_state['pay_docs'] = [x for x in st.session_state.get('pay_docs', []) if x in _dl]
         st.multiselect('加入的可选单据（母本中标为“可选/Optional”的单据）', list(_dl), key='pay_docs')
         pay_choice['付款可选单据'] = [_dl[x] for x in st.session_state['pay_docs']]
-    pay_fields = [f for f in asm.pay_fields(opts['付款方式'], plan, opts, pay_choice) if f in V] if nodes else []
+    pay_fields = [f for f in payment.pay_fields(lib, opts['付款方式'], plan, pay_choice) if f in V] if nodes else []
     PAY_LABEL = {'预付款比例': '预付款（%）', '进度款比例': '进度款（%）', '发货款比例': '发货款（%）', '到货款比例': '到货款（%）',
                  '调试款比例': '调试款（%）', '质保比例': '质保款（%）' if CT == 'PO' else '质保函 / 质保金（%）',
                  '付款天数': '收到单据后付款天数', '完工文件_原件份数': '完工文件原件份数', '完工文件_电子份数': '完工文件电子版份数',
@@ -236,13 +240,13 @@ with tabs[0]:
     st.session_state['_pay'] = (pay_choice, pay_fields, nodes)
     nums, bad_num = [], False
     for n in nodes:
-        sv = st.session_state.get(key(asm.pay_node(n)['比例变量']), '').strip()
+        sv = st.session_state.get(key(payment.pay_node(lib, n)['比例变量']), '').strip()
         if sv:
             try: nums.append(float(sv))
             except ValueError: bad_num = True
     if nums and not bad_num:
         tot = sum(nums)
-        parts = ' + '.join(asm.pay_node(n)['名称'].split('（')[0] for n in nodes)
+        parts = ' + '.join(payment.pay_node(lib, n)['名称'].split('（')[0] for n in nodes)
         (st.success if abs(tot - 100) < 1e-6 else st.warning)(
             f'{parts} = {tot:g}%' + ('' if abs(tot - 100) < 1e-6 else '，不等于 100%'))
 
@@ -264,7 +268,7 @@ with tabs[1]:
             st.warning('该写法还没有条款文字，请先在选项库中补充，或选择其他写法。')
         if name == '质保期':
             pid = str(st.session_state.get(key('项目编号'), '')).strip()
-            eff = sid or asm.choose(name, o, {'项目编号': pid}, {})
+            eff = sid or choose(name, o, {'项目编号': pid}, {})
             if eff == '自定义':
                 c1, c2 = st.columns(2)
                 c1.text_area('自定义质保期条款（中文）', key=key('质保期_自定义'), height=120,
@@ -329,7 +333,7 @@ def collect():
 
 st.divider()
 cfg = collect()
-pay_req = [asm.pay_node(n)['比例变量'] for n in st.session_state['_pay'][2]] + ([BOND] if BOND_ATOM and st.session_state.get('bond', True) else [])
+pay_req = [payment.pay_node(lib, n)['比例变量'] for n in st.session_state['_pay'][2]] + ([BOND] if BOND_ATOM and st.session_state.get('bond', True) else [])
 _custom = ['质保期_自定义', '质保期_自定义_en'] if cfg['选项'].get('质保期') == '自定义' else []
 miss = [k for k in required + pay_req + _custom + [x for x in st.session_state.get('_extra', []) if x != '币种'] if k not in cfg['变量']] + \
        [k + '_en' for k in required if k + '_en' in V and k + '_en' not in cfg['变量']]
@@ -350,7 +354,7 @@ if go:
     with open(os.path.join(CFG_DIR, f'{stem}.yaml'), 'w', encoding='utf-8') as f:
         f.write(f'# 由表单保存于 {stamp}\n' + yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False, width=1000))
     try:
-        doc, used, missing, order, na = asm.build(cfg)
+        doc, used, missing, order, na = build(cfg)
     except SystemExit as e:
         st.error(str(e)); st.stop()
     out = os.path.join(OUT_DIR, cfg['输出文件名'])

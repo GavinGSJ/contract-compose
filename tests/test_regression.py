@@ -18,10 +18,7 @@ CASES_DIR = os.path.join(ROOT, 'tests', 'cases')
 W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 
 
-# ---------------- 引擎适配（目录调整时只改这里） ----------------
-def _engine():
-    from contract_compose import assembler
-    return assembler
+# ---------------- 用例 ----------------
 
 
 def _config_files():
@@ -30,17 +27,10 @@ def _config_files():
 
 def build_case(kind, arg):
     """kind: config（合同配置文件）/ regress（--母本）/ annotate（--标注）。返回 (doc, used, missing, order, na)"""
-    asm = _engine()
+    from contract_compose import build
     if kind == 'config':
-        cfg = yaml.safe_load(open(arg, encoding='utf-8'))
-        return asm.build(cfg)
-    if kind == 'regress':
-        return asm.build({'合同类型': arg}, regress=True)
-    asm.MARK_VARS, asm.LABEL = True, '变量'
-    try:
-        return asm.build({'合同类型': arg}, regress=True)
-    finally:
-        asm.MARK_VARS, asm.LABEL = False, '待填'
+        return build(yaml.safe_load(open(arg, encoding='utf-8')))
+    return build({'合同类型': arg}, regress=True, mark_vars=(kind == 'annotate'))
 
 
 # ---------------- 快照 ----------------

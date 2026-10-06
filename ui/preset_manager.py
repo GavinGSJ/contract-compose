@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """页面：预存信息管理（买方主体等）。每个预存库是 library/common/presets/ 下的一个 yaml 文件。"""
-import os, re
 import streamlit as st
 
-from contract_compose import assembler as asm
+from contract_compose.presets import load_presets, save_preset
 
 NEW = '＋ 新增条目'
 ss = st.session_state
@@ -31,7 +30,7 @@ def fkey(lib, entry, f):
 
 # ---------------- 回调：保存 / 删除 / 设为默认 / 复制 ----------------
 def save_entry(lib, old):
-    d = asm.load_presets()[lib]
+    d = load_presets()[lib]
     name = str(ss.get(fkey(lib, old, '__name__'), '')).strip()
     if not name:
         return flash('error', '条目名称不能为空。')
@@ -44,7 +43,7 @@ def save_entry(lib, old):
     else:
         items = [(name, vals) if n == old else (n, e) for n, e in items]
     d['条目'] = dict(items)
-    asm.save_preset(d)
+    save_preset(d)
     if old == NEW:                                  # 清空“新增条目”表单
         for k in [k for k in ss.keys() if k.startswith(fkey(lib, NEW, ''))]:
             del ss[k]
@@ -55,22 +54,22 @@ def save_entry(lib, old):
 def delete_entry(lib, name):
     if not ss.get(f'pm::confirm::{lib}::{name}'):
         return flash('warning', '请先勾选“确认删除”。')
-    d = asm.load_presets()[lib]
+    d = load_presets()[lib]
     d['条目'].pop(name, None)
-    asm.save_preset(d)
+    save_preset(d)
     ss['pm::sel::' + lib] = next(iter(d['条目']), NEW)
     flash('success', f'已删除“{name}”（旧版本已存入 presets/backups）。')
 
 
 def make_default(lib, name):
-    d = asm.load_presets()[lib]
+    d = load_presets()[lib]
     d['条目'] = {name: d['条目'][name], **{n: e for n, e in d['条目'].items() if n != name}}
-    asm.save_preset(d)
+    save_preset(d)
     flash('success', f'“{name}”已设为默认（排在第一位）。')
 
 
 def copy_entry(lib, name):
-    d = asm.load_presets()[lib]
+    d = load_presets()[lib]
     for f, v in d['条目'][name].items():
         ss[fkey(lib, NEW, f)] = '' if v is None else str(v)
     ss[fkey(lib, NEW, '__name__')] = name + '（副本）'
@@ -81,7 +80,7 @@ def copy_entry(lib, name):
 def add_field(lib):
     k = str(ss.get('pm::newfield::' + lib, '')).strip()
     lab = str(ss.get('pm::newlabel::' + lib, '')).strip()
-    d = asm.load_presets()[lib]
+    d = load_presets()[lib]
     if not k:
         return flash('error', '请填写变量名。')
     if k in fields_of(d):
@@ -89,17 +88,17 @@ def add_field(lib):
     d['字段'][k] = lab or k.split('.', 1)[-1]
     for e in d['条目'].values():
         e.setdefault(k, '')
-    asm.save_preset(d)
+    save_preset(d)
     ss['pm::newfield::' + lib] = ''; ss['pm::newlabel::' + lib] = ''
     flash('success', f'已新增字段“{d["字段"][k]}”（{k}）。')
 
 
 def save_labels(lib):
-    d = asm.load_presets()[lib]
+    d = load_presets()[lib]
     for f in fields_of(d):
         v = str(ss.get(f'pm::label::{lib}::{f}', '')).strip()
         if v: d['字段'][f] = v
-    asm.save_preset(d)
+    save_preset(d)
     flash('success', '字段显示名已保存。')
 
 
@@ -107,7 +106,7 @@ def save_labels(lib):
 st.header('预存信息管理')
 st.caption('维护合同中反复使用的固定信息。修改保存后立即生效，生成合同时自动带出；每次保存前的旧版本自动存入 library/common/presets/backups。')
 
-presets = asm.load_presets()
+presets = load_presets()
 if not presets:
     st.info('library/common/presets/ 中还没有预存信息文件。'); st.stop()
 
