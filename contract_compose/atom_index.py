@@ -4,6 +4,7 @@ import os, re, sys, glob
 from . import paths
 from .library import load_atoms, load_yaml, load_type, list_types
 from .assembler import numbering
+from .constants import SPECIAL
 
 
 def main(ct):
@@ -20,9 +21,9 @@ def main(ct):
             for f in glob.glob(os.path.join(td, paths.TABLES, re.sub(r'\$[\w一-鿿]+', '*', t) + '.xml')):
                 text += open(f, encoding='utf-8').read()
         ph = [x.split(':', 1)[1] if x.startswith(('英文数字:', '中文数字:')) else x for x in re.findall(r'\{\{([^}]+)\}\}', text)]
-        vals = sorted({x[:-3] if x.endswith('_en') else x for x in ph if not x.startswith(('ref:', 'table:', '选项'))})
+        vals = sorted({x[:-3] if x.endswith('_en') else x for x in ph if not x.startswith(SPECIAL + ('选项',))})
         ops = sorted({x.split(':', 1)[1].removesuffix('_en') for x in ph if x.startswith('选项')})
-        refs = sorted({x[4:] for x in ph if x.startswith('ref:')})
+        refs = sorted({x[4:] for x in ph if x.startswith('ref:')} | {x.split(':', 1)[1] for x in ph if x.startswith(('附件:', '附件_en:', '附件号:'))})
         note = []
         if it.get('条件'): note.append(f"条件：{it['条件']}（不成立时标注不适用）")
         if it.get('仅当选项'): note.append('仅当 ' + '、'.join(f'{k}={v}' for k, v in it['仅当选项'].items()) + '（否则标注不适用）')

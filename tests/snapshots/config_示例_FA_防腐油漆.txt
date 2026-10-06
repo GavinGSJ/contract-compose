@@ -1,16 +1,16 @@
-选用的写法：计算方法=a、质保期=F484、付款方式=预付_到货、质保方式=质保函、支付方式=银行转账、交货时间=按订单、交货地点=DDP、包装方式=g、运输方式=a
+选用的写法：计算方法=a、质保期=F484、付款方式=预付_到货、质保方式=质保函、支付方式=银行转账、交货时间=按订单、交货地点=DDP、包装方式=g、运输方式=a、附件=不提供：附件九
 未填变量：卖方.SWIFT、卖方.传真、卖方.信用代码、卖方.开户行、卖方.账号、卖方.邮编、预付款_天数、预付款_文件数
 条款原子：106
 标注不适用：
 
-sha256 word/document.xml: d963eae8a542965e60c0ff35032365fae81cfe97f67f80c529bbdc9784c453e7
+sha256 word/document.xml: 5f5bab15d7dc115e18432956230266e24cd96ff6236eec6fad1ede0c58254eec
 sha256 word/footer1.xml: e4dc14e8d34dcb7d0448422f577ae31128b17d82f8b32efded191451fc8deb56
 sha256 word/footer2.xml: 814659d03483f8480a14cb9fc1c7a1392919a5f45684e13c51730b37b81ea494
 sha256 word/header1.xml: 317f67624f16cad543b445f058e047ba6e2f6abea5c565d327649c6b1bb0a339
 sha256 word/header2.xml: e1d2d4060c859ac7d6648284ba49706cf80e2e14374d3cf9bb2983edf9ee677f
 sha256 word/header3.xml: e1d2d4060c859ac7d6648284ba49706cf80e2e14374d3cf9bb2983edf9ee677f
-sha256 word/numbering.xml: 3157611854c70f488c11eca2e27bbd0b6af512e65f54cc3501f88ec12a647fd5
-sha256 word/styles.xml: 8728408d45a1c8e099f02400bdd97c1cee4ad048e7aef0387fa2b7dd83b8d8dd
+sha256 word/numbering.xml: 916a52f694d57eb73fa0ff229f7743eb6dc788af58c6bd5310483d854300cd63
+sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807bcf6cfe1f
 
 ---- 正文 ----
 [-5] 框架采购合同
@@ -57,14 +57,16 @@ sha256 word/styles.xml: 8728408d45a1c8e099f02400bdd97c1cee4ad048e7aef0387fa2b7dd
 [TOC1] 18	Communication Channel from both Buyer & seller 买卖双方沟通渠道
 [TOC1] 第二部分 合同附件 Part II Contract Annexes
 [TOC1] 附件一 供货明细表 Annex 1 Detailed Price List
-[TOC1] 附件二 文件资料交付要求 Documentation Requirements
-[TOC1] 附件三 交货要求 Delivery Requirements
-[TOC1] 附件四 送货（装箱）清单 Packing List
-[TOC1] 附件五 技术协议（签字版）Technical Agreement（如有）
-[TOC1] 附件六 惠生清能HSE管理要求 WNE HSE Management Requirements
-[TOC1] 附件七 采购订单（订单）Purchase Order
-[TOC1] 附件八 廉洁从业承诺书 Undertaking of Honest Conduct
-[TOC1] 附件九 主合同相关要求：退货和回购条款 Requirements related to the main contract: Return and Buy-back Term 
+[TOC1] 附件二 文件资料交付要求 Annex 2 Documentation Requirements
+[TOC1] 附件三 交货要求 Annex 3 Delivery Requirements
+[TOC1] 附件四 送货（装箱）清单 Annex 4 Packing List
+[TOC1] 附件五 技术协议（签字版） Annex 5 Technical Agreement
+[TOC1] 附件六 惠生清能HSE管理要求 Annex 6 WNE HSE Management Requirements
+[TOC1] 附件七 采购订单（订单） Annex 7 Purchase Order
+[TOC1] 附件八 廉洁从业承诺书 Annex 8 Undertaking of Honest Conduct
+[TOC1] 附件九 主合同相关要求：退货和回购条款 Annex 9 Requirements related to the main contract: Return and Buy-back Term（不适用 Not Applicable）
+[TOC1] 附件十 项目特殊条款 Annex 10 Project Special Requirements
+[TOC1] 附件十一 模板 Annex 11 Templates
 [-9] 第一部分    合同条款
 [-a] Part I     Contract Text
 [-] 总则 General
@@ -72,7 +74,7 @@ sha256 word/styles.xml: 8728408d45a1c8e099f02400bdd97c1cee4ad048e7aef0387fa2b7dd
 [-b] Wison Energy Trading (Qidong) Co., Ltd. (hereinafter referred to as the "BUYER") and Example Coatings Co., Ltd. (hereinafter referred to as the "SELLER"), in accordance with the Civil Code of the People's Republic of China and relevant laws and regulations, and based on the principles of equality, mutual benefit, good faith, and mutual agreement, have entered into this CONTRACT on October  , 2026, in order for the SELLER to provide Anti-corrosion Paint (hereinafter referred to as "Material", "Equipment" or "GOODS") supply and services to the BUYER.
 [-0] 合同的组成 Contract components
 [-b] 本订货合同由以下部分组成：This order contract consists of the following parts:
-[-2] ATTACHMENT A PROJECT SPECIAL REQUIREMENTS 附件 A项目特殊条款（如有）
+[-2] ATTACHMENT 10 PROJECT SPECIAL REQUIREMENTS 附件 10项目特殊条款（如有）
 [-2] ATTACHMENT 5 TECHNICAL AGREEMENT 附件 5 技术协议（编号 No.：EX-TA-001；版本 Rev.：Rev.0；日期 Date：2026-09-30）
 [-2] 合同正文Contract Text
 [-2] 合同附件Contract Annexes
@@ -191,7 +193,7 @@ sha256 word/styles.xml: 8728408d45a1c8e099f02400bdd97c1cee4ad048e7aef0387fa2b7dd
 [-c] SELLER shall provide the GOODS in accordance with the specific purchase order, 90% of purchase order shall be paid by BUYER to SELLER by T/T within (60) days after the complete delivery of the CONTRACT GOODS and BUYER has received the following documents:
 [-3] Correct original copy of 100% of VAT invoice shall be provided by SELLER in mainland China or 100% commercial invoice shall be provided by SELLER outside mainland China 在中国大陆境内的卖方需提供正确的100%增值税发票原件或中国大陆境外卖方需提供100%商业发票；
 [-3] One (1) original and one (1) copy of the Acceptance Certificate signed by BUYER and SELLER; 买卖双方共同签署验收证明原件、复印件各一份；
-[-3] 质量保证函 Warranty Bond：由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为每批次订单总价5%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见附件B An irrevocable and unconditional Bank Letter of Guarantee covering 5% of the total price of each Purchase Order, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per ATTACHMENT B.
+[-3] 质量保证函 Warranty Bond：由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为每批次订单总价5%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见{{附件:ANX-TEMPLATES}} An irrevocable and unconditional Bank Letter of Guarantee covering 5% of the total price of each Purchase Order, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per {{附件_en:ANX-TEMPLATES}}.
 [-0] 买方付款前，卖方须为买方开具合法、正式和有效的增值税专用发票，否则买方有权拒绝付款且不视为违约。卖方承诺，如买方或任何第三方在任何时候发现卖方开具的发票不符合要求，卖方应立即重新为买方开具符合要求的发票，并向买方支付与不符合要求的发票的总额相等的违约金。如买方因为卖方开具的发票不符合要求而受到有关部门的处罚，卖方还应全额赔偿买方因该处罚而受到的损失。如卖方因开具不符合要求的发票而受到有关部门的处罚，卖方应承担全部责任，且该处罚不能作为卖方减轻或免除按照上述约定应向买方承担责任的理由。
 [-b] Before the BUYER makes payment, the SELLER must issue a legal, formal, and valid VAT special invoice to the BUYER. Otherwise, the BUYER has the right to refuse payment and shall not be considered a breach of contract. The SELLER promises that if the BUYER or any third party discovers at any time that the invoice issued by the SELLER does not meet the requirements, the SELLER shall immediately issue a new invoice that meets the requirements for the BUYER and pay a penalty equal to the total amount of the non-compliant invoice to the BUYER. If the BUYER is punished by relevant authorities due to the invoice issued by the SELLER not meeting the requirements, the SELLER shall also fully compensate the BUYER for the losses incurred due to such punishment. If the SELLER is punished by relevant departments for issuing invoices that do not meet the requirements, the SELLER shall bear full responsibility, and this punishment cannot be used as a reason for the SELLER to reduce or exempt the responsibility to the BUYER according to the above agreement.
 [-0] 支付方式：按（银行转账）方式支付。Payment Method: Payment shall be made by bank transfer.
@@ -466,3 +468,157 @@ sha256 word/styles.xml: 8728408d45a1c8e099f02400bdd97c1cee4ad048e7aef0387fa2b7dd
 [-b] Tel:
 [-b] Mobile:
 [-b] E-mail:
+[-9] 第二部分    合同附件
+[-a] Part II     Contract Annexes
+[-d] 本合同附件清单 The Contract Annexes of this Contract:
+[表] 序号 | 文件名称 | 提供资料
+[表] 附件一 | 供货明细表 Detailed Price List | 有 ☑    无 □
+[表] 附件二 | 文件资料交付要求 Documentation Requirements | 有 ☑    无 □
+[表] 附件三 | 交货要求 Delivery Requirements | 有 ☑    无 □
+[表] 附件四 | 送货（装箱）清单 Packing List | 有 ☑    无 □
+[表] 附件五 | 技术协议（签字版） Technical Agreement | 有 ☑    无 □
+[表] 附件六 | 惠生清能HSE管理要求 WNE HSE Management Requirements | 有 ☑    无 □
+[表] 附件七 | 采购订单（订单） Purchase Order | 有 ☑    无 □
+[表] 附件八 | 廉洁从业承诺书 Undertaking of Honest Conduct | 有 ☑    无 □
+[表] 附件九 | 主合同相关要求：退货和回购条款 Requirements related to the main contract: Return and Buy-back Term | 有 □    无 ☑
+[表] 附件十 | 项目特殊条款 Project Special Requirements | 有 ☑    无 □
+[表] 附件十一 | 模板 Templates | 有 ☑    无 □
+[annexTitle] 附件二 文件资料交付要求
+[annexTitle] Annex 2 Documentation Requirements
+[-d] 卖方需交付的文件资料除满足询价文件或技术协议的要求外，尚应满足以下要求：
+[-d] The documents and materials that the SELLER needs to deliver should not only meet the requirements of the inquiry documents or Technical Agreements, but also meet the following requirements:
+[-2#4.5] 字迹清楚，图样（章）清晰，图表整洁，签认盖章手续完备。质量文件必须电脑打印（签字除外），不应使用色带式打印机、水性墨打印机和热敏打印机，禁用易褪色的书写材料（红色墨水、纯蓝墨水、圆珠笔、复写纸、铅笔等）书写、绘制。Clear handwriting, clear design (stamp), neat charts, and complete signature and stamping procedures. Quality documents must be printed on a computer (except for signatures), and ribbon printers, water-based ink printers, and thermal printers should not be used. Writing and drawing on easily fading writing materials (red ink, pure blue ink, ballpoint pens, carbon paper, pencils, etc.) is prohibited.
+[-2#4.5] 文字材料一般按A4（210mm×297mm）幅面编制，每页左边预留25mm的装订区域，图纸按照GB/T10609.3的要求折叠成A4幅面，与其他随机资料一起装订。Paper documents are generally prepared in A4 (210mm x 297mm) format, with a 25mm binding area reserved on the left side of each page. The drawings are folded into A4 format according to the requirements of GB/T10609.3 and bound together with other random materials.
+[-2#4.5] 成册的文件资料必须要有资料目录、页码及到货清单，清单上的数量、型号、规格、材质等应与所供的货物相一致。A complete set of documents must have a table of contents, page numbers, and packing list. The quantity, model, specification, material, etc. on the list should be consistent with the supplied GOODS.
+[-2#4.5] 质量检验文件每页正文应加盖制造厂质量检验专用章，无法提供原件的在产品质量证明文件复印件上加盖确认印章的延续性的质量证明文件，所盖印章不得模糊。The main text of each page of the quality inspection document should be stamped with the manufacturer's quality inspection special stamp. If the original copy cannot be provided, the quality certificate document that confirms the continuity of the stamp should be stamped on the copy of the product quality certificate document, and the stamp should not be blurred.
+[-2#4.5] 交工资料用户名称为项目业主的名称，购件的产品合格证粘贴在设备随机资料内。过程文件或资料发送按[文件传送单]（如有）格式进行。并预先发送电子版，纸版采用快递方式或直接递交。The name of end user of the final documentation shall be the name of the project owner, and the product qualification certificate of the purchased parts is pasted in the GOODS. The process files or data shall be sent in the format of the [File Transfer Form] (if any). And send the electronic version in advance, the paper version will be sent by express delivery or directly submitted.
+[-2#4.5] 交工资料工程名称、设备名称、设备位号等应按照设计图纸填写，包括质量证明文件包含的相关资料。Final documentation: The project name, equipment name, equipment tag number, etc. should be filled in according to the design drawings, including the relevant information contained in the quality certification documents.
+[-2#4.5] 交工资料原件（N/A）份，另加复印件（N/A）份，电子光盘（N/A）份。Original (N/A) copies of handover documents, along with (N/A) copies and (N/A) electronic CDs.
+[annexTitle] 附件三 交货要求
+[annexTitle] Annex 3 Delivery Requirements
+[-d] 为确保标的物快捷、顺利地送达项目建设现场，使我方提前做好接收准备，及时安排卸车，卖方在送货前做好以下工作：To ensure that the GOODS is delivered to the project construction site quickly and smoothly, so that we can prepare for receipt in advance and arrange for unloading in a timely manner, the SELLER shall do the following work before delivery:
+[-2#5.5] 安排专车运输标的物，未经买方同意，不得采用配货、零担方式运输；运输车辆应务必做到人员、车辆证件齐全（如车辆保险等），否则将无法进入工程现场。Arrange dedicated vehicles to transport the GOODS, and without the BUYER's consent, it is not allowed to use distribution or less than truckload transportation methods; Transport vehicles must have complete personnel and vehicle documents (such as vehicle insurance), otherwise they will not be able to enter the construction site.
+[-2#5.5] 发货前（1）天请通过惠生一体化平台推送[发货清单]（具体要求见惠生一体化平台）。
+[-c] [1] days before shipment, submit shipping notification through the Wison Integrated Platform (specific requirements can be found on the Wison Integrated Platform).
+[-2#5.5] 标的物发货前请将送货车辆车号、司机联系方式、预计到达时间等通知到买方经办人。
+[-c] Inform the BUYER's agent of the vehicle plate number, driver's contact information, and estimated arrival time before shipping the GOODS.
+[-2#5.5] 大宗材料在到达指定交货地点的前一天，卖方负责向买方再次确认到达具体时间。On the day before the arrival at the designated delivery location, the SELLER is responsible for reconfirming the specific arrival time with the BUYER.
+[-2#5.5] 承运人应持有卖方填写的[送货（装箱）清单]一式贰份，交付标的物的同时交付买方。（如适用）The logistic agent shall hold two copies of the delivery (packing) list filled out by the SELLER and submit at the time of delivery of the GOODS to the BUYER. (If applicable)
+[-2#5.5] 卖方应办理好标的物运送的全部手续，承担因运输纠纷导致的损失；出现货到现场不付运费不卸货的情况，如导致我方付费则加倍从合同价款中扣除。The SELLER shall handle all procedures for the transportation of the GOODS and bear the losses caused by transportation disputes; If there is a situation where the GOODS arrive at the site without paying the freight and are not unloaded, if it causes BUYER to pay, double the amount will be deducted from the contract price.
+[-2#5.5] 标的物按我方指定送达惠生仓储库或工程项目现场。The GOODS shall be delivered to the Wison warehouse or project site as designated by BUYER.
+[annexTitle] 附件四 送货（装箱）清单
+[annexTitle] Annex 4 Packing List
+[表] 项目名称 | F484 | 合同编号 | F484-FA-EXAMPLE-001
+[表] 文件明细
+[表] 序号 | 文件名称 | 文件编号 | 每套页数 | 数 量 | 是否原件 | 备  注
+[表]  |  |  |  |  |  | 
+[表]  |  |  |  |  |  | 
+[表]  |  |  |  |  |  | 
+[表] 标的物明细
+[表] 序号 | 标的物名称 | 规格型号 | 位 号 | 数 量 | 箱（件）号 | 备  注
+[表]  |  |  |  |  |  | 
+[表]  |  |  |  |  |  | 
+[表]  |  |  |  |  |  | 
+[表] 备品备件明细
+[表] 序号 | 备品备件名称 | 规格型号 | 位 号 | 数 量 | 箱（件）号 | 备  注
+[表]  |  |  |  |  |  | 
+[表]  |  |  |  |  |  | 
+[表] 发货单位签字：盖章：年   月   日 | 收货单位签字：盖章：年   月   日 | 施工单位签字：盖章：年   月   日
+[表] 注1：凡外观检验不合格品不得办理收货，质量证明文件要求为原件，文件与标的物要完整交付；注2：标的物直送现场时，除惠生现场接收人员签字外，施工单位备案人员也应签字；注3：该表格用于除设备外的物资时，标的物明细“备注”栏应填写“物资编码”；注4：如表格数量不足可按编号分页，本单一式四份。
+[annexTitle] 附件十 项目特殊条款
+[annexTitle] Annex 10 Project Special Requirements
+[-d] The content of this Annex 10 specifies the special requirements of the PROJECT. If there is any discrepancies or conflicts between Annex 10 and other articles or attachments of this CONTRACT, Annex 10 shall prevail and take precedence over the other articles or attachments, in accordance.
+[-d] 这附件十制定了项目特殊的要求。如果此附件与本合同的其他条款或附件有任何差异或冲突，应以附件十为准。附件十优先于其他条款或附件。
+[-2#6.5] Seller shall provide any and all technical information as it may reasonably be requested by BUYER so that the latter is in a position to meet its regulatory obligations under the APPLICABLE LAW.
+[-c] 卖方应根据买方的合理要求向买方提供相关的技术信息，以便买方能够履行适用法律规定的监管义务。
+[-2#6.5] BUYER shall have the right to reject any part of the GOODS or rework which does not comply with any requirement(s) of the CONTRACT, including, but not limited to, faulty design, workmanship, services, welding, materials or equipment. Upon receiving notice of rejection SELLER shall immediately commence to reperform, repair or replace the defective part of the GOODS and shall carry out such inspections and/or tests on other parts of the GOODS as BUYER may require to ensure that there are no similar parts of the GOODS that fail to comply with the requirements of the CONTRACT, at all times at the expense of the CONTRACTOR. All associated expenses shall be borne by SELLER.
+[-c] 买方有权拒收或要求返工不符合合同任一一条要求的任一部分的产品，包括但不限于有缺陷的设计、工艺、服务、焊接、材料或设备。在收到拒收或返工通知后，卖方应立即开始重做、修理或更换产品的缺陷部分，并应按照买方的要求对产品的其他部分进行检查和/或测试，以确保没有不符合本合同要求的类似缺陷，相关费用均由卖方承担。
+[-2#6.5] Neither failure on the part of the BUYER to inspect the GOODS or witness or test or to discover DEFECTS nor failure to reject work performed by SELLER which is not in accordance with the CONTRACT shall relieve SELLER from any liability or obligation under the CONTRACT.
+[-c] 买方未能检查、见证、测试及发现到缺陷，或未拒收卖方执行的不符合合同规定的工作，均不能免除卖方在合同项下的任何责任或义务。
+[-2#6.5] In case of default on the part of the SELLER in carrying out its obligations under Reject or Rework Clause BUYER, having given prior notice to SELLER, shall be entitled to undertake (by itself or through a third party) the SELLER's responsibilities in this respect. And BUYER shall be entitled to recover from SELLER all costs reasonably incurred by BUYER in carrying out such responsibilities.
+[-c] 如果卖方未能履行拒收或返工条款规定的义务，买方在事先通知卖方后，有权（自行或通过第三方）承担卖方在这方面的责任，同时买方有权向卖方收回买方在履行此类责任时产生的所有合理费用。
+[-2#6.5] BUYER has the right to issue instructions to SELLER at any time to do any of the following:
+[-c] 买方有权随时向卖方发出指令，以执行以下任何一项工作：
+[-c] 1）Make any revision to the GOODS which may include additions, omissions, substitutions and changes in quality, form, character, kind, position, dimension, level or line and changes in any method of construction specified by the OWNER;
+[-c] 根据业主提出的要求对产品进行的任何修订，其中可能包括质量、型式、性能、种类、位置、尺寸、标准或管线的添加、删除、替换和更改等。
+[-c] 2）Revise elements of the GOODS already completed in accordance with the CONTRACT;
+[-c] 修改已经按照合同完成的产品部件；
+[-c] 3）After commencement of the GOODS, SELLER shall cooperated to accelerate the GOODS or any part thereof in order to recover all or part of any delay.
+[-c] 在工作开始后为弥补全部或部分延迟，卖方应配合进行产品或其任何一个环节的赶工工作。
+[-c] 4）Reprogramme the GOODS and reschedule its resource in order to complete the GOODS or any part thereof in accordance with any amendment to the SCHEDULE OF KEY DATES or the MASTER PROGRAMME the BUYER may require;
+[-c] 根据买方的关键时间节点或控制流程调整产品整体或部分的需求或资源计划。
+[-2#6.5] Title to any (a) GOODS and (b) goods, equipment, materials, and supplies provided by the SELLER shall vest in BUYER absolutely as soon as (i) delivered in accordance with the Incoterms specified in the CONTRACT, or (ii) when the payment has been made (whichever occurs earlier).
+[-c] 卖方提供的任何(a)货物和(b)货物、设备、材料和交付物的所有权应在(i)按照合同规定的国际贸易术语交货后，或(ii)付款后（以先到时间为准）立即绝对归买方所有。
+[-c] Title to any equipment, materials and supplies provided by the SELLER which do not comply with the requirements of the CONTRACT and which are rejected by the BUYER and further reasonably demonstrated to be incurable and unrepairable by the SELLER within reasonable period, shall re-vest immediately in the SELLER. For the avoidance of any doubt, the foregoing—or the failure on the side of the BUYER to reject such equipment, materials and supplies—shall not be construed in the way that any obligation of the SELLER regarding such equipment, materials and supplies is waived or cease to exist.
+[-c] 卖方提供的任何设备、材料和交付物如不符合合同要求、被买方拒绝接受，且在合理时间内被卖方声明无法修复和维修，则其所有权应立即重新归属卖方。为避免任何疑问，上述情形的设备、材料和交付物不能因为买方没有及时拒收而影响卖方的责任。
+[-2#6.5] SELLER is responsible for supplying to BUYER any required documents on any Hazardous Substance pursuant to the APPLICABLE LAWS. SELLER is responsible for complying with all APPLICABLE LAWS regarding packaging, marking, and shipment of Hazardous Substance for delivery to the designated receiving location and shall indemnify and hold the BUYER harmless from and against any damages or loss which BUYER may incur due to such failure.
+[-c] 卖方有责任根据适用法律的规定向买方提供任何有关危险物质的需求文件，卖方有责任遵守所有有关危险物包装、标记和装运的适用法律将危险物运送到指定的收货地点，卖方应保证买方免受危险物损害并赔偿买方因卖方未能遵守这些法律而可能遭受的任何损害或损失。
+[-2#6.5] the performance testing will be conducted within one year after project delivery. If the performance fails to meet the specified standards within the 72-hour testing period,supplier will be responsible for the repairs性能测试将在项目交付后一年内进行，如果在72小时的测试期内性能未达到规定的标准，供应商将负责维修。
+[-2#6.5] PERFORMANCE GUARANTEE 履约保函
+[-c] An irrevocable and unconditional Bank Letter of Performance Guarantee issued by SELLER in accordance with the template available in the CONTRACT, from a bank approved by BUYER within （ 30 ） days after the CONTRACT becomes effective in favor of the BUYER covering 10% of the TOTAL CONTRACT PRICE. This guarantee shall be valid until sixty ( 60 ) days after the DELIVERY DATE. The specimen is as per Annex 11 卖方应在合同生效后（ 30 ）天之内，由卖方根据附件十一中提供的模板，从买方认可的银行开具不可撤销及无条件见索即付银行履约保函，保函金额为合同总价的10%，保函有效期应至货物交付后（60）天。
+[annexTitle] 附件十一 模板
+[annexTitle] Annex 11 Templates
+[centerText] Performance guarantee/advance payment/quality bond template
+[centerText] 履约/预付款/质量保函
+[-d] To: WISON xxxxx LTD
+[-d] Address:
+[-d] Re: Irrevocable Letter of Guarantee
+[-d] Guarantee No.: xxxxxx
+[-d] Date: xxxxxx
+[-d] With reference to Contract No. ______________ (hereinafter referred to as “CONTRACT”) signed for ___________________[the subject matter] as described in the Contract between ________________________ (hereinafter referred to as “BENEFICIARY”) and ______________________ (hereinafter referred to as “APPLICANT”) dated __________, with a total Contract Price of ______________ (say: __________________ only), we, ______________address______________(hereinafter referred to as “GUARANTOR”), at the request of the APPLICANT, hereby issue this Irrevocable Performance Guarantee in your favor in an amount not exceeding in aggregate [CURRENCY/AMOUNT]___________ (say: __________________ only) [equivalent of XX percent of the Contract Price] and undertake as follows:
+[-d] We shall, within five (5) banking days upon receipt of your first written demand wherein you declare that the APPLICANT has not duly performed its obligations under the CONTRACT, partially or wholly, irrespective of the validity and legal effect of the CONTRACT or any amendment to the CONTRACT and waiving all rights of objection and defense and notwithstanding any objection by the APPLICANT, hereby irrevocably and unconditionally undertake, as primary obligor, to pay you an amount not exceeding in aggregate [CURRENCY/AMOUNT]__________ .
+[-d] We shall accept your written demand if it:
+[-d] (1) is sent by you to our offices at the address indicated above; or
+[-d] (2) is sent in electronic form by Beneficiary’s bank by way of SWIFT.
+[-d] We will not verify any statement contained in the demand or request other documents, and we will accept the statement in the demand as conclusive evidence of the facts stated.
+[-d] All payments under this GUARANTEE shall be made in ______ [Currency] and shall be made free and clear of, and without any set-off, counterclaim or deduction on account of any liability whatsoever, including, without limitation, any present or future taxes, duties, charges, fees, deductions or withholdings of any nature whatsoever and by whomsoever imposed. If at the moment of our due payment under this GUARANTEE it will be illegally or otherwise impossible for us to pay you in ______ [Currency] we shall immediately inform you and pay the amount demanded by you in _____[Currency] at the exchange rate of __________[Central Bank] determined on the date of payment.
+[-d] This Irrevocable Letter of Guarantee shall come into force from the date of issuance and shall remain valid until DD/MM/YYYY [The Expiry Date] [采购合同项下].
+[-d] A. This Performance Guarantee shall be governed by, and construed in accordance with, the laws of PRC.
+[-d] OR
+[-d] B. This Guarantee is subject to the Uniform Rules for Demand Guarantee（URDG）2010 revision, ICC Publication No.758.
+[-d] 致： 惠生[  ]公司
+[-d] 法定地址：
+[centerText] 见索即付保函
+[-d] 编号：
+[-d] 时间：
+[-d] 鉴于 XXXXXX限公司（下称“保函申请人” ） 于【】年【】月【】日与你方签订了编号为 【XXXXX】（合同号）的采购合同 （下称“基础交易合同”）。我行接受保函申请人的申请，特此开立以你方为受益人的最高金额为CNY 【XXXX】(人民币 【XXXX】元整)（下称“保函金额”）的保函。一、本保函为不可撤销、见索即付的独立保函。
+[-d] 我行无条件且不可撤销地承诺：我行将在收到你方的第一次书面索赔请求申明申请人部分或全部未适当履行其在基础交易合同项下的义务后的五（5）个工作日内，作为主债务人向你方支付相应款项，无论基础交易合同或基础交易合同的任何修正案是否有效和具有法律效力，无论申请人是否提出任何异议，不争辩、不挑剔、并放弃所有异议和抗辩权，但支付总额不超过[货币/金额]__________。
+[-d] 在以下情况下，我行将接受你方的书面索赔请求：
+[-d] (1) 由你方按上述地址寄往我行营业部；或
+[-d] (2) 由你方银行通过 SWIFT 以电子形式发送。
+[-d] 我行不会核实索赔请求中的任何陈述或要求提供其他文件，我行将接受索赔请求中的申明作为陈述事实的决定性证据。
+[-d] 本保函下的所有付款均应以 ______ [货币]支付，本保函项下的所有赔付应无任何责任或负担，包括但不限于任何性质和任何人征收的当前或将来的任何税费、关税、费用、扣除或扣缴，无论由谁征收，且无任何抵消、反诉或扣除。如果在我行根据本保函到期付款时，我行无法或不可能以 ______ [货币]向你方付款，我行应立即通知你方，并按付款日确定的 __________ 中国人民银行汇率中间价以 _____ [货币]支付贵方要求的金额。
+[-d] 本不可撤销保函自签发之日起生效，有效期至【】年【】月【】日。
+[-d] A. 本履约担保书受中国法律管辖，并按中国法律解释。
+[-d] 或
+[-d] B. 本担保书受国际商会第 758 号出版物《见索即付保函统一规则》（URDG）2010 年修订版的约束。
+[] ⏎
+[centerText] TEMPLATE FOR L/C OPENING REQUEST 开证通知书模版
+[-d] 供应商名称                                                                  开证申请日期
+[-d] Supplier’s Name___________________________     Date        _____________________
+[-d] 供应商地址                                                                 参考号
+[-d] Supplier’s Address_________________________     Reference No. _____________________
+[centerText] ﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊
+[centerText] Letter of Credit Opening Request
+[centerText] 信 用 证 开 证 申 请
+[centerText] ﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊
+[-d] 发往 SEND TO: 惠生[]公司采购部&财务部
+[-d] WISON [].PROCUREMENT DEPT.& FINANCIAL DEPT.
+[-d] 邮政编码 POST CODE: 201203
+[-d] 收件人ATTENTION TO:
+[-d] 合同买方 BUYER:
+[-d] 合同号：
+[-d] CONTRACT NO. _______________________________________________
+[-d] 合同描述
+[-d] CONTRACT DESCRIPTION ______________________________________________________
+[-d] 交货条件                                                合同交货期
+[-d] DELIVERY TERM: ______________ CONTRACTUAL DELIVERY DATE:________________
+[-d] 其他
+[-d] OTHER: _______________________________________________________________________
+[-d] ______________________________________________________________________________
+[-d] 开证币种：                                                              开证金额：
+[-d] L/C CURRENCY: _________________________  L/C Amount__________________________
+[-d] 大写金额
+[-d] SAY IN WORD__________________________________________________________________
+[-d] 供应商签字，盖章                                        联系电话：
+[-d] SUPPLIER’S SIGNATURE, CHOP             TELEPHONE NO.:____________________

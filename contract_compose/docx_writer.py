@@ -13,9 +13,11 @@ XML_SPACE = '{http://www.w3.org/XML/1998/namespace}space'
 class Writer:
     MARKS = [('### ', '合同-子条款', 'C2'), ('## ', '合同-条款', 'C1'), ('# ', '合同-章标题', 'H1'),
              ('  - ', '合同-列项二级', 'L2'), ('  + ', '合同-列项二级', 'N2'), ('- ', '合同-列项', 'L1'),
-             ('+ ', '合同-列项', 'N1'), ('<顶格> ', '合同-正文（顶格）', 'P'),
+             ('+ ', '合同-列项', 'N1'), ('<顶格> ', '合同-正文（顶格）', 'P'), ('<居中> ', '合同-正文（居中）', 'P'),
              ('    ', '合同-正文（二级续行）', 'CONT'), ('  ', '合同-正文（列项续行）', 'CONT')]
-    FALLBACK = {'合同-正文（二级续行）': '合同-正文（列项续行）'}
+    FALLBACK = {'合同-正文（二级续行）': '合同-正文（列项续行）', '合同-正文（居中）': '合同-正文（顶格）',
+                '合同-附件标题': '合同-部分标题（英文）'}
+    PAGE = '<分页>'                                             # 单独一行：分页
 
     def __init__(self, template, label=LABEL_MISSING):
         self.label = label                                      # 未填变量的标签：待填 / 变量（标注版）
@@ -30,6 +32,7 @@ class Writer:
         # 模板中已有的编号实例保留（1 = 章节/条款/列项主编号；其他为块中使用的独立列项）
         self.next_num = max([int(n.get(qn('w:numId'))) for n in self.numxml.findall(qn('w:num'))] + [1]) + 1
         self.list_num = None; self.groups = 0; self.prev = 'H1'
+        self.plain = '合同-正文'                                 # 无标记行的样式（附件正文中为顶格）
 
     def add(self, e):
         self.sect.addprevious(e); return e
@@ -66,10 +69,16 @@ class Writer:
                 t.set(XML_SPACE, 'preserve')
             if not len(rp): r.remove(rp)
 
-    def para(self, style, text, num=None):
+    def style_id(self, style):
+        while style not in self.sid and style in self.FALLBACK:     # 样式模板中没有时按 FALLBACK 退回
+            style = self.FALLBACK[style]
+        return self.sid.get(style) or self.sid['合同-正文']
+
+    def para(self, style, text, num=None, page_break=False):
         p = etree.Element(qn('w:p')); ppr = etree.SubElement(p, qn('w:pPr'))
-        style = style if style in self.sid else self.FALLBACK.get(style, '合同-正文')
-        etree.SubElement(ppr, qn('w:pStyle')).set(qn('w:val'), self.sid[style])
+        etree.SubElement(ppr, qn('w:pStyle')).set(qn('w:val'), self.style_id(style))
+        if page_break:
+            etree.SubElement(ppr, qn('w:pageBreakBefore'))
         if num:
             n = etree.SubElement(ppr, qn('w:numPr'))
             etree.SubElement(n, qn('w:ilvl')).set(qn('w:val'), num[1])
@@ -77,12 +86,25 @@ class Writer:
         self.runs(p, text)
         return self.add(p)
 
+    def page_break(self):
+        p = etree.Element(qn('w:p')); r = etree.SubElement(p, qn('w:r'))
+        etree.SubElement(r, qn('w:br')).set(qn('w:type'), 'page')
+        return self.add(p)
+
+    def heading(self, style, lines, page_break=False):
+        """不编号的标题（如附件标题）；其后的列项重新从 a) / 1) 开始编号"""
+        for i, t in enumerate(lines):
+            self.para(style, t, page_break=page_break and i == 0)
+        self.list_num = None; self.groups = 1; self.prev = 'H1'
+
     def line(self, line):
+        if line.strip() == self.PAGE:
+            self.page_break(); return
         for mark, style, kind in self.MARKS:
             if line.startswith(mark):
                 text = line[len(mark):]; break
         else:
-            style, kind, text = '合同-正文', 'P', line
+            style, kind, text = self.plain, 'P', line
         num = None
         if kind in ('H1', 'C1', 'C2'):
             self.list_num = None; self.groups = 0
@@ -105,6 +127,31 @@ class Writer:
             e = copy.deepcopy(e)
             strip_ids(e); fill(e)
             self.add(e)
+
+    def table_rows(self, path, rows, fill):
+        """插入表格，最后一行为行模板：按 rows（[{占位名: 值}]）逐行复制并替换其中的 {{占位名}}"""
+        root = etree.parse(path).getroot()
+        for e in root:
+            e = copy.deepcopy(e); strip_ids(e)
+            if e.tag == qn('w:tbl'):
+                tpl = e.findall(qn('w:tr'))[-1]
+                for row in rows:
+                    tr = copy.deepcopy(tpl)
+                    for t in tr.iter(qn('w:t')):
+                        for k, v in row.items():
+                            if t.text and '{{%s}}' % k in t.text:
+                                t.text = t.text.replace('{{%s}}' % k, v)
+                    tpl.addprevious(tr)
+                e.remove(tpl)
+            fill(e)
+            self.add(e)
+
+    def toc_lines(self, lines, first_before=200):
+        """目录中的附加行（不带页码），第一行前加段前距"""
+        for i, t in enumerate(lines):
+            p = self.para('toc 1', t)
+            if i == 0 and first_before:
+                etree.SubElement(p.find(qn('w:pPr')), qn('w:spacing')).set(qn('w:before'), str(first_before))
 
     def toc(self, heads, title, lead_lines, nfmt):
         """目录：标题、前置行、各章（编号 + 标题），整体包在一个 TOC 域中"""

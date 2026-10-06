@@ -18,9 +18,9 @@ id: QUA-04
 
 ## 质量保证 Quality Guarantee
 
-- 卖方应保证提供的标的物符合本合同附件五《技术协议》和合同约定质量要求，标的物是全新的、未使用过的、技术成熟的，并在各个方面符合本合同规定的质量、规格和性能要求。不得提供国家、行业、国际、国际协会等禁止使用、明令淘汰、限期禁止使用的设备或材料。
+- 卖方应保证提供的标的物符合本合同{{附件:ANX-TA}}《技术协议》和合同约定质量要求，标的物是全新的、未使用过的、技术成熟的，并在各个方面符合本合同规定的质量、规格和性能要求。不得提供国家、行业、国际、国际协会等禁止使用、明令淘汰、限期禁止使用的设备或材料。
 
-  The SELLER shall ensure that the provided GOODS meets the quality requirements stipulated in Annex 5 of this CONTRACT, including the Technical Agreement and the contract. The GOODS is brand new, unused, technologically mature, and meets the quality, specifications, and performance requirements stipulated in this CONTRACT in all aspects. Do not provide equipment or materials that are prohibited, explicitly phased out, or prohibited for use within a specified period by countries, industries, international organizations, or international associations.
+  The SELLER shall ensure that the provided GOODS meets the quality requirements stipulated in {{附件_en:ANX-TA}} of this CONTRACT, including the Technical Agreement and the contract. The GOODS is brand new, unused, technologically mature, and meets the quality, specifications, and performance requirements stipulated in this CONTRACT in all aspects. Do not provide equipment or materials that are prohibited, explicitly phased out, or prohibited for use within a specified period by countries, industries, international organizations, or international associations.
 
 - 质量保证期：{{选项:质保期}}若法律规定的质保期或产品出厂质保证书记载的质保期长于本合同约定的质保期，则以法律规定的质保期或产品出厂质保证书记载的质保期为准。若在质量保证期间出现任何质量问题，则卖方应按照第{{ref:QUA-03}}条款进行修理或更换，标的物的质量保证期自修理或更换合格之日重新起算。
 

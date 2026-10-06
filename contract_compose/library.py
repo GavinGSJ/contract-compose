@@ -20,6 +20,7 @@ class Library:
     recipe: dict                                   # 配方
     entities: dict                                 # 预存库“买方主体”的条目
     pay: dict = field(default_factory=dict)        # 付款条款库
+    annexes: dict = field(default_factory=dict)    # 合同附件，按配方“附件/顺序”排列 {附件ID: {'meta', 'body', 'file'}}
 
     @property
     def dir(self):
@@ -30,10 +31,10 @@ def load_yaml(p, default=None):
     return (yaml.safe_load(open(p, encoding='utf-8')) or default) if os.path.exists(p) else default
 
 
-def load_atoms(td):
-    """读取 <类型目录>/atoms/*.md → {原子ID: {'meta', 'body', 'file'}}"""
+def load_atoms(td, sub=paths.ATOMS):
+    """读取 <类型目录>/atoms/*.md（附件为 annexes/）→ {ID: {'meta', 'body', 'file'}}"""
     atoms = {}
-    for p in glob.glob(os.path.join(td, paths.ATOMS, '*.md')):
+    for p in glob.glob(os.path.join(td, sub, '*.md')):
         _, fm, body = open(p, encoding='utf-8').read().split('---', 2)
         m = yaml.safe_load(fm)
         atoms[m['id']] = {'meta': m, 'body': body.strip('\n'), 'file': os.path.basename(p)}
@@ -98,4 +99,10 @@ def load_library(ctype=None):
     presets = load_presets()
     entities = (presets.get('买方主体') or {}).get('条目') or {}
     merge_preset_options(opts, presets)
-    return Library(ctype, settings, atoms, opts, V, recipe, entities, pay)
+    found = load_atoms(td, paths.ANNEXES)
+    order = (recipe.get('附件') or {}).get('顺序') or []
+    lost = [a for a in order if a not in found]
+    if lost:
+        raise SystemExit(f'配方“附件/顺序”中的附件在 library/{ctype}/{paths.ANNEXES}/ 中找不到：{lost}')
+    annexes = {a: found[a] for a in order}
+    return Library(ctype, settings, atoms, opts, V, recipe, entities, pay, annexes)

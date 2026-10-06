@@ -7,14 +7,15 @@
     options.py      选项变量取哪种写法
     payment.py      付款节点与单据
     values.py       派生变量（价款、技术协议）、替换 {{变量}} / {{选项:…}}
+    annexes.py      合同附件：编号、有/无、引用
     docx_writer.py  写 Word（样式段落、编号、块、表格、目录）
-    本文件          条款编号、不适用标注、整体组装流程
+    本文件          条款编号、不适用标注、整体组装流程（第一部分条款 + 第二部分附件）
 
 命令行用法见 cli.py。
 """
 import os, re
 
-from . import paths
+from . import paths, annexes
 from .constants import NA_MARK, LABEL_MISSING, LABEL_ANNOTATE
 from .library import load_library
 from .options import choose
@@ -35,7 +36,7 @@ def numbering(atoms, order, start=1):
 
 def build(cfg, regress=False, keep=None, mark_vars=False):
     """组装一份合同。
-    cfg：合同配置（合同类型、买方主体、变量、选项、条件、不适用）；合同类型为空时取第一个类型
+    cfg：合同配置（合同类型、买方主体、变量、选项、条件、不适用、附件）；合同类型为空时取第一个类型
     regress：用母本值/默认值组装（与母本比对）；mark_vars：变量标注版（所有变量黄色标出变量名）
     返回 (doc, used 选用的写法, missing 未填变量, order 原子顺序, shown 标注不适用的原子)"""
     lib = load_library(cfg.get('合同类型'))
@@ -66,10 +67,13 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
     chap = {a['meta']['章']: aid for aid, a in atoms.items() if a['meta']['层级'] == '章'}
     inherit = {aid for aid in order if chap.get(atoms[aid]['meta']['章']) in na}   # 整章不适用
     refs = numbering(atoms, order, settings['编号起始'])
+    anums = annexes.numbers(lib)
+    ast = annexes.states(lib, values, None if regress else cfg.get('附件'))   # {附件ID: 有/无}
     used, missing = {}, set()
 
     def fill(text, is_na=False):
-        t = expand_options(lib, text, values, choices, used)
+        t = annexes.replace_refs(lib, text, anums)
+        t = expand_options(lib, t, values, choices, used)
         t = resolve_values(t, V, values, missing, regress, keep, is_na, mark_vars)
         t = resolve_values(t, V, values, missing, regress, keep, is_na, mark_vars)   # 计算变量中嵌套的 {{变量}}
         return re.sub(r'\{\{ref:([^}]+)\}\}', lambda m: refs[m.group(1)], t)
@@ -99,20 +103,50 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
             w.toc(heads, item.get('标题', '目录'), item.get('前置行') or [], item.get('编号格式', '{n}'))
             if item.get('附加块'):
                 w.block(os.path.join(lib.dir, paths.BLOCKS, item['附加块'] + '.xml'), fill_e)
-    for aid, text in rendered:
+            if item.get('附件行') and lib.annexes:          # 目录中的第二部分与各附件（无的附件标注不适用）
+                sec = recipe['附件']
+                w.toc_lines([fill(sec['目录行'])] + [
+                    annexes.title(lib, a, nums=anums) + ' ' + f"Annex {anums[a]} {lib.annexes[a]['meta']['名称_en']}"
+                    + ('' if ast[a] else NA_MARK) for a in lib.annexes])
+
+    def write_lines(text):
         for line in text.split('\n'):
             if not line.strip():
                 continue
-            m = re.fullmatch(r'\s*\{\{table:([^}]+)\}\}\s*', line)
+            m = re.fullmatch(r'\s*\{\{(table|block):([^}]+)\}\}\s*', line)
             if m:
                 def tv(x):                              # 表格名中的 $变量（如 PO-SCO-$价款_计税）
                     k = x.group(1); v = V.get(k, {})
                     return str(values.get(k) or v.get('母本值') or v.get('默认值') or '')
-                tid = re.sub(r'\$([\w一-鿿]+)', tv, m.group(1))
-                w.block(os.path.join(lib.dir, paths.TABLES, tid + '.xml'), fill_e)
+                tid = re.sub(r'\$([\w一-鿿]+)', tv, m.group(2))
+                sub = paths.TABLES if m.group(1) == 'table' else paths.BLOCKS
+                w.block(os.path.join(lib.dir, sub, tid + '.xml'), fill_e)
                 w.prev = 'TABLE'
             else:
                 w.line(line)
+
+    for aid, text in rendered:
+        write_lines(text)
+    if lib.annexes:                                    # 第二部分 合同附件：附件清单表 + 有正文且“有”的附件
+        sec = recipe['附件']
+        zh, en = sec['标题']
+        w.para('合同-部分标题', zh); w.para('合同-部分标题（英文）', en)
+        if sec.get('清单说明'):
+            w.para('合同-正文（顶格）', fill(sec['清单说明']))
+        if sec.get('清单表'):
+            rows = [{'附件序号': annexes.label(lib, a, nums=anums), '附件名称': lib.annexes[a]['meta']['名称'],
+                     '附件名称_en': lib.annexes[a]['meta']['名称_en'], '附件提供': annexes.checkbox(ast[a])}
+                    for a in lib.annexes]
+            w.table_rows(os.path.join(lib.dir, paths.TABLES, sec['清单表'] + '.xml'), rows, fill_e)
+        w.plain = '合同-正文（顶格）'
+        for a in lib.annexes:
+            if not (ast[a] and annexes.has_body(lib, a)):
+                continue
+            w.heading('合同-附件标题', [annexes.title(lib, a, nums=anums), annexes.title(lib, a, en=True, nums=anums)],
+                      page_break=bool(lib.annexes[a]['meta'].get('另起一页')))
+            write_lines(fill(lib.annexes[a]['body']))
+        w.plain = '合同-正文'
+        used['附件'] = annexes.summary(lib, ast)
     # 页眉页脚
     for rel in w.doc.part.rels.values():
         if rel.reltype.endswith(('/header', '/footer')):

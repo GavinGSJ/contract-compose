@@ -9,7 +9,7 @@
 ## 快速开始
 
 1. 首次使用：双击 `安装依赖.bat`（需已安装 Python）。
-2. 双击 `启动表单.bat`，浏览器打开表单（http://localhost:8501）：选合同类型 → 填必填信息 → 点“生成合同”。
+2. 双击 `启动表单.bat`，浏览器打开表单（http://localhost:8501）：选合同类型 → 填必填信息 → 在“④ 合同附件”中勾选附件 → 点“生成合同”。
 3. Word 保存在 `output/`，填写内容保存在 `configs/`，下次可直接打开修改。
 
 命令行（在项目根目录）：
@@ -27,7 +27,7 @@ python -m pytest tests                                    # 回归测试（先 p
 
 | 路径 | 内容 |
 |---|---|
-| `library/` | 内容库：`common/` 共用（变量字典、付款条款库、选项库、预存库），`FA/`、`PO/` 各类型（`type.yaml`、`recipe.yaml`、`atoms/`、`templates/`…） |
+| `library/` | 内容库：`common/` 共用（变量字典、付款条款库、选项库、预存库），`FA/`、`PO/` 各类型（`type.yaml`、`recipe.yaml`、`atoms/`、`annexes/` 附件、`templates/`…） |
 | `contract_compose/` | 组装引擎（Python 包） |
 | `ui/`、`app.py` | 表单页面 |
 | `configs/`、`output/` | 合同配置；生成的合同 |

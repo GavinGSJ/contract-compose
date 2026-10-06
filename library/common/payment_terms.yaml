@@ -219,7 +219,7 @@
   预付款保函: 预付款保函/履约保函 （如有）Advance payment guarantee/performance guarantee (if any)；
   技术文件提交: 完成下列技术文件的提交（按要求调整）The complete submission of the following technical documents (If any)
   主材到厂: 主要材料（或主要构件）（{{进度款_主材名称}}）到厂验证报告；The certification of main material or main component ({{进度款_主材名称}}) arriving to the factory;
-  质保函: 质量保证函 Warranty Bond：由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为每批次订单总价{{质保比例}}%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见附件B An irrevocable and unconditional Bank Letter of Guarantee covering {{质保比例}}% of the total price of each Purchase Order, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per ATTACHMENT B.
+  质保函: 质量保证函 Warranty Bond：由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为每批次订单总价{{质保比例}}%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见{{附件:ANX-TEMPLATES}} An irrevocable and unconditional Bank Letter of Guarantee covering {{质保比例}}% of the total price of each Purchase Order, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per {{附件_en:ANX-TEMPLATES}}.
   发运单据:
     组:
     - 提单_长途海运

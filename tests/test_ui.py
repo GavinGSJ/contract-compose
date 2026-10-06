@@ -61,3 +61,21 @@ def test_presets_page():
 
 
 PRESET_PAGE = os.path.join('ui', 'preset_manager.py')
+
+
+def test_annex_tab(tmp_path, monkeypatch):
+    """④ 合同附件：取消勾选的附件写入配置为“无”；技术协议随“本合同有技术协议”"""
+    import glob, yaml
+    from contract_compose import paths
+    monkeypatch.setattr(paths, 'CONFIGS', str(tmp_path / 'configs'))
+    monkeypatch.setattr(paths, 'OUTPUT', str(tmp_path / 'output'))
+    (tmp_path / 'configs').mkdir()
+    at = _run(AppTest.from_file(APP))
+    assert at.checkbox(key='ax::ANX-TA').disabled and at.checkbox(key='ax::ANX-TA').value
+    at.checkbox(key='ta').uncheck(); _run(at)
+    assert not at.checkbox(key='ax::ANX-TA').value
+    at.checkbox(key='ax::ANX-HSE').uncheck(); _run(at)
+    at.button[0].click(); _run(at)
+    cfg = yaml.safe_load(open(glob.glob(str(tmp_path / 'configs' / '*.yaml'))[0], encoding='utf-8'))
+    assert cfg['附件']['ANX-HSE'] == '无' and cfg['附件']['ANX-DOCS'] == '有' and 'ANX-TA' not in cfg['附件']
+    assert cfg['变量']['有技术协议'] == '否'

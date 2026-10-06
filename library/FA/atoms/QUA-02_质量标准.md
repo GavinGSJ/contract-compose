@@ -9,6 +9,6 @@ id: QUA-02
 版本: FA母本_v2
 ---
 
-## 质量标准：符合国家、行业相关标准、规范及相关法律法规的要求，详见本合同附件五《技术协议》。相关标准若不一致，以最严格标准为准，但买方选择不采用最严格标准除外。
+## 质量标准：符合国家、行业相关标准、规范及相关法律法规的要求，详见本合同{{附件:ANX-TA}}《技术协议》。相关标准若不一致，以最严格标准为准，但买方选择不采用最严格标准除外。
 
-Quality Standards: Meet the requirements of relevant national and industry standards, specifications, and relevant laws and regulations, as detailed in Annex 5 "Technical Agreement" of this CONTRACT. If there is any inconsistency in the relevant standards, the strictest standard shall prevail, except when the BUYER chooses not to use the strictest standard.
+Quality Standards: Meet the requirements of relevant national and industry standards, specifications, and relevant laws and regulations, as detailed in {{附件_en:ANX-TA}} "Technical Agreement" of this CONTRACT. If there is any inconsistency in the relevant standards, the strictest standard shall prevail, except when the BUYER chooses not to use the strictest standard.

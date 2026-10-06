@@ -2,7 +2,7 @@
 """变量：由表单值计算派生变量（价款、技术协议等），以及把条款中的 {{变量}}、{{选项:…}} 替换成文字。"""
 import re
 
-from .constants import MISS_L, MISS_R, NA_MARK, YES
+from .constants import MISS_L, MISS_R, NA_MARK, YES, SPECIAL
 from .money import CURRENCIES, price_calc, fmt_money, cn_upper, en_words, num_en, num_cn
 from .options import end_punct, choose
 from .payment import render_payment
@@ -81,7 +81,7 @@ def resolve_values(text, V, values, missing, regress=False, keep=None, na=False,
     mark_vars：变量标注版，所有变量显示为“名称｜母本值”；na：不适用条款中未填变量写 N/A。"""
     def rep(m):
         k = m.group(1)
-        if k.startswith(('ref:', 'table:')):
+        if k.startswith(SPECIAL):
             return m.group(0)
         if k.startswith(('英文数字:', '中文数字:')):      # {{英文数字:付款天数}} → sixty
             kind, var = k.split(':', 1)

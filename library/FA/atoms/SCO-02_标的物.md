@@ -20,6 +20,6 @@ id: SCO-02
 
 The GOODS of this CONTRACT is: {{标的物名称_en}}, Country of origin and manufacturer: <u>{{原产国和制造商_en}}</u>
 
-供货范围和明细详见附件一《供货明细表》和附件五《技术协议》。
+供货范围和明细详见{{附件:ANX-PRICE}}《供货明细表》和{{附件:ANX-TA}}《技术协议》。
 
-The GOODS of this CONTRACT is: the scope of supply and details are detailed in Annex 1 "Supply Details Table" and Annex 5 "Technical Agreement".
+The GOODS of this CONTRACT is: the scope of supply and details are detailed in {{附件_en:ANX-PRICE}} "Supply Details Table" and {{附件_en:ANX-TA}} "Technical Agreement".

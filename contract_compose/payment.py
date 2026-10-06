@@ -5,6 +5,7 @@ lib 为 library.Library；o 为付款方案所在的选项（opts['付款方式'
 """
 import re
 
+from .constants import SPECIAL
 from .library import for_type, list_types
 from .options import choose
 
@@ -69,7 +70,7 @@ def pay_fields(lib, o, k, choices):
     names = []
     for m in re.findall(r'\{\{([^}]+)\}\}', text):
         m = m.split(':', 1)[1] if m.startswith(('英文数字:', '中文数字:')) else m
-        if m not in names and not m.startswith(('ref:', 'table:')): names.append(m)
+        if m not in names and not m.startswith(SPECIAL): names.append(m)
     ratios = [pay_node(lib, n)['比例变量'] for n in nodes]
     return ratios + [x for x in names if x not in ratios]
 

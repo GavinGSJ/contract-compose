@@ -1,11 +1,29 @@
 # FA 框架合同配方：条款顺序（类型设置见 type.yaml）；按顺序组装；带“条件”的原子仅在条件成立时选用
+# 第二部分 合同附件：在最后一条条款之后另起一页生成。编号按“顺序”自动排（附件一、附件二……）
+附件:
+  标题: [第二部分    合同附件, Part II     Contract Annexes]
+  目录行: 第二部分 合同附件 Part II Contract Annexes
+  清单说明: '本合同附件清单 The Contract Annexes of this Contract:'
+  清单表: FA-ANX-LIST          # tables/ 中的附件清单表，最后一行为每个附件的行模板
+  顺序:
+  - ANX-PRICE                  # 供货明细表（PDF）
+  - ANX-DOCS                   # 文件资料交付要求
+  - ANX-DELIVERY               # 交货要求
+  - ANX-PACKING                # 送货（装箱）清单
+  - ANX-TA                     # 技术协议（PDF，随“有技术协议”）
+  - ANX-HSE                    # 惠生清能HSE管理要求（PDF）
+  - ANX-PO                     # 采购订单（PDF）
+  - ANX-INTEGRITY              # 廉洁从业承诺书（PDF）
+  - ANX-RETURN                 # 主合同相关要求：退货和回购条款
+  - ANX-SPECIAL                # 项目特殊条款
+  - ANX-TEMPLATES              # 模板（保函、信用证开证通知书）
 顺序:
 - 块: FA-COVER
 - 目录: 自动
   标题: 目录CONTENT
   前置行: [第一部分 合同条款 Part I Contract Text]
   编号格式: '{n}'
-  附加块: FA-TOC-ANNEX
+  附件行: 自动                # 第二部分与各附件行（随“附件”自动生成，无的附件标注不适用）
 - 块: FA-PART1
 - 原子: GEN-00
 - 原子: GEN-01
