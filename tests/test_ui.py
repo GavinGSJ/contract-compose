@@ -79,3 +79,34 @@ def test_annex_tab(tmp_path, monkeypatch):
     cfg = yaml.safe_load(open(glob.glob(str(tmp_path / 'configs' / '*.yaml'))[0], encoding='utf-8'))
     assert cfg['附件']['ANX-HSE'] == '无' and cfg['附件']['ANX-DOCS'] == '有' and 'ANX-TA' not in cfg['附件']
     assert cfg['变量']['有技术协议'] == '否'
+
+
+def test_clause_editor(lib_copy, tmp_path, monkeypatch):
+    """条款维护：查找 → 修改 → 对比 → 保存（写入临时副本）→ 历史版本恢复"""
+    from contract_compose import snapshots, load_library
+    monkeypatch.setattr(snapshots, 'SNAP', str(tmp_path / 'snapshots'))
+    at = _run(AppTest.from_file(APP))
+    at.switch_page(os.path.join(ROOT, 'ui', 'clause_editor.py')); _run(at)
+    at.text_input(key='ed::kw').input('质量保证'); _run(at)
+    at.radio(key='ed::sel::FA::条款').set_value('QUA-04'); _run(at)
+    bk = 'ed::body::FA::条款::QUA-04'
+    old = at.text_area(key=bk).value
+    at.text_area(key=bk).input(old.replace('具体要求以技术协议为准', '具体要求以技术协议为准（页面测试）')); _run(at)
+    assert any('页面测试' in m.value for m in at.markdown)              # 修改对比
+    at.text_input(key='ed::reason::FA::条款::QUA-04').input('页面测试'); _run(at)
+    next(b for b in at.button if b.label == '保存').click(); _run(at)
+    assert any('已保存' in s.value for s in at.success), [e.value for e in at.error]
+    assert '页面测试' in load_library('FA').atoms['QUA-04']['body']
+    next(b for b in at.button if b.label == '恢复此版本').click(); _run(at)
+    assert load_library('FA').atoms['QUA-04']['body'] == old
+    assert len(list((tmp_path / 'snapshots').glob('*.txt'))) > 0      # 快照写到了临时目录
+
+
+def test_clause_editor_rejects_unknown_variable(lib_copy):
+    at = _run(AppTest.from_file(APP))
+    at.switch_page(os.path.join(ROOT, 'ui', 'clause_editor.py')); _run(at)
+    sel = at.radio(key='ed::sel::FA::条款').value
+    bk = f'ed::body::FA::条款::{sel}'
+    at.text_area(key=bk).input(at.text_area(key=bk).value + '\n\n{{没有这个变量}}'); _run(at)
+    assert any('变量字典' in e.value for e in at.error)
+    assert next(b for b in at.button if b.label == '保存').disabled
