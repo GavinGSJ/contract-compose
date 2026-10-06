@@ -9,6 +9,7 @@ PRESETS = os.path.join(COMMON, 'presets')                            # 预存库
 PRESET_BACKUPS = os.path.join(PRESETS, 'backups')                    # 预存库修改前的自动备份（不进 git）
 CONFIGS = os.path.join(ROOT, 'configs')                              # 每份合同的配置
 OUTPUT = os.path.join(ROOT, 'output')                                # 生成的合同与报告
+CONTENT_BACKUPS = os.path.join(LIBRARY, 'backups')                   # 条款维护页面保存前的自动备份（不进 git）
 NEW_TYPES = os.path.join(ROOT, 'new_types')                          # 新增合同类型的中间产物（体检报告等）
 
 # 内容库中的固定名称（公共目录与各类型目录通用）

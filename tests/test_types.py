@@ -5,7 +5,7 @@ import yaml
 import pytest
 
 from contract_compose import paths, build, list_types, load_type
-from test_regression import dump
+from contract_compose.snapshots import dump
 
 CFG = os.path.join(paths.CONFIGS, '示例_FA_防腐油漆.yaml')
 
@@ -19,19 +19,6 @@ def _add_type(x, src, new):
     elif isinstance(x, list):
         x = [_add_type(v, src, new) for v in x]
     return x
-
-
-@pytest.fixture
-def lib_copy(tmp_path, monkeypatch):
-    lib = tmp_path / 'library'
-    shutil.copytree(paths.LIBRARY, lib, ignore=shutil.ignore_patterns('*.docx', 'reference', 'backups'))
-    for t in ('FA', 'PO'):                                   # 样式模板要保留
-        shutil.copytree(os.path.join(paths.type_dir(t), 'templates'), lib / t / 'templates', dirs_exist_ok=True)
-    monkeypatch.setattr(paths, 'LIBRARY', str(lib))
-    monkeypatch.setattr(paths, 'COMMON', str(lib / 'common'))
-    monkeypatch.setattr(paths, 'PRESETS', str(lib / 'common' / 'presets'))
-    monkeypatch.setattr(paths, 'PRESET_BACKUPS', str(tmp_path / 'backups'))
-    return lib
 
 
 def test_types_discovered():

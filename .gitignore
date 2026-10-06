@@ -10,6 +10,9 @@ output/*
 # 预存库修改前的自动备份（本地保留，不进 git）
 library/common/presets/backups/
 
+# 条款维护页面保存前的自动备份（本地保留，不进 git）
+library/backups/
+
 # 体检生成的段落数据（可随时重新生成）
 new_types/*/段落.json
 
