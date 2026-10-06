@@ -5,4 +5,5 @@ MISS_L, MISS_R = '\u0001', '\u0002'            # 未填变量标记（内部使�
 LABEL_MISSING = '待填'                          # 未填变量的标签
 LABEL_ANNOTATE = '变量'                         # 变量标注版中的标签
 NA_MARK = '（不适用 Not Applicable）'           # 不适用条款标题后缀
+SPECIAL = ('ref:', 'table:', 'block:', '附件:', '附件_en:', '附件号:')   # 不是变量的占位：引用、表格、块、附件引用
 YES = ('是', '有', 'true', 'True', True, '1', 1)

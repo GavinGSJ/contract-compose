@@ -4,7 +4,8 @@ import os, re, io, glob, datetime
 import yaml
 import streamlit as st
 
-from contract_compose import paths, payment, money
+from contract_compose import paths, payment, money, annexes
+from contract_compose.constants import SPECIAL
 from contract_compose.assembler import build, numbering
 from contract_compose.library import load_library, load_type, list_types, for_type
 from contract_compose.options import choose
@@ -46,6 +47,17 @@ option_vars = sorted([k for k, v in V.items() if v.get('类型') == '选项' and
 # 可标注“不适用”的条款（付款条款与履约保函单独处理）
 ALL_ORDER = [it['原子'] for it in recipe['顺序'] if '原子' in it]
 REFS = numbering(atoms, ALL_ORDER, SETTINGS['编号起始'])
+
+# 合同附件：编号、正文中用到的变量
+ANUMS = annexes.numbers(lib)
+def _annex_vars(aid):
+    names = []
+    for m in re.findall(r'\{\{([^}]+)\}\}', lib.annexes[aid]['body']):
+        m = m.split(':', 1)[1] if m.startswith(('英文数字:', '中文数字:')) else m
+        m = m[:-3] if m.endswith('_en') and m[:-3] in V else m
+        if m in V and not m.startswith(SPECIAL) and m not in names: names.append(m)
+    return names
+ANNEX_VARS = {a: _annex_vars(a) for a in lib.annexes}
 COND_ATOMS = {it['原子'] for it in recipe['顺序'] if it.get('条件') or it.get('仅当选项')}
 NA_LABEL = {f"{REFS[a]}　{atoms[a]['meta']['名称']}": a for a in ALL_ORDER
             if a not in SETTINGS['付款条款'] and a != BOND_ATOM and a not in COND_ATOMS}
@@ -99,6 +111,11 @@ def apply_cfg(cfg):
     na = cfg.get('不适用') or []
     if BOND_ATOM: st.session_state['bond'] = BOND_ATOM not in na
     st.session_state['na'] = [NA_ID_TO_LABEL[a] for a in na if a in NA_ID_TO_LABEL]
+    chosen = cfg.get('附件') or {}
+    for aid in lib.annexes:
+        if not annexes.follows(lib, aid):
+            st.session_state['ax::' + aid] = (str(chosen[aid]) != annexes.HAVE_NOT) if aid in chosen \
+                else annexes.default_state(lib, aid, cfg.get('变量') or {})
 
 
 if '_pending_cfg' in st.session_state:
@@ -107,7 +124,7 @@ if '_pending_cfg' in st.session_state:
 
 def change_type():
     for k in list(st.session_state):           # 换合同类型时清空条款写法与付款设置，以及未改动过的默认值
-        if k.startswith('o::') or k in ('pay_nodes', 'pay_docs', 'na'): del st.session_state[k]
+        if k.startswith(('o::', 'ax::')) or k in ('pay_nodes', 'pay_docs', 'na'): del st.session_state[k]
         elif k.startswith('v::') and str(st.session_state[k]) == str(V.get(k[3:], {}).get('默认值', '')):
             del st.session_state[k]
 
@@ -137,7 +154,7 @@ def field(col, name, en=False):
     col.text_input(label, key=key(k), placeholder=ph)
 
 
-tabs = st.tabs(['① 必填信息', '② 条款写法', '③ 默认条款参数'])
+tabs = st.tabs(['① 必填信息', '② 条款写法', '③ 默认条款参数', '④ 合同附件'])
 
 with tabs[0]:
     for g, names in GROUPS.items():
@@ -300,10 +317,43 @@ with tabs[2]:
             cols[i % 3].text_input(name + '（英文）', key=ke)
 
 
+def _form_value(var):
+    """表单中某变量的当前值（“有技术协议”来自技术协议勾选框）"""
+    if var == '有技术协议':
+        return '是' if st.session_state.get('ta', True) else '否'
+    return st.session_state.get(key(var), '')
+
+
+with tabs[3]:
+    st.caption('勾选本合同包含的附件，附件清单表中自动打 ☑ / □。“PDF”类附件只在清单中打钩，文件请另行附上；'
+               '其余附件的正文生成在合同第二部分。附件编号按顺序自动排列。')
+    anx_fields = []
+    for aid, a in lib.annexes.items():
+        m = a['meta']; k = 'ax::' + aid
+        lab = f"{annexes.title(lib, aid, nums=ANUMS)}　{m['名称_en']}" + ('' if annexes.has_body(lib, aid) else '　（PDF）')
+        if annexes.follows(lib, aid):
+            on = annexes.default_state(lib, aid, {m['跟随变量']: _form_value(m['跟随变量'])})
+            st.session_state[k] = on
+            st.checkbox(lab, key=k, disabled=True, help=f"随“{m['跟随变量']}”自动勾选")
+        else:
+            if k not in st.session_state:
+                st.session_state[k] = annexes.default_state(lib, aid, {})
+            st.checkbox(lab, key=k)
+        if st.session_state[k] and ANNEX_VARS[aid]:
+            cols = st.columns(3)
+            for i, name in enumerate(ANNEX_VARS[aid]):
+                vk = key(name)
+                if vk not in st.session_state: st.session_state[vk] = str(V[name].get('默认值', '') or '')
+                cols[i % 3].text_input(V[name].get('说明') or name, key=vk)
+                anx_fields.append(name)
+    st.session_state['_anx'] = anx_fields
+
+
 # ---------------- 生成 ----------------
 def collect():
     pay_choice, pay_fields, nodes = st.session_state['_pay']
-    order = [n for g in GROUPS.values() for n in g] + st.session_state.get('_extra', []) + pay_fields + defaults
+    order = [n for g in GROUPS.values() for n in g] + st.session_state.get('_extra', []) + pay_fields + defaults \
+        + st.session_state.get('_anx', [])
     order = [x for n in order for x in (n, n + '_en')]
     vals = {}
     for n in order:
@@ -328,6 +378,9 @@ def collect():
     na = [NA_LABEL[x] for x in st.session_state.get('na', []) if x in NA_LABEL]
     if BOND_ATOM and not st.session_state.get('bond', True): na.append(BOND_ATOM)
     if na: cfg['不适用'] = sorted(na, key=ALL_ORDER.index)
+    if lib.annexes:
+        cfg['附件'] = {a: (annexes.HAVE if st.session_state.get('ax::' + a, True) else annexes.HAVE_NOT)
+                     for a in lib.annexes if not annexes.follows(lib, a)}
     return cfg
 
 
@@ -335,7 +388,8 @@ st.divider()
 cfg = collect()
 pay_req = [payment.pay_node(lib, n)['比例变量'] for n in st.session_state['_pay'][2]] + ([BOND] if BOND_ATOM and st.session_state.get('bond', True) else [])
 _custom = ['质保期_自定义', '质保期_自定义_en'] if cfg['选项'].get('质保期') == '自定义' else []
-miss = [k for k in required + pay_req + _custom + [x for x in st.session_state.get('_extra', []) if x != '币种'] if k not in cfg['变量']] + \
+anx_req = [n for n in st.session_state.get('_anx', []) if V[n].get('默认值') in (None, '')]
+miss = [k for k in required + pay_req + _custom + anx_req + [x for x in st.session_state.get('_extra', []) if x != '币种'] if k not in cfg['变量']] + \
        [k + '_en' for k in required if k + '_en' in V and k + '_en' not in cfg['变量']]
 bad = [n for n, s in cfg['选项'].items() if n in option_vars and opts[n]['选项'][s].get('状态') == '待补']
 if not st.session_state['_pay'][2]: bad.append('付款节点')

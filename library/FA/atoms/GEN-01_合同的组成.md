@@ -13,9 +13,9 @@ id: GEN-01
 
 本订货合同由以下部分组成：This order contract consists of the following parts:
 
-- ATTACHMENT A PROJECT SPECIAL REQUIREMENTS 附件 A项目特殊条款（如有）
+- ATTACHMENT {{附件号:ANX-SPECIAL}} PROJECT SPECIAL REQUIREMENTS 附件 {{附件号:ANX-SPECIAL}}项目特殊条款（如有）
 
-- ATTACHMENT 5 TECHNICAL AGREEMENT 附件 5 技术协议{{技术协议说明}}
+- ATTACHMENT {{附件号:ANX-TA}} TECHNICAL AGREEMENT 附件 {{附件号:ANX-TA}} 技术协议{{技术协议说明}}
 
 - 合同正文Contract Text
 

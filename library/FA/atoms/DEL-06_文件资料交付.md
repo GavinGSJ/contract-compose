@@ -11,7 +11,7 @@ id: DEL-06
 
 ## 文件资料交付Delivery of Documents and Materials：
 
-- 文件资料的数量、内容、交付时间等详细要求按《技术协议》执行，格式见本合同附件二《文件资料交付要求》，不符合约定的文件资料视为无效，卖方须修改升版直至完全符合约定要求。The detailed requirements for the quantity, content, delivery time, and other details of the documentation shall be executed in accordance with the Technical Agreement. The format is shown in Annex 2 "Documentation Delivery Requirements" of this CONTRACT. Any documentation that do not comply with the agreement shall be deemed invalid, and the SELLER shall modify and upgrade them until they fully meet the agreed requirements
+- 文件资料的数量、内容、交付时间等详细要求按《技术协议》执行，格式见本合同{{附件:ANX-DOCS}}《文件资料交付要求》，不符合约定的文件资料视为无效，卖方须修改升版直至完全符合约定要求。The detailed requirements for the quantity, content, delivery time, and other details of the documentation shall be executed in accordance with the Technical Agreement. The format is shown in {{附件_en:ANX-DOCS}} "Documentation Delivery Requirements" of this CONTRACT. Any documentation that do not comply with the agreement shall be deemed invalid, and the SELLER shall modify and upgrade them until they fully meet the agreed requirements
 
 - 随机文件资料应与标的物同时交付，并提供随机文件资料目录，否则，视同未按时交货。标的物交付时间最终认定为：卖方全部且最后一批符合要求的文件交付买方之日。
 

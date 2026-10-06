@@ -13,6 +13,7 @@ NEW_TYPES = os.path.join(ROOT, 'new_types')                          # 新增合
 
 # 内容库中的固定名称（公共目录与各类型目录通用）
 ATOMS = 'atoms'
+ANNEXES = 'annexes'                                                  # 合同附件（一个附件一个 .md）
 OPTIONS = 'options'
 BLOCKS = 'blocks'
 TABLES = 'tables'

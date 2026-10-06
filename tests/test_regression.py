@@ -96,8 +96,10 @@ def test_snapshot(name, kind, arg):
 if __name__ == '__main__':
     if '--update' not in sys.argv:
         sys.exit(pytest.main([__file__, '-q']))
+    sys.path.insert(0, ROOT)                       # 直接运行本文件时也能 import contract_compose
+    out = {name: dump(build_case(kind, arg)) for name, kind, arg in cases()}   # 全部生成成功后再写
     os.makedirs(SNAP, exist_ok=True)
     for f in glob.glob(os.path.join(SNAP, '*.txt')): os.remove(f)
-    for name, kind, arg in cases():
-        open(snap_path(name), 'w', encoding='utf-8').write(dump(build_case(kind, arg)))
+    for name, text in out.items():
+        open(snap_path(name), 'w', encoding='utf-8').write(text)
         print('已更新', name)
