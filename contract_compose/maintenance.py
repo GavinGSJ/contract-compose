@@ -119,11 +119,11 @@ def check(lib, kind, aid, body):
             warns.append(f'第 {i} 行的“**”（加粗）没有成对')
         if line.count('<u>') != line.count('</u>'):
             warns.append(f'第 {i} 行的“<u>”（下划线）没有成对')
-    old = src[aid]['body']
+    old = src[aid]['body'] if aid in src else body
     lead = lambda t: (re.match(r'(#+ |<顶格> |- |\+ )?', next((x for x in t.split('\n') if x.strip()), '')).group(1) or '')
     if kind == '条款' and lead(old) != lead(body):
         warns.append(f'首行标记由“{lead(old).strip() or "无"}”变为“{lead(body).strip() or "无"}”，条款的层级 / 编号会变化')
-    if not body.strip() and (kind == '条款' or annexes.has_body(lib, aid)):
+    if not body.strip() and (kind == '条款' or (aid in lib.annexes and annexes.has_body(lib, aid))):
         errors.append('正文不能为空')
     return errors, warns
 
@@ -259,13 +259,13 @@ def log_change(lib, line):
     open(p, 'w', encoding='utf-8').write(s)
 
 
-def verify(ctype):
-    """用该类型的全部示例 / 测试配置和母本回归试生成；返回错误信息（无错误返回 None）"""
+def verify(ctypes):
+    """用这些类型的全部示例 / 测试配置和母本回归试生成；返回错误信息（无错误返回 None）"""
     from .snapshots import cases, build_case
-    import yaml as _y
+    ctypes = [ctypes] if isinstance(ctypes, str) else list(ctypes)
     for name, k, arg in cases():
-        t = (_y.safe_load(open(arg, encoding='utf-8')) or {}).get('合同类型') if k == 'config' else arg
-        if (t or list_types()[0]) != ctype:
+        t = (yaml.safe_load(open(arg, encoding='utf-8')) or {}).get('合同类型') if k == 'config' else arg
+        if (t or list_types()[0]) not in ctypes:
             continue
         try:
             build_case(k, arg)
@@ -274,6 +274,46 @@ def verify(ctype):
         except Exception as e:                          # noqa: BLE001  保存失败时给出原因
             return f'{name}：{type(e).__name__}: {e}'
     return None
+
+
+def transaction(lib, writes, log_line, update_snapshots=True):
+    """一次修改：writes = {路径: 新内容（None 为删除）}。写入后试生成，失败则全部还原；成功则记修订记录、更新快照。
+    改到共用库（library/common）时，所有合同类型都要试生成。返回 {'ok', 'message', 'snapshots'}"""
+    olds = {p: (open(p, encoding='utf-8').read() if os.path.exists(p) else None) for p in writes}
+    for p, text in writes.items():
+        if text is None:
+            if os.path.exists(p): os.remove(p)
+        else:
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            open(p, 'w', encoding='utf-8').write(text)
+    common = any(os.path.abspath(p).startswith(os.path.abspath(paths.COMMON)) for p in writes)
+    err = verify(list_types() if common else lib.ctype)
+    if err:
+        for p, text in olds.items():
+            if text is None:
+                if os.path.exists(p): os.remove(p)
+            else:
+                open(p, 'w', encoding='utf-8').write(text)
+        return {'ok': False, 'message': f'修改后试生成失败，已还原：{err}'}
+    log_change(lib, log_line)
+    changed = []
+    if update_snapshots:
+        from .snapshots import update
+        changed = update()
+    return {'ok': True, 'message': '已保存', 'snapshots': changed}
+
+
+def backup_item(lib, kind, aid, now=None):
+    """条款 / 附件文件备份（历史版本），返回备份路径"""
+    now = now or datetime.datetime.now()
+    os.makedirs(backup_dir(lib, kind), exist_ok=True)
+    bak = os.path.join(backup_dir(lib, kind), f'{aid}_{now:%Y%m%d-%H%M%S}.md')
+    shutil.copy2(path_of(lib, kind, aid), bak)
+    return bak
+
+
+def stamp(now=None):
+    return f'{(now or datetime.datetime.now()):%Y-%m-%d %H:%M}'
 
 
 def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=None):
@@ -289,23 +329,14 @@ def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=
     new_text = join_file(new_fm, body)
     if new_text == old_text:
         return {'ok': False, 'message': '内容没有变化'}
-    now = now or datetime.datetime.now()
-    os.makedirs(backup_dir(lib, kind), exist_ok=True)
-    bak = os.path.join(backup_dir(lib, kind), f'{aid}_{now:%Y%m%d-%H%M%S}.md')
-    shutil.copy2(p, bak)
-    open(p, 'w', encoding='utf-8').write(new_text)
-    err = verify(lib.ctype)
-    if err:                                             # 试生成失败：还原
-        open(p, 'w', encoding='utf-8').write(old_text)
-        return {'ok': False, 'message': f'保存后试生成失败，已还原：{err}'}
+    bak = backup_item(lib, kind, aid, now)
     no = next((r['no'] for r in items(lib, kind) if r['id'] == aid), '')
     extra = f'；名称“{old_name}”改为“{name}”' if name and name != old_name else ''
-    log_change(lib, f'- {now:%Y-%m-%d %H:%M}　{no} {old_name}（{aid}）：{reason.strip() or "（未填写原因）"}{extra}')
-    changed = []
-    if update_snapshots:
-        from .snapshots import update
-        changed = update()
-    return {'ok': True, 'message': '已保存', 'backup': bak, 'snapshots': changed}
+    res = transaction(lib, {p: new_text}, f'- {stamp(now)}　{no} {old_name}（{aid}）：{reason.strip() or "（未填写原因）"}{extra}',
+                      update_snapshots)
+    if not res['ok']:
+        os.remove(bak)
+    return {**res, 'backup': bak}
 
 
 def restore(lib, kind, aid, backup_path, reason=''):
