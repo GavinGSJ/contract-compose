@@ -33,6 +33,26 @@ def test_open_saved_config():
         _run(at)
 
 
+def test_generate_from_saved_config(tmp_path, monkeypatch):
+    """打开示例配置并点“生成合同”：配置与 Word 写到临时目录，生成结果与命令行一致"""
+    import glob, shutil, yaml
+    from contract_compose import paths
+    cfg_dir, out_dir = tmp_path / 'configs', tmp_path / 'output'
+    shutil.copytree(paths.CONFIGS, cfg_dir)
+    monkeypatch.setattr(paths, 'CONFIGS', str(cfg_dir))
+    monkeypatch.setattr(paths, 'OUTPUT', str(out_dir))
+    at = _run(AppTest.from_file(APP))
+    for f in [x for x in at.selectbox(key='cfg_file').options if x != '（新合同）']:
+        at.selectbox(key='cfg_file').set_value(f)
+        _run(at); _run(at)
+        at.button[0].click()
+        _run(at)
+        assert any('已生成' in s.value for s in at.success)
+    assert len(glob.glob(str(out_dir / '*.docx'))) >= 2
+    saved = [p for p in glob.glob(str(cfg_dir / '*.yaml')) if open(p, encoding='utf-8').read().startswith('# 由表单保存')]
+    assert sorted(yaml.safe_load(open(p, encoding='utf-8'))['合同类型'] for p in saved) == ['FA', 'PO']
+
+
 def test_presets_page():
     at = _run(AppTest.from_file(APP))
     at.switch_page(os.path.join(ROOT, PRESET_PAGE))
@@ -40,4 +60,4 @@ def test_presets_page():
     assert any('预存信息管理' in h.value for h in at.header)
 
 
-PRESET_PAGE = os.path.join('公共', '界面', '预存信息管理.py')
+PRESET_PAGE = os.path.join('ui', 'preset_manager.py')

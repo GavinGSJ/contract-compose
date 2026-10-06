@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 生成的合同：只保留示例
+output/*
+!output/示例_*.docx
+
+# 预存库修改前的自动备份（本地保留，不进 git）
+library/common/presets/backups/
+
+# 体检生成的段落数据（可随时重新生成）
+new_types/*/段落.json
+
+# Word 打开文件时的临时锁文件
+~$*

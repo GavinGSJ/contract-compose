@@ -8,7 +8,7 @@
 快照内容：生成报告（选用写法、未填变量、不适用）+ 每个 Word 部件（正文、编号、页眉页脚）的 SHA-256
 + 正文逐段文字（样式、编号、文字），便于看出差异在哪。
 """
-import os, sys, io, re, glob, hashlib, zipfile, importlib.util
+import os, sys, io, re, glob, hashlib, zipfile
 import yaml
 from lxml import etree
 
@@ -20,13 +20,12 @@ W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 
 # ---------------- 引擎适配（目录调整时只改这里） ----------------
 def _engine():
-    spec = importlib.util.spec_from_file_location('asm', os.path.join(ROOT, '公共', '工具', '合同组装器.py'))
-    asm = importlib.util.module_from_spec(spec); spec.loader.exec_module(asm)
-    return asm
+    from contract_compose import assembler
+    return assembler
 
 
 def _config_files():
-    return sorted(glob.glob(os.path.join(ROOT, '合同配置', '*.yaml'))) + sorted(glob.glob(os.path.join(CASES_DIR, '*.yaml')))
+    return sorted(glob.glob(os.path.join(ROOT, 'configs', '*.yaml'))) + sorted(glob.glob(os.path.join(CASES_DIR, '*.yaml')))
 
 
 def build_case(kind, arg):
