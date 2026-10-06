@@ -105,9 +105,8 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
                 w.block(os.path.join(lib.dir, paths.BLOCKS, item['附加块'] + '.xml'), fill_e)
             if item.get('附件行') and lib.annexes:          # 目录中的第二部分与各附件（无的附件标注不适用）
                 sec = recipe['附件']
-                w.toc_lines([fill(sec['目录行'])] + [
-                    annexes.title(lib, a, nums=anums) + ' ' + f"Annex {anums[a]} {lib.annexes[a]['meta']['名称_en']}"
-                    + ('' if ast[a] else NA_MARK) for a in lib.annexes])
+                w.toc_lines([fill(sec['目录行'])] + [annexes.full_title(lib, a, anums) + ('' if ast[a] else NA_MARK)
+                                                    for a in lib.annexes])
 
     def write_lines(text):
         for line in text.split('\n'):
@@ -142,7 +141,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         for a in lib.annexes:
             if not (ast[a] and annexes.has_body(lib, a)):
                 continue
-            w.heading('合同-附件标题', [annexes.title(lib, a, nums=anums), annexes.title(lib, a, en=True, nums=anums)],
+            w.heading('合同-附件标题', [annexes.full_title(lib, a, anums)],
                       page_break=bool(lib.annexes[a]['meta'].get('另起一页')))
             write_lines(fill(lib.annexes[a]['body']))
         w.plain = '合同-正文'

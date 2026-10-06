@@ -88,6 +88,11 @@ def title(lib, aid, en=False, nums=None):
     return f"{label(lib, aid, en, nums)} {m['名称_en' if en else '名称']}"
 
 
+def full_title(lib, aid, nums=None):
+    """同一行的中英文标题：附件十 项目特殊条款 Annex 10 Project Special Requirements"""
+    return f'{title(lib, aid, nums=nums)} {title(lib, aid, en=True, nums=nums)}'
+
+
 def checkbox(on):
     return '有 ☑    无 □' if on else '有 □    无 ☑'
 

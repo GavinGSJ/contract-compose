@@ -3,7 +3,7 @@
 条款原子：106
 标注不适用：
 
-sha256 word/document.xml: e1264d0d098ef1d5e2dede5c2d9fdacf93ff4f28a18ba6adc738807fdb4bb480
+sha256 word/document.xml: 6daef2994cba01f776f7df571f9d0f88d08a4408510ed9e1e0fc03246ae70657
 sha256 word/footer1.xml: e4dc14e8d34dcb7d0448422f577ae31128b17d82f8b32efded191451fc8deb56
 sha256 word/footer2.xml: 814659d03483f8480a14cb9fc1c7a1392919a5f45684e13c51730b37b81ea494
 sha256 word/header1.xml: 317f67624f16cad543b445f058e047ba6e2f6abea5c565d327649c6b1bb0a339
@@ -483,8 +483,7 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [表] 附件九 | 主合同相关要求：退货和回购条款 Requirements related to the main contract: Return and Buy-back Term | 有 ☑    无 □
 [表] 附件十 | 项目特殊条款 Project Special Requirements | 有 ☑    无 □
 [表] 附件十一 | 模板 Templates | 有 □    无 ☑
-[annexTitle] 附件二 文件资料交付要求
-[annexTitle] Annex 2 Documentation Requirements
+[annexTitle] 附件二 文件资料交付要求 Annex 2 Documentation Requirements
 [-d] 卖方需交付的文件资料除满足询价文件或技术协议的要求外，尚应满足以下要求：
 [-d] The documents and materials that the SELLER needs to deliver should not only meet the requirements of the inquiry documents or Technical Agreements, but also meet the following requirements:
 [-2#4.5] 字迹清楚，图样（章）清晰，图表整洁，签认盖章手续完备。质量文件必须电脑打印（签字除外），不应使用色带式打印机、水性墨打印机和热敏打印机，禁用易褪色的书写材料（红色墨水、纯蓝墨水、圆珠笔、复写纸、铅笔等）书写、绘制。Clear handwriting, clear design (stamp), neat charts, and complete signature and stamping procedures. Quality documents must be printed on a computer (except for signatures), and ribbon printers, water-based ink printers, and thermal printers should not be used. Writing and drawing on easily fading writing materials (red ink, pure blue ink, ballpoint pens, carbon paper, pencils, etc.) is prohibited.
@@ -494,8 +493,7 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-2#4.5] 交工资料用户名称为项目业主的名称，购件的产品合格证粘贴在设备随机资料内。过程文件或资料发送按[文件传送单]（如有）格式进行。并预先发送电子版，纸版采用快递方式或直接递交。The name of end user of the final documentation shall be the name of the project owner, and the product qualification certificate of the purchased parts is pasted in the GOODS. The process files or data shall be sent in the format of the [File Transfer Form] (if any). And send the electronic version in advance, the paper version will be sent by express delivery or directly submitted.
 [-2#4.5] 交工资料工程名称、设备名称、设备位号等应按照设计图纸填写，包括质量证明文件包含的相关资料。Final documentation: The project name, equipment name, equipment tag number, etc. should be filled in according to the design drawings, including the relevant information contained in the quality certification documents.
 [-2#4.5] 交工资料原件（N/A）份，另加复印件（N/A）份，电子光盘（N/A）份。Original (N/A) copies of handover documents, along with (N/A) copies and (N/A) electronic CDs.
-[annexTitle] 附件三 交货要求
-[annexTitle] Annex 3 Delivery Requirements
+[annexTitle] 附件三 交货要求 Annex 3 Delivery Requirements
 [-d] 为确保标的物快捷、顺利地送达项目建设现场，使我方提前做好接收准备，及时安排卸车，卖方在送货前做好以下工作：To ensure that the GOODS is delivered to the project construction site quickly and smoothly, so that we can prepare for receipt in advance and arrange for unloading in a timely manner, the SELLER shall do the following work before delivery:
 [-2#5.5] 安排专车运输标的物，未经买方同意，不得采用配货、零担方式运输；运输车辆应务必做到人员、车辆证件齐全（如车辆保险等），否则将无法进入工程现场。Arrange dedicated vehicles to transport the GOODS, and without the BUYER's consent, it is not allowed to use distribution or less than truckload transportation methods; Transport vehicles must have complete personnel and vehicle documents (such as vehicle insurance), otherwise they will not be able to enter the construction site.
 [-2#5.5] 发货前（3）天请通过惠生一体化平台推送[发货清单]（具体要求见惠生一体化平台）。
@@ -506,12 +504,10 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-2#5.5] 承运人应持有卖方填写的[送货（装箱）清单]一式贰份，交付标的物的同时交付买方。（如适用）The logistic agent shall hold two copies of the delivery (packing) list filled out by the SELLER and submit at the time of delivery of the GOODS to the BUYER. (If applicable)
 [-2#5.5] 卖方应办理好标的物运送的全部手续，承担因运输纠纷导致的损失；出现货到现场不付运费不卸货的情况，如导致我方付费则加倍从合同价款中扣除。The SELLER shall handle all procedures for the transportation of the GOODS and bear the losses caused by transportation disputes; If there is a situation where the GOODS arrive at the site without paying the freight and are not unloaded, if it causes BUYER to pay, double the amount will be deducted from the contract price.
 [-2#5.5] 标的物按我方指定送达惠生仓储库或工程项目现场。The GOODS shall be delivered to the Wison warehouse or project site as designated by BUYER.
-[annexTitle] 附件九 主合同相关要求：退货和回购条款
-[annexTitle] Annex 9 Requirements related to the main contract: Return and Buy-back Term
+[annexTitle] 附件九 主合同相关要求：退货和回购条款 Annex 9 Requirements related to the main contract: Return and Buy-back Term
 [-d] 对于工程中的剩余产品，买方有权对产品进行退货，退回的产品要按照合同规定产品售价的80%计算，退回运费由买方承担。被回购的产品应保持交付时的原始状态，允许合理损耗，但不得影响其正常使用。若卖方未按约定回购材料，需向买方支付未回购材料总价值的10%作为违约金。因不可抗力导致回购无法履行，争议应通过双方协商解决，协商不成时提交合同签订地有管辖权的人民法院诉讼解决。
 [-d] For the remaining products in the project, the Buyer has the right to return the products, and the returned products are to be calculated at 80% of the selling price of the products under the contract, and the return shipping costs are to be undertake by the Buyer. The repurchased products shall be kept in the original state at the time of delivery, and reasonable wear and tear is allowed, but shall not affect their normal use. If the seller fails to repurchase the materials as agreed, it shall pay 10% of the total value of the materials not repurchased to the Buyer as liquidated damages. If the repurchase cannot be performed due to force majeure, the dispute shall be solved through consultation between the two parties, and if the consultation fails, the dispute shall be submitted to the People's Court with jurisdiction over the place where the contract was signed for litigation.
-[annexTitle] 附件十 项目特殊条款
-[annexTitle] Annex 10 Project Special Requirements
+[annexTitle] 附件十 项目特殊条款 Annex 10 Project Special Requirements
 [-d] The content of this Annex 10 specifies the special requirements of the PROJECT. If there is any discrepancies or conflicts between Annex 10 and other articles or attachments of this CONTRACT, Annex 10 shall prevail and take precedence over the other articles or attachments, in accordance.
 [-d] 这附件十制定了项目特殊的要求。如果此附件与本合同的其他条款或附件有任何差异或冲突，应以附件十为准。附件十优先于其他条款或附件。
 [-2#6.5] Seller shall provide any and all technical information as it may reasonably be requested by BUYER so that the latter is in a position to meet its regulatory obligations under the APPLICABLE LAW.
