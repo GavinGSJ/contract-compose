@@ -1,0 +1,10 @@
+名称: 标的物交付时间
+位置: DEL-01（5.1）
+类型: 句内
+默认: 按订单
+说明: 默认写法中的天数为每份合同必填（{{交货期天数}}）
+选项:
+  按订单:
+    名称: 每批订单生效后不超过 N 天（模板原文）
+    中文: 原则上每批次货物对应的采购订单生效后不超过{{交货期天数}}天，具体以每批次下的订单所约定时间为准。
+    英文: In principle, it shall not exceed {{交货期天数}} days after the effective date of each order for each batch of GOODS, and the specific delivery time shall be subject to the agreed time of each batch of orders.

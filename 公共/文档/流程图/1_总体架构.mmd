@@ -1,0 +1,15 @@
+flowchart TB
+  subgraph LIB["内容库（人维护 / AI 辅助维护）"]
+    direction LR
+    A1["原子 .md<br/>每条条款一个文件"]
+    A2["配方.yaml<br/>条款顺序、条件"]
+    A3["样式模板 .docx<br/>字体、编号、页眉页脚"]
+    A4["块 / 表格<br/>封面、目录附件行、价格表"]
+    A5["变量字典 + 选项库<br/>付款条款库"]
+    A6["预存库<br/>买方主体、项目质保期"]
+  end
+  FORM["表单<br/>启动表单.bat"] --> CFG["合同配置 .yaml<br/>本份合同的填写内容"]
+  CFG --> ASM["合同组装器<br/>公共/工具/合同组装器.py"]
+  LIB --> ASM
+  ASM --> OUT["输出/ Word 合同<br/>+ 生成报告"]
+  ASM -.回归比对.-> REG["母本 PDF 逐字比对"]

@@ -1,0 +1,14 @@
+名称: 计算方法（结算方式）
+位置: SCO-04（2.4）
+类型: 字母选择
+显示方式: 字母加列表
+列表格式: 逐项
+默认: a
+说明: 根据不同结算方式进行选择
+选项:
+  a:
+    列表文字: 根据国家相关规定，按理论重量计算According to relevant national regulations, calculated based on theoretical weight；
+  b:
+    列表文字: 按双方认可的过磅码单结算Settle according to the agreed weighing report between both parties;
+  c:
+    列表文字: 买方要求或认可的其它方法Other methods requested or approved by the BUYER.

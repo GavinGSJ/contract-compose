@@ -1,0 +1,28 @@
+名称: 包装方式
+位置: PAC-01（6.1）
+类型: 字母选择
+显示方式: 字母加列表
+列表格式: 合并
+默认: g
+选项:
+  a:
+    中文: 新木箱
+    英文: New wooden crates
+  b:
+    中文: 纸箱
+    英文: Carton
+  c:
+    中文: 集装箱
+    英文: Container
+  d:
+    中文: 裸装
+    英文: Unpacked
+  e:
+    中文: 托盘
+    英文: Tray
+  f:
+    中文: 钢框架
+    英文: Steel frame
+  g:
+    中文: 其它
+    英文: Other

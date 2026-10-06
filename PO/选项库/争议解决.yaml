@@ -1,0 +1,18 @@
+# PO 第 19 章争议解决方式：诉讼 / 仲裁 二选一；选“诉讼”时 19.1–19.3 仲裁细则标注不适用
+名称: 争议解决方式
+位置: DIS-00（第 19 章）
+类型: 段落
+默认: 仲裁
+选项:
+  仲裁:
+    名称: 上海国际仲裁中心仲裁（SHIAC）
+    正文: |-
+      All disputes arising in the course of executing the CONTRACT or in connection with the CONTRACT including any non-contractual liabilities shall be settled through friendly consultations between the PARTIES. In case no agreement can be reached through consultations, then the dispute may be submitted by either PARTY to arbitration under the rules of the Shanghai International Economic and Trade Arbitration Commission (Shanghai International Arbitration Center, “SHIAC”) for resolution.
+
+      双方应通过友好协商解决双方在合同执行过程中产生的或与合同有关的所有纠纷，包括任何非合同责任。如果协商仍未能达成一致，则任何一方均可根据上海国际经济贸易仲裁委员会（上海国际仲裁中心“SHIAC”）的规则将争议提交仲裁解决。
+  诉讼:
+    名称: 上海市浦东新区人民法院诉讼
+    正文: |-
+      All disputes arising in the course of executing the CONTRACT or in connection with the CONTRACT including any non-contractual liabilities shall be settled through friendly consultations between the PARTIES. In case no agreement can be reached through consultations, then the dispute may be submitted by either PARTY to the Primary People’s Court of Pudong New District of Shanghai.
+
+      双方应通过友好协商解决双方在合同执行过程中产生的或与合同有关的所有纠纷，包括任何非合同责任。如果协商仍未能达成一致，则任何一方均可向上海市浦东新区人民法院提起诉讼。

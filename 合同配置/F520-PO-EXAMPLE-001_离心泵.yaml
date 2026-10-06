@@ -1,0 +1,58 @@
+# 由表单保存于 20261006-1948
+合同类型: PO
+买方主体: 启东惠生能源贸易有限公司
+条件: []
+选项:
+  付款方式: 复杂合同
+  质保方式: 质保函
+  争议解决: 仲裁
+变量:
+  合同编号: F520-PO-EXAMPLE-001
+  项目编号: F520
+  项目名称: Example FLNG Project
+  业主名称: Example Owner Ltd.
+  设施简称: FLNG
+  设施全称: 浮式液化天然气生产储卸装置
+  设施全称_en: floating liquefied natural gas production facility
+  标的物名称: 离心泵
+  标的物名称_en: Centrifugal Pumps
+  签订日期: 2026年10月  日
+  签订日期_en: October  , 2026
+  卖方.名称: 示例泵业有限公司
+  卖方.英文名: Example Pumps Co., Ltd.
+  卖方.地址: 示例地址
+  卖方.联系人: Zhang San
+  卖方.邮箱: sales@example.com
+  交货日期: 2027年3月31日
+  交货日期_en: 31 March 2027
+  贸易术语: DDP 启东基地, 中国
+  贸易术语_en: DDP Qidong Yard, China
+  原产国: China
+  制造商: Example Pumps Co., Ltd.
+  买方.联系人: Gavin
+  买方.邮箱: buyer@example.com
+  币种: RMB
+  含税总价: '2260000'
+  技术协议号: F520-TA-001
+  技术协议版本: Rev.0
+  技术协议日期: '2026-09-30'
+  预付款比例: '10'
+  进度款比例: '20'
+  发货款比例: '20'
+  到货款比例: '35'
+  质保比例: '5'
+  调试款比例: '10'
+  付款天数: '60'
+  进度款_主材名称: 泵壳铸件
+  完工文件_原件份数: '2'
+  完工文件_电子份数: '1'
+  签订地: 上海浦东
+  签订地_en: SHANGHAI PUDONG NEW DISTRICT
+  迟交违约金_前四周: '0.5'
+  迟交违约金_此后: '1.5'
+  迟交违约金_上限: '15'
+  文件迟交违约金_上限: '5'
+  服务违约金_上限: '5'
+  暂停免费天数: '90'
+  有技术协议: 是
+输出文件名: F520-PO-EXAMPLE-001_离心泵.docx

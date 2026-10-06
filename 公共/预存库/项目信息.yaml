@@ -1,0 +1,26 @@
+# 预存信息库（可在表单“预存信息管理”页面中编辑）
+名称: 项目信息
+说明: 按项目代号预设的项目要求；合同表单填写“项目编号”后自动带出（目前：3.4 b) 质量保证期条款）
+条目名称标签: 项目代号（与合同表单中的“项目编号”一致，不区分大小写）
+多行字段:
+- 质保期
+- 质保期_en
+字段:
+  质保期: 质量保证期条款（中文）
+  质保期_en: 质量保证期条款（英文）
+条目:
+  F450:
+    质保期: 供货、合同货物的质量、性能和符合与供货相关的合同要求的质保期应为项目验收合格后二十四（24）个月（提供日期）或卖方向买方交付合同货物后三十六（36）个月，以先到者为准。
+    质保期_en: The warranty period of the SUPPLY, CONTRACT GOODS for quality, performance and compliance with the CONTRACT requirements in relation to the SUPPLY shall be twenty-four (24) months after acceptance of the project (with date provided) or thirty-six (36) months after SELLER delivers the CONTRACT GOODS to BUYER, whichever comes first.
+  F502:
+    质保期: 供货、合同货物的质量、性能和符合与供货相关的合同要求的质保期应为FPU验收合格后十八（18）个月（提供日期）或卖方向买方交付合同货物后四十八（48）个月，以先到者为准。
+    质保期_en: The warranty period of the SUPPLY, CONTRACT GOODS for quality, performance and compliance with the CONTRACT requirements in relation to the SUPPLY shall be eighteen (18) months after acceptance of the FPU (with date provided) or forty-eight (48) months after SELLER delivers the CONTRACT GOODS to BUYER, whichever comes first.
+  S416:
+    质保期: 供货、合同货物的质量、性能和符合与供货相关的合同要求的质保期应为买方向买方客户交船之日起十二（12）个月（提供日期）或卖方向买方交付合同货物后二十四（24）个月，以先到者为准。
+    质保期_en: The warranty period of the SUPPLY, CONTRACT GOODS for quality, performance and compliance with the CONTRACT requirements in relation to the SUPPLY shall be twelve (12) months from the date of delivery of the Vessel to the BUYER’s Customer (with date provided) or twenty-four (24) months after SELLER delivers the CONTRACT GOODS to BUYER, whichever comes first.
+  F520:
+    质保期: 供货、合同货物的质量、性能和符合与供货相关的合同要求的质保期应为项目运行开始后十八（18）个月（提供日期）或卖方向买方交付合同货物后四十八（48）个月，以先到者为准。
+    质保期_en: The warranty period of the SUPPLY, CONTRACT GOODS for quality, performance and compliance with the CONTRACT requirements in relation to the SUPPLY shall be eighteen (18) months from offshore start-up (with date provided) or forty-eight (48) months after SELLER delivers the CONTRACT GOODS to BUYER, whichever comes first.
+  F484:
+    质保期: 供货、合同货物的质量、性能和符合与供货相关的合同要求的质保期应为项目运行开始后十八（18）个月（提供日期）或卖方向买方交付合同货物后四十八（48）个月，以先到者为准。
+    质保期_en: The warranty period of the SUPPLY, CONTRACT GOODS for quality, performance and compliance with the CONTRACT requirements in relation to the SUPPLY shall be eighteen (18) months from offshore start-up (with date provided) or forty-eight (48) months after SELLER delivers the CONTRACT GOODS to BUYER, whichever comes first.

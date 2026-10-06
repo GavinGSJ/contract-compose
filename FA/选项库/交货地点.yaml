@@ -1,0 +1,10 @@
+名称: 交货地点
+位置: DEL-04（5.4）
+类型: 句内
+默认: DDP
+说明: 根据贸易术语自动选择：取 {{贸易术语}} 的第一个词（如 DDP）作为选项ID
+跟随变量: 贸易术语
+选项:
+  DDP:
+    中文: 买方的施工现场或仓库
+    英文: The BUYER's construction site or warehouse.
