@@ -1,15 +1,17 @@
 flowchart TB
-  subgraph LIB["内容库（人维护 / AI 辅助维护）"]
+  subgraph LIB["内容库 library/（人维护 / AI 辅助维护）"]
     direction LR
-    A1["原子 .md<br/>每条条款一个文件"]
-    A2["recipe.yaml 配方<br/>条款顺序、条件"]
+    A1["原子 atoms/<br/>每条条款一个文件"]
+    A2["recipe.yaml 配方<br/>条款顺序、条件、附件顺序"]
+    A7["附件 annexes/<br/>一个附件一个文件"]
     A3["样式模板 .docx<br/>字体、编号、页眉页脚"]
-    A4["块 / 表格<br/>封面、目录附件行、价格表"]
+    A4["块 / 表格<br/>封面、价格表、装箱单"]
     A5["变量字典 + 选项库<br/>付款条款库"]
     A6["预存库<br/>买方主体、项目质保期"]
   end
-  FORM["表单<br/>启动表单.bat"] --> CFG["configs/*.yaml 合同配置<br/>本份合同的填写内容"]
+  FORM["表单：合同生成<br/>启动表单.bat"] --> CFG["configs/*.yaml 合同配置<br/>本份合同的填写内容"]
   CFG --> ASM["合同组装器<br/>contract_compose/"]
   LIB --> ASM
-  ASM --> OUT["output/ Word 合同<br/>+ 生成报告"]
-  ASM -.回归比对.-> REG["母本 PDF 逐字比对"]
+  ASM --> OUT["output/ Word 合同<br/>第一部分条款 + 第二部分附件"]
+  EDIT["表单：条款维护 / 预存信息管理"] -->|修改、自动备份、修订记录| LIB
+  ASM -.回归快照.-> REG["tests/ 自动回归"]
