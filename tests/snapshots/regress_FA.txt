@@ -1,0 +1,468 @@
+选用的写法：计算方法=a、质保期=通用_18_48、付款方式=预付_到货、质保方式=质保函、支付方式=银行转账、交货时间=按订单、交货地点=DDP、包装方式=g、运输方式=a
+未填变量：业主名称、价款_不含税_表、价款_含税_表、价款_大写、价款_税额_表、价款_英文大写、卖方.SWIFT、卖方.传真、卖方.信用代码、卖方.名称、卖方.地址、卖方.开户行、卖方.电话、卖方.英文名、卖方.账号、卖方.邮编、合同编号、技术协议目录标注、技术协议说明、标的物名称、标的物名称_en、签订日期、签订日期_en、设施全称、设施全称_en、设施简称、项目名称、项目编号、预付款_天数、预付款_文件数
+条款原子：106
+标注不适用：
+
+sha256 word/document.xml: c33ca870c826cdfed889208da082cf2285b6726b618dfb17d37980ea6a8d4c1f
+sha256 word/footer1.xml: e4dc14e8d34dcb7d0448422f577ae31128b17d82f8b32efded191451fc8deb56
+sha256 word/footer2.xml: 814659d03483f8480a14cb9fc1c7a1392919a5f45684e13c51730b37b81ea494
+sha256 word/header1.xml: 6d35e860eca46bb5b1b6f8aad70230569708054458d00adc3ef377c56c32158e
+sha256 word/header2.xml: e1d2d4060c859ac7d6648284ba49706cf80e2e14374d3cf9bb2983edf9ee677f
+sha256 word/header3.xml: e1d2d4060c859ac7d6648284ba49706cf80e2e14374d3cf9bb2983edf9ee677f
+sha256 word/numbering.xml: 3157611854c70f488c11eca2e27bbd0b6af512e65f54cc3501f88ec12a647fd5
+sha256 word/styles.xml: 8728408d45a1c8e099f02400bdd97c1cee4ad048e7aef0387fa2b7dd83b8d8dd
+
+---- 正文 ----
+[-5] 框架采购合同
+[-5] Frame Master Contract
+[-6] 项目名称：{{项目编号}}	合同编号：{{合同编号}}
+[] 
+[-7] 签订地点：上海浦东新区
+[-7] Signed at: Pudong, Shanghai
+[表] 买 方BUYER: | {{买方.名称}} | 卖 方SELLER: | {{卖方.名称}}
+[表] 地 址Address: | {{买方.地址}} | 地 址Address: | {{卖方.地址}}
+[表] 电 话/Tel: | {{买方.电话}} | 电 话Tel: | {{卖方.电话}}
+[表] 传 真/Fax： | {{买方.传真}} | 传 真/Fax： | {{卖方.传真}}
+[表] 邮 编/Postcode： | {{买方.邮编}} | 邮 编/Postcode： | {{卖方.邮编}}
+[表] 开户行/Bank of deposit： | {{买方.开户行}} | 开户行/ Bank of deposit： | {{卖方.开户行}}
+[表] 账 号/ Account： | {{买方.账号}} | 账 号/ Account： | {{卖方.账号}}
+[表] 统一社会信用代码： | {{买方.信用代码}} | 统一社会信用代码： | {{卖方.信用代码}}
+[表] SWIFT CODE: | {{买方.SWIFT}} | SWIFT CODE: | {{卖方.SWIFT}}
+[-d] 
+[表] SIGNATURE
+[表] 买方（盖章）：BUYER(Seal): |  | 卖方（盖章）：SELLER(Seal): | 
+[表] 法定代表人：Legal Representative: |  | 法定代表人：Legal Representative: | 
+[表] 委托代理人：Entrusted agent: |  | 委托代理人：Entrusted agent: | 
+[表] 经  办  人：Handled by: |  | 经  办  人：Handled by: | 
+[表] 签字日期：Date of signature: |  | 签字日期：Date of signature: | 
+[-8] 目录CONTENT
+[TOC1] 第一部分 合同条款 Part I Contract Text
+[TOC1] 1	总则 General
+[TOC1] 2	供货范围和工作范围 Supply and Service Scopes
+[TOC1] 3	质量要求、标准、责任和保证 Quality Requirements, Standards, Responsibilities and Guarantee
+[TOC1] 4	合同价款及支付方式 Contract Price and Payment Terms
+[TOC1] 5	交货时间、交（提）货方式、要求及地点Delivery time, Delivery (pick-up) Method, Requirements and Location
+[TOC1] 6	包装标准、标识要求Packaging Standards and Labeling Requirements
+[TOC1] 7	运输方法、费用负担和运输要求Transportation Methods, Cost Burden and Transportation Requirements
+[TOC1] 8	检验与验收	 Inspection and Acceptance
+[TOC1] 9	涂装过程的检测、记录、报告和检验 (如有)PERFORMANCE TEST, LOG, REPORT, INSPECT（if applicable）
+[TOC1] 10	权利担保条款Rights Guarantee Clause
+[TOC1] 11	不可抗力Force Majeure
+[TOC1] 12	合同的变更、暂停和终止（除不可抗力外）Changes, Suspension and Termination of Contracts (Except for Force Majeure)
+[TOC1] 13	知识产权Intellectual Property
+[TOC1] 14	保密责任Confidentiality Responsibility
+[TOC1] 15	违约责任Liability for Breach of Contract
+[TOC1] 16	解决合同纠纷的方式Ways to Resolve Contract Disputes
+[TOC1] 17	其它约定事项Other Agreed Matters
+[TOC1] 18	Communication Channel from both Buyer & seller 买卖双方沟通渠道
+[TOC1] 第二部分 合同附件 Part II Contract Annexes
+[TOC1] 附件一 供货明细表 Annex 1 Detailed Price List
+[TOC1] 附件二 文件资料交付要求 Documentation Requirements
+[TOC1] 附件三 交货要求 Delivery Requirements
+[TOC1] 附件四 送货（装箱）清单 Packing List
+[TOC1] 附件五 技术协议（签字版）Technical Agreement（如有）{{技术协议目录标注}}
+[TOC1] 附件六 惠生清能HSE管理要求 WNE HSE Management Requirements
+[TOC1] 附件七 采购订单（订单）Purchase Order
+[TOC1] 附件八 廉洁从业承诺书 Undertaking of Honest Conduct
+[TOC1] 附件九 主合同相关要求：退货和回购条款 Requirements related to the main contract: Return and Buy-back Term 
+[-9] 第一部分    合同条款
+[-a] Part I     Contract Text
+[-] 总则 General
+[-b] {{买方.名称}}（以下称为“买方”）和{{卖方.名称}}（以下称为“卖方”）就卖方为买方提供{{标的物名称}}（以下简称“货物”、“设备”或“标的物”）供货及服务事宜，根据《中华人民共和国民法典》及相关法律法规，本着平等互利、诚实信用的原则，经双方协商一致，于{{签订日期}}订立本合同，共同信守。
+[-b] {{买方.英文名}} (hereinafter referred to as the "BUYER") and {{卖方.英文名}} (hereinafter referred to as the "SELLER"), in accordance with the Civil Code of the People's Republic of China and relevant laws and regulations, and based on the principles of equality, mutual benefit, good faith, and mutual agreement, have entered into this CONTRACT on {{签订日期_en}}, in order for the SELLER to provide {{标的物名称_en}} (hereinafter referred to as "Material", "Equipment" or "GOODS") supply and services to the BUYER.
+[-0] 合同的组成 Contract components
+[-b] 本订货合同由以下部分组成：This order contract consists of the following parts:
+[-2] ATTACHMENT A PROJECT SPECIAL REQUIREMENTS 附件 A项目特殊条款（如有）
+[-2] ATTACHMENT 5 TECHNICAL AGREEMENT 附件 5 技术协议{{技术协议说明}}
+[-2] 合同正文Contract Text
+[-2] 合同附件Contract Annexes
+[-0] 合同正文与合同附件不一致时，以合同正文为准。本合同的其它附件与附件五《技术协议》（以下简称《技术协议》，编号：N/A，版本：N/A，日期：N/A）不一致时，以《技术协议》为准。
+[-b] In case of any inconsistency between the Contract Text and Contract Annexes, the Contract Text shall prevail. In case of any inconsistency between the other annexes of this CONTRACT and Annex 5 "Technical Agreement" (hereinafter referred to as "Technical Agreement", No. N/A, Rev. N/A, Date: N/A), the "Technical Agreement" shall prevail.
+[-0] 本合同为框架合同，买方可依据本合同向卖方下发采购订单（简称“订单”），该等订单受本合同条款约束。但本合同不构成买方向卖方的采购承诺，也不构成买方向卖方的独家采购承诺，买方在任何情况下都没有义务发出采购订单，也无义务做出任何有关最低订单数量的承诺。
+[-b] This Contract is a framework contract, BUYER may place Purchase Orders (hereinafter referred to as the "Order") with the SELLER under this CONTRACT, and such orders shall be subject to the terms of this CONTRACT. This Contract does not constitute a procurement commitment or an exclusive purchase commitment from BUYER to SELLER. BUYER shall not be obliged to issue Orders under any circumstances, nor shall it be obliged to make any commitment regarding minimum order quantities.
+[-0] Definitions
+[-b] AFFILIATE means any entity controlled, directly or indirectly, by a company, any entity that controls, directly or indirectly, such company, or any entity directly or indirectly under common control with such company. For this purpose, "control" of any entity or person means ownership of a majority of the voting power of the entity or person.
+[-b] 关联公司指由某一公司直接或间接控制的任何实体、直接或间接控制该公司的任何实体，或与该公司直接或间接同受共同控制的任何实体。就本定义而言，对任何实体或人员的"控制"指持有该实体或人员过半数的表决权。
+[-b] APPLICABLE LAW means any treaty, law, decree, order, regulation, decision, statute, ordinance, rule, directive, code or other document that has legal force according to the terms of any system of law, including, without limitation, local law, the laws of any other state or part thereof or international law, and which creates or purports to create any requirement or rule that may affect, restrict, prohibit or expressly allow the terms of this contract or any activity contemplated or carried out under this contract.
+[-b] 适用法律是指任何条约、法律、法令、命令、条例、决定、法规、条例、规则、指令、法典或其他从属任何法律体系（包括但不限于当地法律、任何其他国家或其部分法律或国际法）的条款以及具有法律效力的文件，以致影响、限制、禁止或明确允许本合同条款或根据本合同计划或开展的任何活动。
+[-b] BUYER GROUP includes the following: 买方集团包括：
+[-2] BUYER and its AFFILIATES; 买方及其附属公司；
+[-2] BUYER’s joint venture partners (if any) involved in a joint venture pertaining to the SUPPLY; 参与与供货相关的合资企业的买方合资伙伴（如有）；
+[-2] BUYER’s contractors (other than SELLER) and their subcontractors (of any tier); 买方承包商（卖方除外）及其分包商（任何层级）；
+[-2] OWNER, OWNER’s co-ventures and OWNER and its co-ventures’ AFFILIATES; and业主、业主的合营者和业主及其合营者附属公司；和
+[-2] the directors, officers, employees, consultants, advisors and agents of any entity listed in this definition; but shall not include any member of SELLER GROUP. 本定义所列任何实体的董事、高管、员工、顾问、咨询和代理人；但不包括卖方集团的任何成员。
+[-b] Delivery Date means the contractual date whereupon complete delivery of the CONTRACT GOODS is due.
+[-b] 交货日期是指合同中规定的货物应完全交付的日期。
+[-b] {{设施简称}} means the {{设施全称_en}} to be supplied by BUYER to OWNER for the purpose of the PROJECT.
+[-b] {{设施简称}}是指买方为本项目向业主提供的{{设施全称}}。
+[-b] GOODS, MATERIALS, OR EQUIPMENT means all equipment, materials, spares, consumables, tools, supplies, software, products, and other goods as applicable, to be provided by SELLER and sold to BUYER under the CONTRACT in accordance with the TECHNICAL AGREEMENT.
+[-b] “货物”或“合同货物”是指根据技术协议，由卖方根据合同提供并出售给买方的所有设备、材料、备件、消耗品、工具、供应品、软件、产品和其他适用货物。
+[-b] INDEMNIFIED COSTS or CLAIMS means any and all losses, damages, liabilities, claims, demands, actions, proceedings, payments, costs, expenses (including, with no limitation, legal costs, tribunal costs, experts’ and investigative fees), fines, penalties and interest.
+[-b] 赔偿费用或索赔是指任何和所有损失、损害、责任、索赔、要求、诉讼、付款、成本、费用（包括但不限于法律费用、法庭费用、专家和调查费用）、罚款、惩罚和利息。
+[-b] OWNER means {{业主名称}} or its permitted successor or assignee.
+[-b] 业主是指{{业主名称}}或其许可的继承人或受让人。
+[-b] PARTIES means both the BUYER and the SELLER and PARTY refers to either BUYER or SELLER, as the context so requires.
+[-b] 双方指买方和卖方；其中一方指合同上下文提及的买方或卖方。
+[-b] PERSONNEL means the personnel to be dispatched by SELLER GROUP in connection with the performance of the SUPPLY.
+[-b] 职员指卖方公司为执行完成本合同供货项目派遣的人员。
+[-b] project means {{项目名称}}
+[-b] 项目：{{项目名称}}
+[-b] PROJECT LOCATION means where the deliverable of the PROJECT will be finally delpoyed.
+[-b] 项目地点是指本项目交付物最终被使用的地点。
+[-b] SELLER GROUP includes the following: 卖方集团包括：
+[-2#3.3] SELLER and its AFFILIATES; 卖方及其附属公司；
+[-2#3.3] the participating companies in any joint venture with SELLER providing the SUPPLY; 与卖方合资提供供货的参与公司；
+[-2#3.3] subcontractors (of any tier); and分包商（任何层级）；和
+[-2#3.3] the directors, officers, employees, consultants, advisors and agents of any entity listed in this definition; but shall not include any member of BUYER GROUP. 本定义所列任何实体的董事、高管、员工、顾问和代理人；但不包括买方集团的任何成员。
+[-b] SITE means the delivery location of the GOODS and where the GOODS will be erected, installed, commissioned and tested.
+[-b] 现场：货物交付地点，也是货物吊装，安装，试车和测试地点。
+[-b] SUPPLY means the provision of the GOODS and the associated TECHNICAL SERVICE including the provision of the TECHNICAL DOCUMENTATION.
+[-b] 供货是指提供合同货物和相关的技术服务，包括提供技术文件。
+[-b] TAX or TAXATION means all forms of direct and indirect taxation (including taxes on usage, compensating taxes and "ad valorem" property taxes) and statutory, governmental, international, national, federal, state, provincial, territorial, regional, municipal or local governmental charges, duties (including stamp duties and transfer taxes, customs duties, excise duties, port dues and clearing agent's fees), imposts, brokerage fees, import or export charges and occupation of location charges, contributions, levies, withholdings or liabilities wherever chargeable and of any jurisdiction and whether levied by reference to income, profits, gains, net wealth, asset values, turnover, added value or other measure (including social security contributions and any other payroll taxes and including local authority rates) however imposed (whether by way of a withholding or deduction for or on account of tax or otherwise), and any penalty, fine, surcharge, interest, charges or costs arising in connection therewith;
+[-b] “税收”或“税款”是指所有形式的直接和间接税收（包括使用税、补偿税和“从价”财产税）以及法定、政府、国际、国家、联邦、州、省、地区、地区、市或地方政府收费，关税（包括印花税和转让税、关税、消费税、港口税和清算代理费）、进口税、经纪费、进出口费和场地占用费、供款、征税、预扣税或任何管辖区的债务，无论是根据收入、利润、收益、净财富、资产价值、营业额征收的，附加值或其他措施（包括社会保障缴款和任何其他工资税，包括地方当局的税率）（无论是通过扣缴或扣除税款或其他方式），以及由此产生的任何罚款、附加费、利息、费用或成本；
+[-b] Technical Documentation means technical documents to be submitted under the CONTRACT, as specified in the [TA] documents.
+[-b] 技术文件是指根据技术协议的要求由卖方负责提供的技术文件。
+[-b] Technical Service means the technical services to be performed by SELLER under the CONTRACT, including the services or at SITE/ Project location, as specified in the [TA、TP、TC、TD] documents.
+[-b] 技术服务是指卖方在本合同项下提供的技术服务，包括技术协议中规定的或现场或项目地点提供的服务。
+[-] 供货范围和工作范围 Supply and Service Scopes
+[-0] 卖方同意，在本项目执行期限内，按照本合同约定的固定单价签署采购订单，并按照本合同及采购订单的要求向买方提供全部合格货物（包括交货文件）和优质服务。
+[-b] The SELLER agrees to sign Purchase Order at the fixed unit price agreed upon herein for the duration of the performance of the {{项目编号}} Project. And provide the BUYER with all qualified GOODS (including delivery documents) and high-quality services in accordance with the requirements of this CONTRACT and the Purchase Order.
+[-0] 标的物 GOODS
+[-b] 本合同标的物为：{{标的物名称}}，原产国和制造商：中国
+[-b] The GOODS of this CONTRACT is: {{标的物名称_en}}, Country of origin and manufacturer: China
+[-b] 供货范围和明细详见附件一《供货明细表》和附件五《技术协议》。
+[-b] The GOODS of this CONTRACT is: the scope of supply and details are detailed in Annex 1 "Supply Details Table" and Annex 5 "Technical Agreement".
+[-0] 项目名称 Project name：{{项目编号}}
+[-0] 计算方法 Calculation method：按（a）执行 In accordance with a
+[-2] 根据国家相关规定，按理论重量计算According to relevant national regulations, calculated based on theoretical weight；
+[-2] 按双方认可的过磅码单结算Settle according to the agreed weighing report between both parties;
+[-2] 买方要求或认可的其它方法Other methods requested or approved by the BUYER.
+[-] 质量要求、标准、责任和保证 Quality Requirements, Standards, Responsibilities and Guarantee
+[-0] 质量要求：符合双方确认的设计文件（图纸、规格书或其它技术资料）和签署的《技术协议》。
+[-b] Quality Requirements: Meet the design documents (drawings, specifications, or other technical information) confirmed by both parties and the signed Technical Agreement
+[-0] 质量标准：符合国家、行业相关标准、规范及相关法律法规的要求，详见本合同附件五《技术协议》。相关标准若不一致，以最严格标准为准，但买方选择不采用最严格标准除外。
+[-b] Quality Standards: Meet the requirements of relevant national and industry standards, specifications, and relevant laws and regulations, as detailed in Annex 5 "Technical Agreement" of this CONTRACT. If there is any inconsistency in the relevant standards, the strictest standard shall prevail, except when the BUYER chooses not to use the strictest standard.
+[-0] 质量责任：在约定的质量保证期内，卖方应对由于制造工艺或材料的缺陷等原因而造成的质量问题负责。卖方应在收到买方通知48小时内赶到现场，免费负责修理或更换有缺陷的货物，且不得因此影响买方的工程进度；若卖方未能在买方指定的期限内予以修理或更换的，或修理/更换不能满足合同或项目要求的，买方有权根据项目实际情况请第三方完成该工作，所发生所有费用和造成的损失由卖方承担，且买方有权从卖方质保金（若有）或任何一笔合同款中扣除，不足部分由卖方补足。
+[-b] Quality Responsibility: During the agreed Warranty period, the SELLER shall be responsible for any quality problems caused by defects in manufacturing processes or materials. The SELLER shall arrive at the site within 48 hours of receiving the BUYER's notice, be responsible for repairing or replacing defective GOODS free of charge, and shall not affect the BUYER's engineering progress as a result; If the SELLER fails to repair or replace within the time limit specified by the BUYER, or if the repair/replacement cannot meet the requirements of the contract or project, the BUYER has the right to request a third party to complete the work according to the actual situation of the project. All expenses and losses incurred shall be borne by the SELLER, and the BUYER has the right to deduct from the SELLER's warranty deposit (if any) or any contract payment, and the shortfall shall be made up by the SELLER.
+[-0] 质量保证 Quality Guarantee
+[-2] 卖方应保证提供的标的物符合本合同附件五《技术协议》和合同约定质量要求，标的物是全新的、未使用过的、技术成熟的，并在各个方面符合本合同规定的质量、规格和性能要求。不得提供国家、行业、国际、国际协会等禁止使用、明令淘汰、限期禁止使用的设备或材料。
+[-c] The SELLER shall ensure that the provided GOODS meets the quality requirements stipulated in Annex 5 of this CONTRACT, including the Technical Agreement and the contract. The GOODS is brand new, unused, technologically mature, and meets the quality, specifications, and performance requirements stipulated in this CONTRACT in all aspects. Do not provide equipment or materials that are prohibited, explicitly phased out, or prohibited for use within a specified period by countries, industries, international organizations, or international associations.
+[-2] 质量保证期：质量保证期为项目验收合格后（18）个月或标的物交付买方验收合格后（48）个月，以先到者为准。若法律规定的质保期或产品出厂质保证书记载的质保期长于本合同约定的质保期，则以法律规定的质保期或产品出厂质保证书记载的质保期为准。若在质量保证期间出现任何质量问题，则卖方应按照第3.3条款进行修理或更换，标的物的质量保证期自修理或更换合格之日重新起算。
+[-c] Warranty period: The Warranty period is (18) months after the provisional project acceptance or (48) months after BUYER’s acceptance of the GOODS upon delivery, whichever comes first. If the warranty period specified by law or the warranty period recorded in the product's factory warranty certificate is longer than the warranty period specified in this CONTRACT, the warranty period specified by law or the warranty period recorded in the product's factory warranty certificate shall prevail. If any quality problems occur during the Warranty period, the SELLER shall repair or replace them in accordance with clause 3.3, and the Warranty period of the GOODS shall be recalculated from the date of qualified repair or replacement.
+[-2] 涂料供应商应为防护涂料系统提供担保，质保期应为项目运行开始后240个月，具体要求以技术协议为准。
+[-c] The coating manufacturer shall provide a warranty for the applied protective coating system, shall be 240 months from onshore start-up, the Technical Agreement will prevail.
+[-2] 适用于修复缺陷设备、部件和工艺的任何供货的质保期应从维修或更换之日起再延长12个月，或至第3.4 b) 条规定的质保期结束为止，以较长者为准。
+[-c] The warranty period applicable to any SUPPLY to rectify defective equipment, parts and workmanship shall be for a further 12 months from the date of repair or replacement or until the end of the warranty period stated in Article 3.4 b), whichever is longer.
+[-c] 如果有缺陷的货物或者部件因维修或者更换需要自项目装置内拆除，卖方应支付给买方因拆除缺陷货物或者部件以及重新安装维修或者更换部件所产生的合理费用。此外，如果维修或者更换涉及将缺陷货物或者部件返回卖方工厂或其他指定地点进行的，运输缺陷货物或部件以及返回相应货物或部件而对买方所产生的运输及保险费用、税费等（包括清关费用、关税）应由卖方承担。在货物无法使用这段期间而导致买方的直接损失，包括但不限于窝工费，财务损失等将由卖方承担。
+[-c] If it is necessary for any defective part(s) of the CONTRACT GOODS to be removed from the PROJECT for repair or replacement, the SELLER shall be liable for the BUYER’s reasonable costs of removing the defective part(s) and re-installing repaired or replacement part(s). Furthermore, where repair or replacement involves the return of defective part(s) to the SELLER’s premises or any to other place for repair, the carriage and insurance costs of shipment to the relevant place of repair and returning repaired or replacement part(s) duties to the BUYER, including customs clearance fees, customs duties, shall be borne by the SELLER. All other direct costs suffered by BUYER, including but not limited to the standby cost, financial damage during the unavailability of SUPPLY shall be borne by the SELLER, too.
+[-2] 对于工程中的剩余产品，在外观保存完好的情况下买方有权对产品质保期剩余在半年内的产品进行退货，退回的产品要按照合同规定产品售价计算，退回运费由买方承担（Resist 78、Tankguard 412、Marathons 550、Jotatemp 1000、Hardtop XP产品不可退货）。（不适用）
+[-c] For the remaining products in the project, the buyer has the right to return the products with good appearance condition and of which remained shelf life are longer than 6 months. The price of returned products shall be calculated according to the price specified in the contract, and the return shipping cost shall be paid by the buyer (Resist 78, Tankguard 412, Marathons 550, Jotatemp 1000, Hardtop XP cannot be returned).（N/A）
+[-] 合同价款及支付方式 Contract Price and Payment Terms
+[-0] 合同价款构成 Contract price breakdown：
+[表] 序号 No. | 描述 Description | 固定单价Fixed unit price  | 预估数量Estimated Quantity | 预估总金额合计Estimated Subtotal
+[表] 1 | 货物 GOODS: {{标的物名称}} {{标的物名称_en}}详细价格请见附件一 供货明细表，详细供货范围请见技术协议 Detailed Price breakdown refer to Annex 1 "Supply Details Table" and Detailed scope of supply refer to Annex 5 "Technical Agreement" | 详见附件一Refer to Annex 1 | 1 批/Lot | {{价款_含税_表}}
+[表] 2 | 根据技术协议提供技术服务（如适用）Technical Service in accordance with the Technical Agreement | 已包含Include | 1 批/Lot | 已包含Included
+[表] 3 | 提供符合技术协议的技术文件Documentation in accordance with the Technical Agreement | 已包含Include | 1 批/Lot | 已包含Included
+[表]  | 不包含增值税的合同总价 Estimated Total Price with VAT excluded： | {{价款_不含税_表}}
+[表]  | 增值税 (13%) 13% VAT： | 1 批/Lot | {{价款_税额_表}}
+[表]  | 包含增值税的价格 Estimated Price inclusive of VAT： | {{价款_含税_表}}
+[表]  | 预估合同总价：人民币大写{{价款_大写}}，DDP 惠生场地, 中国（按照《2020年国际贸易术语解释通则》解释）最终价格以买方实际下达的订单为准。ESTIMATED Total contract price: RMB {{价款_英文大写}}, DDP wison site, China (Incoterms 2020) The actual order placed by the buyer shall prevail.
+[-b] 备注：具体的规格及供货范围见附件五《技术协议》。
+[-b] Note: The specific specifications and supply scope can be found in Annex 5 "Technical Agreement".
+[-b] 以上合同价款为卖方为履行本合同所需之全部费用，包括但不限于以下费用：
+[-b] The above contract price represents all expenses required by the SELLER to perform this CONTRACT, including but not limited to the following expenses:
+[-2] 合同标的物的设计费、图纸及技术资料费Design fee, drawing and technical data fee for the GOODS of the contract；
+[-2] 形成标的物所需的有关加工、检验和试验费，以及各种管理费、税费和利润等The processing, inspection, and testing fees required to form the GOODS, as well as various management fees, taxes, and fees；
+[-2] 两年备件费（清单详见附件五《技术协议》）Two year spare parts cost (see Annex 5 "Technical Agreement" for a detailed list)
+[-2] 卖方工厂至买方施工现场的所有包装费、标识费、运输费、装车费、保险费等All packaging fees, labeling fees, transportation fees, loading fees, insurance fees, etc. from the SELLER's factory to the BUYER's construction site；
+[-2] 到买方现场指导安装、调试费及培训服务费On site guidance, installation, debugging fees, and training service fees for the BUYER；
+[-2] 附件五《技术协议》规定的其它工作范围内发生的全部费用，买方不再向卖方支付本合同价格之外的任何其它费用All expenses incurred within the scope of supply by other work specified in Annex 5 of the Technical Agreement shall not be paid by the BUYER to the SELLER for any other expenses beyond the price of this CONTRACT；
+[-2] 本合同价格为含税总价，如遇国家税率调整，税额部分将按新税率进行相应调整和退补。The price of this CONTRACT is the total price including tax. In case of any national tax rate adjustment, the tax amount will be adjusted and refunded according to the new tax rate
+[-c] 除上述合同价款外，买方无需支付任何其他费用。Apart from the above contract price, the BUYER is not required to pay any other fees
+[-0] 付款方式 Payment Terms：
+[-2] 预付款（如需）Advance payment (if any)
+[-c] 每批次订单生效后，买方在收到卖方以下（{{预付款_文件数}}）文件后，在（{{预付款_天数}}）日历日内，向卖方支付该批次订单总价的xx%作为预付款。After each Purchase Order takes effect, the BUYER shall, within ({{预付款_天数}}) calendar days after receiving the following documents from the SELLER, make a prepayment of xx% of the total price of such Purchase Order to the SELLER.
+[-3] 同额度增值税专用发票 ; VAT special invoice with the same amount
+[-3] 生产进度计划Production schedule；
+[-3] 预付款保函/履约保函 （如有）Advance payment guarantee/performance guarantee (if any)；
+[-3] 完成下列技术文件的提交（按要求调整）The complete submission of the following technical documents (If any)
+[-2] 到货款 Payment Upon delivery
+[-c] 卖方应根据买方下发的订单提供货物，每批次订单总价的xx%应由买方在合同货物到货验收后且收到下列文件的60日内通过电汇方式向卖方支付：
+[-c] SELLER shall provide the GOODS in accordance with the specific purchase order, xx% of purchase order shall be paid by BUYER to SELLER by T/T within (60) days after the complete delivery of the CONTRACT GOODS and BUYER has received the following documents:
+[-3] Correct original copy of 100% of VAT invoice shall be provided by SELLER in mainland China or 100% commercial invoice shall be provided by SELLER outside mainland China 在中国大陆境内的卖方需提供正确的100%增值税发票原件或中国大陆境外卖方需提供100%商业发票；
+[-3] One (1) original and one (1) copy of the Acceptance Certificate signed by BUYER and SELLER; 买卖双方共同签署验收证明原件、复印件各一份；
+[-3] 质量保证函 Warranty Bond：由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为每批次订单总价xx%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见附件B An irrevocable and unconditional Bank Letter of Guarantee covering xx% of the total price of each Purchase Order, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per ATTACHMENT B.
+[-0] 买方付款前，卖方须为买方开具合法、正式和有效的增值税专用发票，否则买方有权拒绝付款且不视为违约。卖方承诺，如买方或任何第三方在任何时候发现卖方开具的发票不符合要求，卖方应立即重新为买方开具符合要求的发票，并向买方支付与不符合要求的发票的总额相等的违约金。如买方因为卖方开具的发票不符合要求而受到有关部门的处罚，卖方还应全额赔偿买方因该处罚而受到的损失。如卖方因开具不符合要求的发票而受到有关部门的处罚，卖方应承担全部责任，且该处罚不能作为卖方减轻或免除按照上述约定应向买方承担责任的理由。
+[-b] Before the BUYER makes payment, the SELLER must issue a legal, formal, and valid VAT special invoice to the BUYER. Otherwise, the BUYER has the right to refuse payment and shall not be considered a breach of contract. The SELLER promises that if the BUYER or any third party discovers at any time that the invoice issued by the SELLER does not meet the requirements, the SELLER shall immediately issue a new invoice that meets the requirements for the BUYER and pay a penalty equal to the total amount of the non-compliant invoice to the BUYER. If the BUYER is punished by relevant authorities due to the invoice issued by the SELLER not meeting the requirements, the SELLER shall also fully compensate the BUYER for the losses incurred due to such punishment. If the SELLER is punished by relevant departments for issuing invoices that do not meet the requirements, the SELLER shall bear full responsibility, and this punishment cannot be used as a reason for the SELLER to reduce or exempt the responsibility to the BUYER according to the above agreement.
+[-0] 支付方式：按（银行转账）方式支付。Payment Method: Payment shall be made by bank transfer.
+[-0] 卖方理解并同意，尽管有上述4.2款约定，买方非合同标的物最终用户或项目业主，买方仅在收到最终用户或项目业主支付的对应采购款项后，才有义务向卖方支付相应的合同款项。买方向卖方支付本合同项下的价款可能会受到合同标的物最终用户或项目业主对买方资金支付的实际情况的影响，此种影响将不能成为卖方延迟或暂缓履行合同项下义务的理由。若买方付款因最终用户或项目业主对买方资金支付而受到影响，不构成买方在本合同项下的违约，卖方不得向买方主张索赔。
+[-b] The SELLER understands and agrees that, despite the provisions of clause 4.2 above, if the BUYER is not the end user or project owner of the GOODS of the contract, the BUYER is only obligated to pay the corresponding contract amount to the SELLER after receiving the corresponding purchase payment from the end user or project owner. The payment of the price by the BUYER to the SELLER under this CONTRACT may be affected by the actual situation of the payment of funds by the end user or project owner of the contract GOODS to the BUYER, and such influence shall not be a reason for the SELLER to delay or suspend the performance of obligations under the contract. If the BUYER's payment is affected by the payment of funds by the end user or project owner to the BUYER, it does not constitute a breach of contract by the BUYER under this CONTRACT, and the SELLER shall not claim compensation from the BUYER.
+[-0] 履约保函（如有）Performance Bond (if applicable)
+[-b] 卖方向买方提供[履约保函]，合同[履约保函]是卖方履行合同的保证，本合同的履约保函的金额为合同金额的xx%。保函有效期直至货物安装调试合格后30天或买方要求的其它期限。履约保函为无条件、不可撤销、见索即付且买方认可的银行保函。The SELLER shall provide the BUYER with a performance bond, which is a guarantee for the SELLER's performance of the contract. The amount of the performance bond in this CONTRACT is xx% of the contract amount. The validity period of the guarantee shall be 30 days after the installation and commissioning of the GOODS are qualified, or any other period requested by the BUYER. The performance bond is an guarantee issued by a bank, being unconditional, irrevocable, payable on demand, and recognized by the BUYER.
+[-0] 对买方支付的合同货款，卖方保证只用于为了完成本合同内容的工作中，买方有权要求卖方提供相应财务数据或财务凭证等以作核实，若卖方将买方支付的合同货款用于非本合同约定的目的，买方有权追回已付合同款项并解除合同，且相关损失由卖方承担。The SELLER guarantees that the contract payment made by the BUYER will only be used for the purpose of completing the work specified in this CONTRACT. The BUYER has the right to request the SELLER to provide corresponding financial data or vouchers for verification. If the SELLER uses the contract payment made by the BUYER for purposes other than those specified in this CONTRACT, the BUYER has the right to recover the paid contract payment and terminate the contract, and the related losses shall be borne by the SELLER.
+[-] 交货时间、交（提）货方式、要求及地点Delivery time, Delivery (pick-up) Method, Requirements and Location
+[-0] 标的物交付时间：原则上每批次货物对应的采购订单生效后不超过45天，具体以每批次下的订单所约定时间为准。
+[-b] Delivery time of the GOODS: In principle, it shall not exceed 45 days after the effective date of each order for each batch of GOODS, and the specific delivery time shall be subject to the agreed time of each batch of orders.
+[-0] 交（提）货方式：按（a）执行。Delivery (pick-up) method: Execute according to (a).
+[-2] 卖方送货或发运至买方的施工现场或仓库，或买方指定的其它地点The SELLER shall deliver or ship the GOODS to the BUYER's construction site or warehouse, or other location designated by the BUYER。
+[-2] 买方在卖方工厂、仓库或其他指定地点提货，卖方配合装货并捆扎固定The BUYER shall pick up the GOODS at the SELLER's factory, warehouse, or other designated location, and the SELLER shall cooperate in loading and tying them in place。
+[-0] 交付要求：标的物发运或送货的，卖方应提前（1）天将[发货通知单]由惠生一体化平台推送给买方合同经办人及收货人。如规定买方派人到卖方现场验收或监造的，必须由买方检验合格，并出具[产品检验放行单]后，卖方才能组织发货，运输超限物资的，卖方应提供标的物运输定位信息给合同收货人，具体详见附件三《交货要求》。Delivery Requirements: If the GOODS is shipped or delivered, the SELLER shall submit [Delivery Notice] to the BUYER's contract agent and consignee on the Wison Integrated Platform (1) days in advance. If it is stipulated that the BUYER shall send personnel to the SELLER's site for acceptance or supervision, the BUYER must inspect and pass the inspection and issue a Product Inspection Release Form before the SELLER can organize shipment. If the transportation of oversized materials is exceeded, the SELLER shall provide the transportation positioning information of the GOODS to the contract consignee. For details, please refer to Annex 3 "Delivery Requirements".
+[-0] 交货地点：买方的施工现场或仓库Delivery location: The BUYER's construction site or warehouse.
+[-0] 交货状态：按附件五《技术协议》要求（外购配套件需经主机厂发往现场，如直接发货时，应书面取得买方同意，并遵守发货要求；随机资料单独装箱，不得与设备混装）。Delivery status: According to the requirements of Annex 5 "Technical Agreement" (purchased accessories need to be sent to the site from the SELLER. If shipped directly, the BUYER's consent should be obtained in writing and the delivery requirements should be followed; documentation should be packed separately and not mixed with equipment).
+[-0] 文件资料交付Delivery of Documents and Materials：
+[-2] 文件资料的数量、内容、交付时间等详细要求按《技术协议》执行，格式见本合同附件二《文件资料交付要求》，不符合约定的文件资料视为无效，卖方须修改升版直至完全符合约定要求。The detailed requirements for the quantity, content, delivery time, and other details of the documentation shall be executed in accordance with the Technical Agreement. The format is shown in Annex 2 "Documentation Delivery Requirements" of this CONTRACT. Any documentation that do not comply with the agreement shall be deemed invalid, and the SELLER shall modify and upgrade them until they fully meet the agreed requirements
+[-2] 随机文件资料应与标的物同时交付，并提供随机文件资料目录，否则，视同未按时交货。标的物交付时间最终认定为：卖方全部且最后一批符合要求的文件交付买方之日。
+[-c] Documentation should be delivered simultaneously with the GOODS, and a directory of documentation should be provided. Otherwise, it will be considered as delayed delivery. The final determination of the delivery time of the GOODS is the date on which the SELLER delivers all and the last batch of documents that meet the requirements to the BUYER.
+[-2] 卖方交付的资料必须完整准确，因卖方提供资料的错误导致买方设计、安装、使用造成的损失由卖方负责。The information delivered by the SELLER must be complete and accurate. The SELLER shall be responsible for any losses caused by the BUYER's design, installation, and use due to errors in the information provided by the SELLER.
+[-0] 标的物交付买方签收之前（包括装卸、运输期间）毁损灭失的风险由卖方承担The risk of damage or loss of the GOODS before delivery to the BUYER (including loading and unloading, transportation period) shall be borne by the SELLER。
+[-0] 标的物的所有权自交付之日起转移给买方，因质量问题买方拒绝接受以及本合同另有约定的除外The ownership of the GOODS shall be transferred to the BUYER from the date of delivery, unless the BUYER refuses to accept it due to quality issues or otherwise specified in this CONTRACT.
+[-] 包装标准、标识要求Packaging Standards and Labeling Requirements
+[-0] 包装应满足附件五《技术协议》及本合同约定中对包装的要求，并符合国家相关的法规对包装物的要求，禁止使用任何对环境可能有污染的包装材料。卖方应采用（g）包装方式。The packaging shall meet the packaging requirements specified in Annex 5 Technical Agreement and this CONTRACT, and comply with relevant national regulations on packaging materials. The use of any packaging materials that may cause environmental pollution is prohibited. The SELLER shall use (g) packaging
+[-c] a) 新木箱；b) 纸箱；c) 集装箱；d) 裸装；e) 托盘；f) 钢框架；g) 其它。
+[-c] a) New wooden crates; b) Carton; c) Container; d) Unpacked; e) Tray; f) Steel frame; g) Other.
+[-0] 包装的标识由卖方负责，符合附件五《技术协议》及相关包装标准规范的要求。该标识应包含买方合同号、产品名称、收货人地址、发货起迄地、发货人和发货单位。The identification of packaging shall be the responsibility of the SELLER, in accordance with the requirements of Annex 5 Technical Agreement and relevant packaging standards and specifications. The identification should include the BUYER's contract number, product name, recipient's address, origin and destination of shipment, shipping agent, and consignor.
+[-0] 因包装不符合标准或约定，造成标的物毁损灭失或其他后果的，由卖方承担相应责任。If the packaging does not meet the standards or agreements, resulting in damage or loss of the GOODS or other consequences, the SELLER shall bear corresponding responsibilities
+[-0] 根据项目要求配合使用材料二维码（WQRS）系统，打印、粘贴二维码标签。Collaborate with the Material QR Code (WQRS) system according to project requirements, print and paste QR code labels
+[-] 运输方法、费用负担和运输要求Transportation Methods, Cost Burden and Transportation Requirements
+[-0] 运输方式为（a）Transportation method shall be (a)。
+[-b] a) 公路；b) 铁路；c) 空运；d) 海运；e) 邮寄。
+[-b] a) Highways; b) Railway; c) Air freight; d) Sea freight; e) Mailing.
+[-0] 由卖方负责承运的，卖方负责装运的全部工作，并确保标的物安全地到达交货地点，货物毁损灭失的风险由卖方负责。卖方应自费投保相应的运输保险。
+[-b] If the SELLER is responsible for the transportation, the SELLER is responsible for all the shipping related works and ensures that the GOODS arrives safely at the delivery location. The risk of damage or loss of the GOODS is the SELLER's responsibility. The SELLER shall purchase corresponding transportation insurance at their own expense.
+[-b] 在启运之前，卖方应根据买方的要求将加盖卖方公章的保险凭证复印件快递给买方，如买方有异议的，卖方须按照买方的要求重新投保。Before shipment, the SELLER shall send a copy of the insurance certificate stamped with the SELLER's official stamp to the BUYER by express delivery according to the BUYER's request. If the BUYER has any objections, the SELLER shall re insure according to the BUYER's request.
+[-0] 卖方及其委托的承运人应遵照《中华人民共和国道路交通安全法》及相关运输安全规定，运输车辆和驾驶人符合其要求，并遵守附件六《惠生清能项目HSE管理要求》。货物运输期间的安全事故责任与买方无关。
+[-b] The SELLER and its authorized carrier shall comply with the Road Traffic Safety Law of the People's Republic of China and relevant transportation safety regulations, transport vehicles and drivers shall meet their requirements, and comply with Annex 6 "WNE HSE Management Requirements". The responsibility for safety accidents during the transportation of GOODS is not related to the BUYER.
+[-0] 如标的物为危险化学品，应另行约定采购、运输、装卸等要求。If the GOODS is a hazardous chemical, separate requirements for procurement, transportation, loading and unloading should be agreed upon.
+[-] 检验与验收	 Inspection and Acceptance
+[-0] 卖方应严格按照本合同附件五《技术协议》的要求及规定的标准、规范进行设计、原材料采购、制造/装配和检验。
+[-b] The SELLER shall strictly follow the requirements of Annex 5 "Technical Agreement" of this CONTRACT and the specified standards and specifications for design, raw material procurement, manufacturing/assembly, and inspection.
+[-0] 对标的物的检验、验收按照本合同《技术协议》和审批的【设备检验、试验计划（ITP）】执行。验收方式为（d）或在设备预检会上确定
+[-b] The inspection and acceptance of the GOODS shall be carried out in accordance with the Technical Agreement of this CONTRACT and the approved Equipment Inspection and Test Plan (ITP). The acceptance method is (d) or determined at the equipment pre inspection meeting：
+[-2] 由买方或委托第三方进行全程驻厂监造Full on-site supervision by the BUYER or commissioned third party；
+[-2] 由买方（业主根据需要）参加的中间过程和出厂检验放行Intermediate process and factory inspection release attended by the BUYER (owner as needed)；
+[-2] 由买方（业主根据需要）参加的出厂检验放行Factory inspection release attended by the BUYER (owner as needed)；
+[-2] 货到买方指定地点后的现场验收On site acceptance after the GOODS arrive at the BUYER's designated location；
+[-2] 其它检验方式Other inspection methods：                       。
+[-0] 检验、验收要求Inspection and Acceptance Requirements
+[-2] 对于重要、关键物资，卖方应提供本项目负责人联系方式和执行人员名单、生产网络计划（进度计划）、质量检验计划（ITP计划），在合同生效后第（N/A）日历日内提交买方审核确认。
+[-c] For important and critical materials, the SELLER shall provide the contact information of the project manager and the list of executing personnel, production plan (schedule plan), inspection and test plan (ITP plan), and submit them to the BUYER for review and confirmation within (N/A) calendar days after the contract takes effect；
+[-2] 合同履行期间，卖方在每月25日前按时给买方提供一份真实合同执行状态和进度报告During the performance of the contract, the SELLER shall provide the BUYER with a genuine contract execution status and progress report on time before the 25th of each month；
+[-2] 卖方所有报送买方的报告均需项目负责人签字，买方将根据卖方提供的报告，适时对质量、进度状况跟踪检查。
+[-c] All reports submitted by the SELLER to the BUYER must be signed by the project manager. The BUYER will track and inspect the quality and progress status in a timely manner based on the reports provided by the SELLER；
+[-2] 卖方应严格执行《技术协议》约定的分包商名单，如有变动，应征得买方书面同意，否则买方有权解除合同，并要求卖方返还买方已经支付的款项，若给买方造成损失的，则卖方须承担赔偿责任，赔偿买方因此而遭受的经济损失，该损失的范围包括但不限于直接损失、可得利益及第三方索赔等间接损失、重新订货的差价、为追究卖方违约责任而支付的律师费用、诉讼仲裁费用、调查取证费用以及其他合理的费用支出等The SELLER shall strictly comply with the list of subcontractors specified in the Technical Agreement. If there are any changes, the BUYER's written consent shall be obtained. Otherwise, the BUYER has the right to terminate the contract and request the SELLER to return the payment already made by the BUYER. If any losses are caused to the BUYER, the SELLER shall bear the compensation responsibility and compensate for the economic losses suffered by the BUYER as a result. The scope of such losses includes but is not limited to direct losses, obtainable benefits, and indirect losses such as third-party claims, price differences for reordering, lawyer fees paid to pursue the SELLER's breach of contract, litigation and arbitration fees, investigation and evidence fees, and other reasonable expenses；
+[-2] 根据需要，买方有权要求卖方提供本合同外购、外协件制造商资质、业绩及联系方式。买方将根据外购、外协件重要程度与卖方共同确认外购、外协件的制造资格，但买方的确认不能免除卖方对外协件的质量责任。
+[-c] As needed, the BUYER has the right to request the SELLER to provide the qualifications, performance, and contact information of manufacturers of purchased and outsourced parts under this CONTRACT. The BUYER will jointly confirm the manufacturing qualifications of the purchased and outsourced parts with the SELLER based on their criticality, but the BUYER's confirmation cannot exempt the SELLER from the quality responsibility of the outsourced parts；
+[-2] 按照质量检验计划（ITP计划），买方参与中间检验、出厂检验时，卖方应提前7天发出通知；经买方在卖方制造工厂检验合格并签署[产品检验放行单]后，买方方可进行标的物的包装和发运准备。
+[-c] According to the Inspection and Test Plan (ITP plan), when the BUYER participates in intermediate and factory inspections, the SELLER should provide a notice of 7 days in advance; After the BUYER passes the inspection at the SELLER's manufacturing factory and signs the [Inspection Release Note], the BUYER can proceed with the packaging and shipping preparation of the GOODS；
+[-2] 买方及其委托的监造人员有权进入卖方为本合同标的物制作场所及分包商工厂，进行与本合同相关的活动。卖方应为买方及其委托的监造人员在入厂检验时提供工作的支持和生活的便利。
+[-c] The BUYER and its authorized supervisors have the right to enter the SELLER's production site and subcontractor's factory for the GOODS of this CONTRACT to carry out activities related to this CONTRACT. The SELLER shall provide work support and convenience for the BUYER and its authorized supervision personnel during the on-site inspection；
+[-2] 买方安排监检人员赴卖方处检验，费用由买方负担，但卖方需提供工作、生活便利The BUYER arranges for inspection personnel to go to the SELLER's place for inspection, and the cost shall be borne by the BUYER, but the SELLER shall provide convenience for work and life；
+[-2] 买方参与的检验、验收或委托的第三方监造，不免除卖方应承担的质量责任；
+[-c] The inspection, acceptance, or third-party supervision commissioned by the BUYER shall not exempt the SELLER from its quality responsibility;
+[-2] 标的物的签收不等于买方认可和免除卖方的产品质量责任；若无特殊原因，买方收货后10日历日内组织验收，并提前2个日历日通知卖方参加；卖方逾期未参加验收的，视为同意买方单方面进行验收并接受验收结果；
+[-c] The acceptance of the GOODS does not mean that the BUYER recognizes and exempts the SELLER from product quality responsibility; If there are no special reasons, the BUYER shall organize acceptance within 10 calendar days after receiving the GOODS, and notify the SELLER to participate 2 calendar days in advance; If the SELLER fails to participate in the acceptance within the specified time, it shall be deemed that they agree to the BUYER's unilateral acceptance decision and accept the acceptance result;
+[-2] 验收结果与合同约定不符的，买方应在验收后5个日历日内书面通知卖方，并有权要求卖方在（7）个日历日内对不合格标的物进行整改、修理、重做/或更换、或降质折价等，卖方有义务按照合同和《技术协议》的要求，采取相关补救措施，直至符合合同和《技术协议》约定；对于整改、修理、重做/或更换、或降质折价等所造成的延迟应按照15.1及15.2进行赔偿；
+[-c] If the acceptance test result is inconsistent with the contract agreement, the BUYER shall notify the SELLER in writing within 5 calendar days after acceptance, and has the right to request the SELLER to rectify, repair, redo/or replace the unqualified GOODS within (7) calendar days, or reduce the quality or price. The SELLER is obliged to take relevant remedial measures in accordance with the requirements of the contract and the Technical Agreement until it meets the provisions of the contract and the Technical Agreement; Compensation shall be made in accordance with 15.1 and 15.2 for delays caused by rectification, repair, redoing/or replacement, or degradation or discount;
+[-2] 标的物缺陷不能补救或改正，则买方有权拒收，卖方必须以合适的标的物进行更换以满足本合同的要求，应在最短（10）个日历日内完成更换工作，否则买方有权解除本合同并重新订货，解除合同的法律后果同第15.3条规定。
+[-c] If the defects of the GOODS cannot be remedied or corrected, the BUYER has the right to reject, and the SELLER must replace it with a suitable one to meet the requirements of this CONTRACT. The replacement work should be completed within the shortest (10) calendar days. Otherwise, the BUYER has the right to terminate this CONTRACT and reorder. The legal consequences of terminating the contract are the same as those stipulated in Article 15.3.
+[-0] 卖方负责对标的物在买方现场提供指导安装与调试，时间、人次执行《技术协议》的要求,必须遵守买方的HSE管理要求，佩带劳动防护用品，遵从买方的统一管理。现场指导安装与调试人员必须是有经验、能胜任相关职责的技术人员或技师。
+[-b] The SELLER is responsible for providing guidance, installation, and commissioning of the GOODS at the BUYER's site. The time and number of personnel shall comply with the requirements of the Technical Agreement, and must comply with the BUYER's HSE management requirements, wear personal protection equipment, and comply with the instruction from BUYER's management. On site guidance for installation and commissioning personnel must be experienced and competent technical personnel or technicians with relevant expertise.
+[-0] 安装调试中或交付后发现的质量问题，卖方在接到买方通知后48小时内须派出专业人员到达指定地点处理，直至买方验收合格。因此增加的人员、费用由卖方承担。If any quality issues are found during installation commissioning or after delivery, the SELLER shall dispatch professional personnel to the designated location within 48 hours of receiving the BUYER's notice to handle them until the BUYER's acceptance is qualified. Therefore, the additional personnel and expenses shall be borne by the SELLER.
+[-0] 卖方服务人员完成现场服务工作后，须填写[供应商现场服务确认单]，并经买方施工专业工程师、施工经理确认。
+[-b] After the SELLER's service personnel complete the on-site service work, they must fill out the [Supplier's on-site service confirmation form] and obtain confirmation from the BUYER's construction professional engineer and construction manager.
+[-0] 若需对买方或项目业主方人员进行培训，卖方负责提供培训教材，对被培训人员进行本合同标的物的操作和维修的培训。培训教材的深度应能满足被培训人员操作、维修、拆卸、重新组装、调整和修复生产设备的需要，使被培训人员能够正确、熟练地操作和维护合同标的物。培训时间安排在合同标的物试运行前进行，在此项培训结束前，不应认为合同标的物已经按照合同规定的接收要求被买方接受。因培训工作的缺失，造成被培训人员错误操作和维护合同标的物而造成的损失，由卖方承担责任。If training is required for personnel of the BUYER or project owner, the SELLER is responsible for providing training materials and providing training on the operation and maintenance of the subject matter of this CONTRACT to the trainees. The depth of the training materials should meet the needs of the trainees to operate, maintain, disassemble, reassemble, adjust, and repair production equipment, so that the trainees can correctly and proficiently operate and maintain the contract subject matter. The training schedule should be arranged before the trial operation of the contract subject matter. Before the end of this training, it should not be considered that the contract subject matter has been accepted by the BUYER in accordance with the acceptance requirements stipulated in the contract. The SELLER shall be responsible for any losses caused by the trainees' incorrect operation and maintenance of the contract subject matter due to the lack of training work.
+[-0] 卖方同意并确保给予买方或业主与买方代表自由进出其分包商和/或分包商处所的权利并提供便利，以便买方或业主与买方代表对卖方的分包商/子供应商的工作进展，以及催交与检验等进行检查、协调、指导或要求。SELLER shall agrees to secure the right of free access to its sub-supplier’s and/or subcontractors’premises is granted to BUYER or the OWNER together with BUYER representatives and shall be provided convenience for Buyer's or Owner's and Buyer's Representative's inspecting, coordinating, directing, or requesting the progress of work of Seller's sub-subcontractors/sub-suppliers.
+[-0] 分供商的催交应作为合同履约及进度报告的一部分，在图纸和分包合同释放后，卖方应派专职人员至少每两周至原材料或部件工厂进行催交并查看进度，并提供买方附带照片的报告，不允许只远程催交，且随时响应与我司派驻的催交人员现场协作。Expedition for sub-suppliers shall be part of the contract performance and progress report, in the aspect of drawings and purchase order released and approved, the SELLER shall deploy a full time personnel bi-weekly at least to the raw materials or parts factory to expedite the delivery and review the progress by providing the report with photo to BUYER, not only remote expediting and always cooperate with our expeditor or resident expeditor at the place of work.
+[-] 涂装过程的检测、记录、报告和检验 (如有)PERFORMANCE TEST, LOG, REPORT, INSPECT（if applicable）
+[-0] 卖方自油漆涂装的工前会议起至模块离开买方交付给业主时止将根据实际情况，为买方免费提供技术服务。除非另有说明，技术服务的职责为：检测、记录、报告及按照规格书要求检验，包括但不限于记录卖方产品在买方现场进行施工的环境和其它条件的任何工作日志、质量保证或质量控制，在该施工期间和施工结束时所取得的观察和测量的事实记录。卖方服务人员需现场确认涂装过程和质量符合技术要求，并填写 [供应商现场服务确认单]，并经买方施工专业工程师、施工经理确认。
+[-b] The SELLER will, from the pre-job start up meeting for application until the project delivery the BUYER and is delivered to the OWNER, according to the actual circumstances, provide technical services free of charge. Unless otherwise been specified, the role of technical service representative(s) would be test, log, report, inspect as per the Technical Specification, including the completion of any working logs, quality assurance or quality control recording the environmental and other conditions under which application of SELLER’s product are made at BUYER’s site, and the record of the factual observations and measurements noted during and at the conclusion of such application. SELLER’s technical service representative must fill out the [Supplier's on-site service confirmation form] and obtain confirmation from the BUYER's construction professional engineer and construction manager, after complete the service work.
+[-b] 当需要时，买方将向卖方的技术服务代表提供相关的图纸、技术资料、办公场所及其他便利。所有的图纸、计算数据、数据、测试报告、基本/详细/生产设计、软件、电子程序及文件均为买方的财产，任何人不能转发、分发或者投递给未经授权的第三方，任何的违背将被记录在案，将对违背者诉诸法律。When applicable, BUYER shall provide SELLER technical service representative(s) with the relevant drawings, technical data, site office and other conveniences. All drawings, calculation data, data, test report, Basic/Detail/production designs, software, electronic program and document would be the property of Wison New Energies Co., Ltd, anyone shouldn’t delivery or/and transfer or/and publish to the unauthorized third parties, any violate would be noted, the violator would be lawing.
+[-0] 卖方的技术服务代表在驻厂期间应遵守买方的各种规章制度，并且卖方应确保其穿着个人防护用品并遵守现场安全规章。如果报验时不具备必要的安全条件，卖方技术服务人员有权拒绝报验。卖方应准备合适的检测设备，配合船厂完成检验工作。
+[-b] SELLER’s technical service representative(s) shall abide by the BUYER’s regulations whilst working in the shipyard and SELLER shall ensure that they wear the proper personal protection equipment and observe safety regulations on site. The technical service representative(s) may refuse to carry out any inspection work if the proper safety procedures are not in place. SELLER shall prepare appropriate equipment to assist YARD to accomplish the detection job.
+[-0] 如果在安装、试运行和性能测试期间，由于卖方技术人员的错误指导造成设备损坏，设备损坏造成的所有损失应由卖方承担。
+[-b] If the equipment’s damaged during erection, test-run and performance test due to the wrong instruction of SELLER’s technicians, all the losses occurred related to equipment damage shall be borne by SELLER.
+[-b] 卖方技术人员的技术指导应以书面的形式提交，包括但不限于产品说明书，施工程序，施工建议，培训材料，信息报告等。Technical instructions by SELLER's technical PERSONNEL shall be submitted in written form, including but not limited to product Data sheet, construction procedures, construction suggestions, training materials, information reports, etc.
+[-0] 若需要卖方或者其分包商厂家的服务工程师到场时，但卖方无法到现场时，买方有权按照操作手册或说明书进行施工或维修，但不免除卖方在合同项下包括第3.4条所述的质保期内应承担的责任。If SELLER or its SUBCONTRACTOR’s service engineers are unable to attend at any WORKS site as required, BUYER has the right to construction, and/or repair in accordance with the manufacturer’s manual or instructions, and such performance shall not affect the SELLER’s warranty responsibility and shall not relieve SELLER of any obligations under this CONTRACT including any warranty obligations in accordance with Clause 3.4.
+[-] 权利担保条款Rights Guarantee Clause
+[-b] 卖方承诺，其所出售的标的物不侵犯任何第三方的权利（包括但不限于所有权、知识产权等），并且任何第三人都不会就该标的物向买方或标的物最终用户或项目业主主张任何权利（包括但不限于所有权、知识产权等）。若因卖方所出售的标的物侵犯第三方的权利而引起任何争议或纠纷（包括但不限于行政机关对买方的调查、诉讼和/或仲裁等），由卖方负责解决。若因此而给买方带来经济损失的，卖方应承担赔偿责任，赔偿买方因此而遭受的经济损失，该等经济损失包括但不限于直接损失、可得利益及第三方索赔等间接损失、买方为处理该等争议或纠纷而支出的律师费用、差旅费用、调查取证费用、诉讼/仲裁费用以及其它合理费用等。
+[-b] The SELLER undertakes that the GOODS sold does not infringe upon the rights of any third party (including but not limited to ownership, intellectual property, etc.), and no third party will assert any rights (including but not limited to ownership, intellectual property, etc.) against the BUYER or the end user or project owner of the GOODS. If any disputes or controversies arise due to the infringement of the rights of third parties by the GOODS sold by the SELLER (including but not limited to investigations, lawsuits, and/or arbitration by administrative authorities against the BUYER), the SELLER shall be responsible for resolving them. If this causes economic losses to the BUYER, the SELLER shall be liable for compensation and compensate the BUYER for the economic losses suffered as a result. Such economic losses include but are not limited to direct losses, obtainable benefits, and indirect losses such as third-party claims. The BUYER shall also bear legal expenses, travel expenses, investigation and evidence collection expenses, litigation/arbitration expenses, and other reasonable expenses incurred by the BUYER in handling such disputes or disputes.
+[-b] 如因卖方违反上述承诺导致买方或标的物最终用户或项目业主无法正常使用、处置标的物的，买方有权要求卖方采取以下任一救济措施：1）将其提供的货物更换为其他不侵犯第三方权利的货物；2）卖方向相关第三方购买或取得相应的权利；3）终止本协议，卖方退还已收到的全部合同金额并按照本合同第12.6条约定承担相应的责任。
+[-b] If the SELLER violates the above commitments, resulting in the BUYER or the end user or project owner of the GOODS being unable to use or dispose of the GOODS normally, the BUYER has the right to request the SELLER to take any of the following remedial measures: 1) replace the GOODS it provides with other GOODS that do not infringe on the rights of third parties; 2) The SELLER shall purchase or acquire corresponding rights from relevant third parties; 3) Terminate this agreement, the SELLER shall refund all contract amounts received and assume corresponding responsibilities in accordance with Article 12.6 of this CONTRACT.
+[-] 不可抗力Force Majeure
+[-0] 不可抗力是指不能预见、不能避免并不能克服的客观情况。
+[-b] Force majeure refers to objective circumstances that are unforeseeable, unavoidable, and insurmountable.
+[-0] 如果一方因战争、火灾、水灾、台风、地震、政府行为不可抗力使其履行合同规定的任何义务受到阻碍，则可根据受影响的程度顺延合同履行期限，并可根据不可抗力的影响，部分或全部免予承担违约责任。但是，即使发生前述不可抗力，如果卖方仍可采取其它补救措施或方案，如选择其它运输路线等，则卖方不得以不可抗力为由免责。若一方违约在先，不得以此后发生不可抗力为由免除其违约的责任。
+[-b] If one party is hindered in fulfilling any obligations under the contract due to war, fire, flood, typhoon, earthquake, or government force majeure, the contract performance period may be extended according to the degree of impact, and partial or full exemption from breach of contract liability may be granted based on the impact of force majeure. However, even if the aforementioned force majeure occurs, if the SELLER can still take other remedial measures or solutions, such as choosing other transportation routes, the SELLER shall not be exempted from liability on the grounds of force majeure. If one party breaches the contract first, it shall not be exempted from liability for breach of contract on the grounds that force majeure occurs afterwards.
+[-0] 当不可抗力发生时，遭受不可抗力方应尽可能将不可抗力事件的发生在最短的时间内通知另一方，并在其后10个日历日内向另一方发出有关部门出具的证明书或其它为公众认可的资料作为证明。
+[-b] When force majeure occurs, the party affected by the force majeure shall notify the other party of the occurrence of the force majeure event as soon as possible, and within 10 calendar days thereafter, issue a certificate issued by relevant departments or other publicly recognized materials to the other party as proof.
+[-0] 不可抗力事件发生后，受影响一方应采取有效措施，以最短的时间和最大努力将不可抗力造成的损失降到最低程度。当不再受不可抗力影响时，应通知另一方，并在最短的时间内恢复受不可抗力影响的工作。
+[-b] After the occurrence of force majeure events, the affected party shall take effective measures to minimize the losses caused by force majeure in the shortest possible time and with the greatest effort. When no longer affected by force majeure, the other party shall be notified and work affected by force majeure shall be resumed as soon as possible.
+[-0] 如果因已根据第11.3款的规定发出通知的不可抗力，使合同履行受到阻碍已持续90天，或由于所通知的不可抗力断续阻碍合同执行累计超过120天，任一方可向对方发出终止合同的通知。在此情况下，合同终止应在该通知发出7天后生效。
+[-b] If the performance of the contract is hindered for a continuous period of 90 days due to force majeure notified in accordance with Article 11.3, or if the notified force majeure has intermittently hindered the execution of the contract for a cumulative period of more than 120 days, either party may issue a notice of termination to the other party. In this case, the termination of the contract shall take effect 7 days after the notice is issued.
+[-0] 因不可抗力造成的损失或花费，由合同双方自行承担。当不可抗力事由结束，受影响方应及时通知另一方并恢复合同履行。卖方不得以不可抗力为由向买方主张任何额外费用。
+[-b] Any losses or expenses caused by force majeure shall be borne by both parties to the contract. When the cause of force majeure ends, the affected party shall promptly notify the other party and resume the performance of the contract. The SELLER shall not claim any additional costs from the BUYER on the grounds of force majeure.
+[-] 合同的变更、暂停和终止（除不可抗力外）Changes, Suspension and Termination of Contracts (Except for Force Majeure)
+[-0] 买方有权根据自身需求或业主原因变更本合同内容，并以书面形式向卖方发出变更通知，卖方必须在收到上述书面指令后的二个工作日之内书面回复买方变更对合同产生的影响（包含费用和交期），若卖方未能按时回复，视为买方变更对合同不产生影响（包含费用和交期）。如该回复不能得到买方的同意，并且需要与卖方进一步协商，买方可以先向卖方发出正式指示，以实施全部或部分预期变更，卖方必须执行买方正式指示中提到的变更。同时与买方进行友好协商，以就成本和或进度影响达成最终协议。双方应本着诚信原则就这些变更达成协议。
+[-b] The BUYER has the right to modify the contents of this CONTRACT according to their own needs or the owner's reasons, and send a change notice to the SELLER in writing. The SELLER must reply in writing to the BUYER within two working days after receiving the above written instructions on the impact of the change on the contract (including costs and delivery time). If the SELLER fails to reply on time, it shall be deemed that the BUYER's change has no impact on the contract (including costs and delivery time). If the response cannot obtain the BUYER's consent and further negotiation with the SELLER is required, the BUYER may first issue formal instructions to the SELLER to implement all or part of the expected changes, and the SELLER must execute the changes mentioned in the BUYER's formal instructions. Simultaneously engage in friendly negotiations with the BUYER to reach a final agreement on cost and/or schedule impacts. Both parties should reach an agreement on these changes in good faith.
+[-b] 在双方达成最终协议后，将发布合同修正案，正式确定对合同的修改。该修正案应视为合同完整的组成部分，与合同正文具有同样的法律效力。无论是买方还是卖方提出的潜在变更，在商议过程中，必须确保原合同的持续执行不受影响。
+[-b] After both parties reach a final agreement, a contract amendment will be issued to formally determine the modifications to the contract. This amendment should be regarded as an integral part of the contract and have the same legal effect as the main text of the contract. Whether it is a potential change proposed by the BUYER or the SELLER, during the negotiation process, it is necessary to ensure that the continuous execution of the original contract is not affected.
+[-0] 如因项目暂停导致本合同暂缓履行，卖方在收到暂停书面通知后，应停止执行本合同，并应对合同下的物资进行保存和保护。在合同暂停时间不超过（60）天的情况下，卖方不应收取任何额外费用。超过（60）天的情况下，由此产生的仓储或保养费等费用，双方协商确定。
+[-b] If the suspension of the project results in the suspension of the performance of this CONTRACT, the SELLER shall, upon receiving a written notice of suspension, cease the execution of this CONTRACT and shall preserve and protect the materials under the contract. If the contract is suspended for no more than (60) days, the SELLER shall not charge any additional fees. Any storage or maintenance fees incurred beyond (60) days shall be negotiated and determined by both parties.
+[-0] 买方有权根据业主/最终用户和项目的具体情况随时解除本合同，且不承担违约责任。卖方在收到提前解除的书面通知后，应立即终止履行本合同，并应在（7）天内提供详细的生产进度报告，报告内容须包含但不仅限于以下文件
+[-b] The BUYER has the right to terminate this CONTRACT at any time based on the specific situation of the owner/end user and the project, and shall not be liable for breach of contract. The SELLER shall immediately terminate the performance of this CONTRACT upon receiving written notice of early termination, and shall provide a detailed production progress report within (7) days, which shall include but not be limited to the following documents:
+[-2] 已完成成品清单及价格Completed finished product list and price
+[-2] 半成品清单及价格List and price of semi-finished products
+[-2] 未开工生产的原材料Raw materials that have not yet started production
+[-2] 以上所列物资的对应照片Corresponding photos of the materials listed above
+[-2] 买方要求的其他文件Other documents requested by the BUYER
+[-0] 卖方应允许买方进驻其工厂，对以上生产进度进行详细核实，双方须对核实后的生产进度报告进行签字，作为合同终止结算的依据。The SELLER shall allow the BUYER to enter its factory and conduct detailed verification of the above production progress. Both parties shall sign the verified production progress report as the basis for contract termination settlement.
+[-0] 如因买方原因终止合同，根据核实的进度状态及对应价格，买方应向卖方支付截至终止之日已经实际交付并经买方验收合格的货物所对应的价款。若双方达成一致对应货物所有权仍归卖方，其对应的货值在合同终止结算中进行抵扣。
+[-b] If the contract is terminated due to the BUYER's reasons, based on the verified progress status and corresponding price, the BUYER shall pay the SELLER the price corresponding to the GOODS that have been actually delivered and accepted by the BUYER as of the date of termination. If both parties reach an agreement that the ownership of the corresponding GOODS still belongs to the SELLER, the corresponding value of the GOODS shall be deducted in the settlement upon termination of the contract.
+[-0] 若因卖方的原因终止或暂停本合同执行的，除本合同第15.3条规定的违约责任外，卖方还应承担买方由此产生的所有损失费用，包括但不仅限于可得利益及第三方索赔、重新签订合同的差价、由此产生的赶工费和导致项目延期的罚款、违约金等。If the execution of this CONTRACT is terminated or suspended due to the SELLER's reasons, in addition to the breach of contract liability stipulated in Article 15.3 of this CONTRACT, the SELLER shall also bear all losses and expenses incurred by the BUYER as a result, including but not limited to benefits and third-party claims, price differences in re-signing the contract, expediting costs incurred as a result, fines for project delays, liquidated damages, etc.
+[-] 知识产权Intellectual Property
+[-0] 卖方保证所供标的物或者服务拥有相关知识产权或得到授权许可，不存在对任何第三方的专利权和技术秘密、商标权和商业秘密等知识产权的侵权或对其物权的侵权。若发生侵权情况，卖方保证负责解决并承担由此产生的全部法律责任。若因此而给买方带来经济损失的，卖方应承担赔偿责任，赔偿买方因此而遭受的经济损失，该等经济损失包括但不限于直接损失、可得利益及第三方索赔等间接损失、买方为处理该等争议或纠纷而支出的律师费用、差旅费用、调查取证费用、诉讼/仲裁费用以及其它合理费用等。The SELLER guarantees that the GOODS or service provided possesses relevant intellectual property rights or has obtained authorized licenses, and there is no infringement of any third-party intellectual property rights such as patents, technical secrets, trademarks, and trade secrets, or any infringement of their property rights. If any infringement occurs, the SELLER guarantees to be responsible for resolving and bearing all legal liabilities arising therefrom. If this causes economic losses to the BUYER, the SELLER shall bear the liability for compensation and compensate the BUYER for the economic losses suffered as a result. Such economic losses include but are not limited to direct losses, obtainable benefits, indirect losses such as third-party claims, legal expenses incurred by the BUYER in handling such disputes or disputes, travel expenses, investigation and evidence collection expenses, litigation/arbitration expenses, and other reasonable expenses.
+[-0] 买方提供的图纸、工艺方法中所包含的技术方案权利归买方所有，仅许可卖方根据买方要求为本合同之目的生产使用。卖方对买方的技术方案负有保密责任，未经书面允许不得将技术方案泄露给任何第三方，否则视为侵权；若卖方违反相关约定，买方有权依据造成的经济损失随时向卖方提出赔偿要求。The technical solutions contained in the drawings and process methods provided by the BUYER belong to the BUYER, and the SELLER is only allowed to produce and use them for the purpose of this CONTRACT according to the BUYER's requirements. The SELLER shall bear the confidentiality responsibility for the BUYER's technical solution and shall not disclose the technical solution to any third party without written permission, otherwise it shall be deemed as infringement; If the SELLER violates the relevant agreement, the BUYER has the right to demand compensation from the SELLER at any time based on the economic losses caused
+[-0] 本合同约定的工作内容完成之后，买方有权要求卖方返还前述资料。未经买方许可，卖方不得留存前述资料（包括复印件）。After the completion of the work content stipulated in this CONTRACT, the BUYER has the right to request the SELLER to return the aforementioned materials. Without the BUYER's permission, the SELLER shall not retain the aforementioned information (including copies).
+[-] 保密责任Confidentiality Responsibility
+[-0] 卖方应当按照保密协议（若有）对买方提供的资料（包括但不限于技术方案、工程设计、技术图纸、技术指标、价格信息、经营信息、项目信息及其它商业秘密等，无论是有形或无形的）保守秘密。未经买方书面同意，卖方不得向任何第三方（包括但不限于卖方无须知晓保密信息的雇员、管理人员或委托代理等）泄露该商业秘密的全部或部分内容，法律法规另有规定的除外。本保密义务应在本合同期满、解除或终止后仍然有效，卖方的保密义务不受本合同效力影响。
+[-b] The SELLER shall keep confidential the information provided by the BUYER (including but not limited to technical solutions, engineering designs, technical drawings, technical indicators, price information, business information, project information, and other trade secrets, whether tangible or intangible) in accordance with the confidentiality agreement (if any). Without the written consent of the BUYER, the SELLER shall not disclose all or part of the contents of the trade secret to any third party (including but not limited to employees, managers, or authorized agents who are not required to know confidential information), except as otherwise provided by laws and regulations. This confidentiality obligation shall remain valid even after the expiration, termination, or termination of this CONTRACT, and the confidentiality obligation of the SELLER shall not be affected by the validity of this CONTRACT.
+[-0] 卖方同意买方披露本协议项下资料的唯一目的是履行本协议约定义务，卖方承诺不将因此而取得的对方秘密信息用于其他任何用途，任何将秘密信息用于其他用途的行为均被视为对保密义务的违反。
+[-b] The SELLER agrees that the sole purpose of the BUYER's disclosure of information under this agreement is to fulfill its obligations under this agreement. The SELLER undertakes not to use the confidential information obtained from the other party for any other purpose, and any use of the confidential information for any other purpose shall be deemed a breach of confidentiality obligations.
+[-0] 若卖方违反上述保密义务，应承担违约责任，支付违约金给买方，违约金金额为合同总额的10%，若违约金不能弥补买方因此而遭受的实际损失的，则以实际损失为准，该实际损失包括直接损失、预期利益的损失、买方为追究卖方的违约责任和/或为防止/制止泄密而支付的律师费用、诉讼仲裁费用、调查取证费用以及其他合理的费用支出等。
+[-b] If the SELLER violates the above confidentiality obligations, they shall bear the liability for breach of contract and pay a penalty to the BUYER, which is 10% of the total contract amount. If the penalty cannot compensate for the actual losses suffered by the BUYER as a result, the actual losses shall prevail. The actual losses include direct losses, loss of expected benefits, legal fees paid by the BUYER to pursue the SELLER's breach of contract liability and/or to prevent/stop leakage, litigation and arbitration fees, investigation and evidence fees, and other reasonable expenses, etc.
+[-0] 非经买方事先书面同意，卖方不得发布广告、公众号、公告、申明或向任何其他方（包括任何媒体等）提供关于双方的合作关系、项目内容、本合同的存在和/或条款的任何信息，不得以任何方式使用包括援引买方的名称、 logo、商标、商号、项目等信息用于任何用途。如卖方违反本条约定，买方有权要求卖方立即停止、改正违约行为并承担违约金，为合同总额的5%，如该等违约金不足以弥补买方因此遭受的损失，卖方应补偿买方的全部损失。
+[-b] Without the prior written consent of the BUYER, the SELLER shall not publish advertisements, official accounts, announcements, statements, or provide any information to any other party (include any media etc.) regarding the cooperation relationship between the two parties, the project content, the existence and/or terms of this CONTRACT, and shall not use any information in any way, including referencing the BUYER's name, logo, trademark, trade name, project, etc., for any purpose. If the SELLER violates this agreement, the BUYER has the right to demand that the SELLER immediately stop, correct the breach of contract, and bear a penalty of 5% of the total contract amount. If such penalty is not enough to compensate for the losses suffered by the BUYER as a result, the SELLER shall compensate the BUYER for all losses incurred.
+[-0] 若保密协议（若有）约定与本合同第14条约定不一致，以较高义务和责任为准。
+[-b] If there is any inconsistency between the confidentiality agreement (if any) and the provisions of Article 14 of this CONTRACT, the higher obligations and responsibilities shall prevail.
+[-] 违约责任Liability for Breach of Contract
+[-0] 卖方应按照附件五《技术协议》和本合同规定的时间节点交付相关技术文件，因未按期交付影响设计进度的，按合同总价的（0.5）% /周向买方支付违约金，交付迟延的天数不满壹周的按照壹周计算。买方有权从任何一笔应付合同款中扣除该违约金。The SELLER shall deliver the relevant technical documentation in accordance with Annex 5 "Technical Agreement" and the time nodes specified in this CONTRACT. If the failure to deliver on time affects the design progress, a penalty of (0.5)% of the total contract price per week shall be paid to the BUYER. If the delivery is delayed for less than one week, it shall be calculated as one week. The BUYER has the right to deduct the penalty from any payable contract payment.
+[-0] 如卖方不能按合同规定及时交货，卖方应向买方支付延期交货违约金，且该违约金，买方可以从应支付给卖方的剩余合同货款中扣除。延期交货4周以内，每延期交货一周，按合同总价的1%支付迟交违约金，延期交货第5周起，每周按合同总价的1.5%支付迟交违约金，不足一周按一周计算。If the SELLER fails to deliver the GOODS in a timely manner as stipulated in the contract, the SELLER shall pay the BUYER a penalty for delayed delivery, and the BUYER may deduct this penalty from the remaining contract payment due to the SELLER. Within 4 weeks of delayed delivery, a penalty of 1% of the total contract price shall be paid for each week of delayed delivery. Starting from the 5th week of delayed delivery, a penalty of 1.5% of the total contract price shall be paid for each week of delayed delivery. If the delay is less than one week, the penalty shall be calculated as one week.
+[-0] 由于卖方如下违约行为，买方有权解除合同，卖方应按合同总价的15%向买方支付违约金；买方要求退货的，卖方应在买方的退货要求提出后15日内返还退货部分所对应的全部款项Due to the following breach of contract by the SELLER, the BUYER has the right to terminate the contract, and the SELLER shall pay a penalty of 15% of the total contract price to the BUYER; If the BUYER requests a return, the SELLER shall return all the corresponding payment for the returned part within 15 days after the BUYER's request for return is made：
+[-2] 卖方延迟交货超过4周的If the SELLER delays delivery by more than 4 weeks；
+[-2] 卖方不按照《技术协议》要求履约，包括但不限于使用材质不符、质量缺陷、试验项目不符、填报虚假报告、隐瞒质量问题、未按照要求提供技术服务等不诚信行为The SELLER fails to fulfill the requirements of the Technical Agreement, including but not limited to using materials that do not comply, quality defects, inspection tests that do not comply, filling out false reports, concealing quality issues, and failing to provide technical services as required, and other dishonest behaviors；
+[-2] 卖方未经买方书面同意将本合同下卖方工作转包给其它任何第三方（双方约定的外购件除外），买方有权拒收或立即解除合同，除上述违约金外，买方有权任何时间内对卖方进行处罚，处罚金额包含但不限于对买方造成的直接和间接损失Without the written consent of the BUYER, if the SELLER subcontracts the SELLER's work under this CONTRACT to any other third party (excluding the externally purchased parts agreed upon by both parties), the BUYER has the right to refuse or immediately terminate the contract. In addition to the above-mentioned liquidated damages, the BUYER has the right to impose penalties on the SELLER at any time, including but not limited to direct and indirect losses caused to the BUYER；
+[-2] 因设备性能考核（以《技术协议》为准）不合格或质保期内出现严重质量问题，卖方在买方指定的期限内无法修补更换或拒绝修补更换If the equipment performance test (based on the Technical Agreement) fails or serious quality problems occur during the warranty period, the SELLER is unable to repair or refuse to repair or replace within the period specified by the BUYER；
+[-2] 卖方无法继续履行合同或因卖方导致的合同无法继续执行The SELLER is unable to continue performing the contract or the contract cannot be continued due to the SELLER's reasons；
+[-2] 卖方违反本合同第10条、第13条承诺的The SELLER's breach of commitments under Article 10 and Article 13 of this CONTRACT；
+[-2] 卖方违反本合同第14条并给买方造成重大损失的If the SELLER violates Article 14 of this CONTRACT and causes significant losses to the BUYER;
+[-2] 其他严重违反合同且未能在买受人指定期限内纠正的情形Other serious violations of the contract that have not been corrected within the specified period by the BUYER.
+[-0] 本合同下，若卖方按照合同约定应支付的违约金不足以弥补买方的实际损失的，则卖方之赔偿范围应以买方的实际损失为准。该实际损失包括但不限于直接损失、可得利益及第三方索赔等间接损失、重新订货的差价、为追究卖方违约责任而支付的律师费用、诉讼仲裁费用、调查取证费用以及其他实际的费用支出等
+[-b] Under this CONTRACT, if the liquidated damages payable by the SELLER according to the contract are insufficient to compensate for the actual losses of the BUYER, the SELLER's compensation scope shall be based on the actual losses of the BUYER. The actual losses include but are not limited to direct losses, financial losses, and indirect losses such as third-party claims, price differences for reordering, legal fees paid to pursue the SELLER's breach of contract, litigation and arbitration fees, investigation and evidence collection fees, and other actual expenses.
+[-0] 如果卖方有责任向买方支付任何违约赔偿金，则卖方应在收到买方的索赔通知后10天内通过电汇支付，否则买方有权从将支付给卖方的任何款项中扣除该金额，或尽可能从履约保函、质保保函或质保金中扣除违约赔偿金。如果通过上述方式仍有任何无法收回的款项，买方有权按照本合同约定的争议解决方式向卖方要求赔偿
+[-b] If the SELLER is responsible for paying any liquidated damages to the BUYER, the SELLER shall make the payment by wire transfer within 10 days after receiving the BUYER's claim notice. Otherwise, the BUYER has the right to deduct the amount from any payment to be made to the SELLER, or deduct the liquidated damages as much as possible from the performance bond, warranty bond, or warranty deposit. If there is still any amount that cannot be recovered through the above methods, the BUYER has the right to demand compensation from the SELLER in accordance with the dispute resolution method stipulated in this CONTRACT.
+[-] 解决合同纠纷的方式Ways to Resolve Contract Disputes
+[-b] 合同双方因执行本合同所发生的或与本合同有关的一切争议和纠纷，首先应通过友好协商解决：如协商不成，则任何一方均可按（a）执行。All disputes and controversies arising from or in connection with the execution of this CONTRACT between the two parties shall first be resolved through friendly consultation. If consultation fails, either party may proceed in accordance with (a) below:
+[-2] 向合同签订地有管辖权的人民法院提起诉讼。Bring a lawsuit to the people's court with jurisdiction over the place where the contract was signed.
+[-2] 提交上海仲裁委员会仲裁，仲裁地点为上海，仲裁裁决对双方均具有约束力。Submit to the Shanghai Arbitration Commission for arbitration, with the arbitration venue in Shanghai. The arbitration result shall be binding on both parties.
+[-] 其它约定事项Other Agreed Matters
+[-0] 卖方应信守职业道德，保证按已签署的《廉洁从业承诺书》执行，不以任何方式向买方相关人员进行商业贿赂或其他违纪行为，任何违反商业道德的行为都将导致合同终止或解除。如有此类事件发生，买方有权以书面形式通知卖方立即解除合同，解除合同的法律后果参照本合同附件八《廉洁从业承诺书》中有关条款执行。
+[-b] The SELLER shall abide by professional ethics, ensure to execute in accordance with the signed Integrity Commitment, and shall not engage in any commercial bribery or other disciplinary behavior towards the BUYER's relevant personnel in any way. Any behavior that violates commercial ethics will result in the termination or termination of the contract. If such events occur, the BUYER has the right to notify the SELLER in writing to immediately terminate the contract. The legal consequences of terminating the contract shall refer to Annex 8 Undertaking of Honest Conduct.
+[-0] 卖方（包括运输商）在送货和调试期间必须遵循买方的HSE管理规定，佩带劳动防护用品。若卖方未遵循买方的HSE管理规定或因卖方原因发生的一切安全事故，由卖方承担全部责任。
+[-b] The SELLER (including the logistic agent) must comply with the BUYER's HSE management regulations and wear personal protection equipment during delivery and commissioning. If the SELLER fails to comply with the BUYER's HSE management regulations or any safety accidents occur due to the SELLER's reasons, the SELLER shall bear full responsibility.
+[-0] 本合同未尽事宜，双方协商签署补充协议，若补充协议与本合同有不一致的，以补充协议为准。卖方应接受买方交付标的物前所有的合理变更要求，若对本合同条款、技术协议有任何变更，必须经原签署各方授权代表书面签字确认，方可生效。
+[-b] Matters not covered in this CONTRACT shall be supplemented by a supplementary agreement signed by both parties through negotiation. In case of any inconsistency between the supplementary agreement and this CONTRACT, the supplementary agreement shall prevail. The SELLER shall accept all reasonable changes requested by the BUYER before delivering the GOODS. If there are any changes to the terms of this CONTRACT or Technical Agreement, they must be confirmed in writing by the authorized representatives of the original signing parties before they can take effect.
+[-0] 本合同所有附件及补充协议与本合同具有同等法律效力。效力优先顺序：项目特殊条款、补充协议、本合同正文、技术协议、本合同附件、合同授予通知书、报价文件、询价文件。 All attachments and supplementary agreements to this CONTRACT shall have the same legal effect as this CONTRACT. Priority order of effectiveness from highest to the lowest shall be: PROJECT SPECIAL REQUIREMENTS, supplementary agreement, main body of this CONTRACT, Technical Agreement, annexes to this CONTRACT, letter of award, quotation document, inquiry document.
+[-0] 双方一致确认，有关本合同的相关书面通知以及其它法律文件的送达地址与送达的联系人以合同扉页所记载的地址以及委托代理人为准，若一方有所变更的，则应提前5个日历日发送通知给对方，若发生变更方未能在前述期限内发送通知给对方的，则该变更方的送达地址以及联系人以合同扉页所记载的为准。本合同一式2份，买方执1份，卖方执1份，自双方法定代表人或法人授权代理人签字加盖合同专用章或公章之日起生效。Both parties agree that the delivery addresses and contact persons for relevant written notices and other legal documents related to this CONTRACT shall be based on the addresses recorded on the contract cover page and the authorized representatives. If one party changes, they shall send a notice to the other party 5 calendar days in advance. If the changing party fails to send a notice to the other party within the aforementioned period, the delivery address and contact person of the changing party shall be based on the address recorded on the contract cover page. This contract is made in two original copies, with the BUYER holding one copy and the SELLER holding the other one. It shall come into effect from the date of signing and affixing the contract stamp or company by the legal representatives or authorized agents of both parties.
+[-0] 合同有效期为自本合同生效之日起到权利义务履行结束之日止，无论合同解除或终止，双方的保密义务均持续有效。如经买方和卖方双方协商一致，本合同的有效期可以延长。
+[-b] The validity period of the contract is from the effective date of the contract to the end of the performance of rights and obligations. Regardless of the termination or termination of the contract, the confidentiality obligations of both parties shall remain valid. If mutually agreed upon by both the BUYER and SELLER, the validity period of this CONTRACT may be extended.
+[-0] 本合同为框架合同，本项目后续采购订单将按此框架合同执行；如有未在框架合同清单的规格型号，则参照本框架合同清单类似规格型号物料价格做核算增补；单价核算方式为：相近项的数量单价/相近项的理论单重*新规格的理论单重，如对理论单重有异议，则卖方与买方设计进行澄清，按照双方最终认可的单重执行。此框架合同执行至项目结束（以买方通知为准），未尽事宜，由双方友好协商解决。This is a framework contract, and the subsequent purchase order for this project will be executed in accordance with this framework contract. If there are specifications and models that are not included in the framework contract list, the material prices of similar specifications and models in this framework contract list shall be supplemented for accounting purposes. The unit price calculation method is: the quantity unit price of similar items/the theoretical unit weight of similar items * the theoretical unit weight of new specifications. If there is any objection to the theoretical single weight. The seller shall clarify with the design personnel of the buyer and execute it according to the final agreed single weight by both parties. This framework contract will be executed until the end of the project (subject to the notification by the buyer). Any matters not covered in this contract shall be resolved through friendly negotiation between both parties.
+[-0] 本合同以中、英文书就，如中英文版本有冲突，以中文版本为准。The CONTRACT is made in both English and Chinese languages. The Chinese version of this CONTRACT shall prevail in case of conflict with English version.
+[-] Communication Channel from both Buyer & seller 买卖双方沟通渠道
+[-0] SELLER PROJECT MANAGER / EXECUTIVE SPONSOR 卖方项目经理/执行担保人
+[-1] Project Manager 项目经理
+[-b] Mr. ***  has been assigned as Seller's Project Manager for the execution of this Purchase Order, including the issue of notices and all communications. The Project Manager shall be responsible for the implementation and management of all activities required for successful completion of the work.  Seller shall at all times insure that the Project Manager is provided with resources that are appropriate and adequate to ensure completion in accordance with Buyer’s requirements, by the agreed upon date.
+[-b] ***先生已被任命为卖方的项目经理以执行采购订单，包括通知发布和所有交流通信。项目经理将负责顺利竣工所要求的所有行为的执行和管理。卖方应随时确保项目经理有适当和充足的资源以保证在合同规定日期下根据买方要求完成此合同。
+[-1] Executive Sponsor 执行负责人
+[-b] Seller hereby appoints Ms. *** as Executive Sponsor of this Purchase Order.  The Executive Sponsor shall remain aware of Seller's obligations and performance under this Purchase Order and shall be available at all reasonable times to Buyer's management representatives for consultation as required.
+[-b] 卖方在此任命****女士为本采购订单的执行负责人。执行负责人应留意卖方在本采购订单中的责任和履行，并应根据要求随时向买方的管理代表提供咨询服务。
+[-1] Location of Manufacture, Testing and Inspection 制造，检验所在地
+[-b] Name of SELLER:
+[-b] 公司名称:
+[-b] Address；
+[-b] 地址：
+[-b] Tel:
+[-b] 电话：
+[-1] Shop Order Number from SELLER
+[-b] Shop Order No. (if available):
+[-b] 工厂订单号（如果适用）
+[-b] Shop Contact (name/phone):
+[-b] 工厂联络人（姓名/电话）
+[-b] Mr. *** (刘***)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-1] Seller’s Contacts 卖方的联系方式:
+[-b] Executive Sponsor (name/title/phone/ e-mail):
+[-b] 执行负责人 (姓名/电话/e-mail地址)
+[-b] Mr. ** (刘**)
+[-b] Title：
+[-b] Tel:：
+[-b] Mobile:
+[-b] E-mail:
+[-b] Project Manager (name/phone/ e-mail):
+[-b] 项目经理 (姓名/电话/e-mail地址)
+[-b] Mr. ** (刘**)
+[-b] Tel:：
+[-b] Mobile:
+[-b] E-mail:
+[-b] Engineering Contact (name/phone):
+[-b] 技术联络人（姓名/电话）
+[-b] Mr. *** (刘***)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Spare Parts Contact (name/phone):
+[-b] 备品备件联络人（姓名/电话）
+[-b] Mr. *** (刘***)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Warranty Contact (name/phone):
+[-b] 质量保证联络人 （姓名/电话）
+[-b] Mr. *** (刘***)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Field Service Contact (name/phone):
+[-b] 现场服务联络人（姓名/电话）
+[-b] Mr. *** (刘***)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-0] BUYER’S CONTACTS 买方的联系方式
+[-b] Engineering Contacts (name/phone):
+[-b] 设计联系人（姓名/电话）
+[-b] Mr.
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Responsible Buyer (name/phone/e-mail):
+[-b] 采购工程师(姓名/电话/e-mail地址)
+[-b] Mr. *** (张***)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Responsible Expeditor (name/phone):
+[-b] 催交员（姓名/电话）
+[-b] Mr. Jonathan Lim Chin Thiam
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Quality Contact (name/phone):
+[-b] 质量联系人 （姓名/电话）
+[-b] Mr.
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Document Control Contacts (name/phone):
+[-b] 文控联络人（姓名/电话）
+[-b] Ms.Ye Qing (叶青)
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:
+[-b] Logistics Contacts (name/phone):
+[-b] 物流联系人（姓名/电话）
+[-b] Mr.
+[-b] Tel:
+[-b] Mobile:
+[-b] E-mail:

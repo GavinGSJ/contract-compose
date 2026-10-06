@@ -11,7 +11,7 @@ for k in list(st.session_state.keys()):
         st.session_state[k] = st.session_state[k]
 
 pg = st.navigation([
-    st.Page('公共/界面/合同生成.py', title='合同生成', icon='📄', url_path='contract', default=True),
-    st.Page('公共/界面/预存信息管理.py', title='预存信息管理', icon='🗂️', url_path='presets'),
+    st.Page('ui/contract_form.py', title='合同生成', icon='📄', url_path='contract', default=True),
+    st.Page('ui/preset_manager.py', title='预存信息管理', icon='🗂️', url_path='presets'),
 ])
 pg.run()

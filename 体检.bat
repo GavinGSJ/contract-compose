@@ -6,7 +6,7 @@ if "%~1"=="" (
   pause
   exit /b
 )
-python 公共\工具\合同体检.py "%~1"
+python -m contract_compose.health_check "%~1"
 echo.
-echo 报告在“新增类型”文件夹里对应的子文件夹中（体检报告.md）
+echo 报告在 new_types 文件夹里对应的子文件夹中（体检报告.md）
 pause
