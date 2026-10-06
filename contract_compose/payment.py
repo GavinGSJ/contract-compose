@@ -5,8 +5,7 @@ lib 为 library.Library；o 为付款方案所在的选项（opts['付款方式'
 """
 import re
 
-from .constants import TYPES
-from .library import for_type
+from .library import for_type, list_types
 from .options import choose
 
 
@@ -15,10 +14,11 @@ def pay_node(lib, n):
     nd = lib.pay['节点'].get(n)
     if not nd:
         return None
+    types = list_types()
     part = nd.get(lib.ctype)
-    if any(t in nd for t in TYPES) and part is None:
+    if any(t in nd for t in types) and part is None:
         return None
-    base = {k: v for k, v in nd.items() if k not in TYPES}
+    base = {k: v for k, v in nd.items() if k not in types}
     return {**base, **(part or {})}
 
 

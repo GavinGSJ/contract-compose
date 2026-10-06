@@ -46,4 +46,7 @@ def choose(name, o, values, choices):
         k = str(values[o['跟随变量']]).split()[0]
         if k in o['选项']:
             return k
+    if str(o['默认']) not in o['选项']:
+        raise SystemExit(f'选项库“{name}”没有适用于本合同类型的默认写法“{o["默认"]}”：'
+                         f'请在 options/{name}.yaml 的“默认”（及各选项的“适用”）中补上本类型')
     return str(o['默认'])

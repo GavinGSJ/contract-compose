@@ -10,6 +10,7 @@ import yaml
 
 from . import paths
 from .assembler import build
+from .library import list_types
 
 
 def main(argv=None):
@@ -18,7 +19,7 @@ def main(argv=None):
     ap.add_argument('--标注', '--annotate', dest='标注', metavar='合同类型',
                     help='生成“变量标注版”母本：所有变量黄色高亮并写明变量名')
     ap.add_argument('--母本', '--regress', dest='母本', metavar='合同类型',
-                    help='用全部默认值生成（FA 或 PO），用于与母本比对')
+                    help='用全部默认值生成，用于与母本比对')
     a = ap.parse_args(argv)
     if a.标注:
         out = os.path.join(paths.type_dir(a.标注), f'{a.标注}母本_变量标注版.docx')
@@ -35,7 +36,7 @@ def main(argv=None):
     os.makedirs(os.path.dirname(out), exist_ok=True)
     doc, used, missing, order, na = build(cfg, regress=bool(a.母本))
     doc.save(out)
-    rep = [f'已生成：{os.path.relpath(out, paths.ROOT)}（{cfg.get("合同类型") or "FA"}）', f'条款原子：{len(order)} 个',
+    rep = [f'已生成：{os.path.relpath(out, paths.ROOT)}（{cfg.get("合同类型") or list_types()[0]}）', f'条款原子：{len(order)} 个',
            '选用的写法：' + '、'.join(f'{k}={v}' for k, v in used.items()),
            '标注不适用：' + ('、'.join(na) or '无')]
     if not a.母本:

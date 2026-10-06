@@ -18,6 +18,7 @@ BLOCKS = 'blocks'
 TABLES = 'tables'
 VARIABLES = 'variables.yaml'
 RECIPE = 'recipe.yaml'
+TYPE_FILE = 'type.yaml'                                              # 合同类型设置；有此文件的目录即为一种合同类型
 PAYMENT_TERMS = 'payment_terms.yaml'
 ATOM_INDEX = '原子总览.md'
 

@@ -6,7 +6,7 @@
     doc, used, missing, order, na = build(cfg)
 命令行：python -m contract_compose（见 cli.py）
 """
-from .library import Library, load_library
+from .library import Library, load_library, list_types, load_type
 from .assembler import build, numbering
 
-__all__ = ["Library", "load_library", "build", "numbering"]
+__all__ = ["Library", "load_library", "list_types", "load_type", "build", "numbering"]

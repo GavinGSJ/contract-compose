@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-"""重新生成 library/<类型>/原子总览.md。用法（在项目根目录运行）：python -m contract_compose.atom_index FA"""
+"""重新生成 library/<类型>/原子总览.md。用法（在项目根目录运行）：python -m contract_compose.atom_index [类型 …]（不写则全部类型）"""
 import os, re, sys, glob
 from . import paths
-from .library import load_atoms, load_yaml
+from .library import load_atoms, load_yaml, load_type, list_types
 from .assembler import numbering
 
 
@@ -11,7 +11,7 @@ def main(ct):
     atoms = load_atoms(td)
     recipe = load_yaml(os.path.join(td, paths.RECIPE), {})
     items = [it for it in recipe['顺序'] if '原子' in it]
-    nos = numbering(atoms, [it['原子'] for it in items], recipe.get('编号起始', 1))
+    nos = numbering(atoms, [it['原子'] for it in items], load_type(ct)['编号起始'])
     rows = []
     for it in items:
         aid = it['原子']; a = atoms[aid]; m, body, fn = a['meta'], a['body'], a['file']
@@ -36,4 +36,5 @@ def main(ct):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else 'FA')
+    for t in (sys.argv[1:] or list_types()):
+        main(t)

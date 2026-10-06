@@ -6,17 +6,17 @@ import streamlit as st
 
 from contract_compose import paths, payment, money
 from contract_compose.assembler import build, numbering
-from contract_compose.constants import TYPES as ALL_TYPES, NA_EXCLUDE
-from contract_compose.library import load_library, for_type
+from contract_compose.library import load_library, load_type, list_types, for_type
 from contract_compose.options import choose
 
 # ---------------- 读取原子库（按所选合同类型） ----------------
-TYPE_NAMES = {'FA': 'FA 框架合同', 'PO': 'PO 实采合同'}
-TYPES = [t for t in ALL_TYPES if os.path.exists(os.path.join(paths.type_dir(t), paths.RECIPE))]
+TYPES = list_types()                                          # library/ 下有 type.yaml 的目录
+TYPE_NAMES = {t: load_type(t)['名称'] for t in TYPES}
 if st.session_state.get('ctype') not in TYPES: st.session_state['ctype'] = TYPES[0]
 CT = st.session_state['ctype']
 lib = load_library(CT)
 atoms, opts, V, recipe, entities = lib.atoms, lib.opts, lib.V, lib.recipe, lib.entities
+SETTINGS = lib.settings
 conditions = sorted({it['条件'] for it in recipe['顺序'] if it.get('条件')})
 
 GROUPS = {
@@ -26,14 +26,14 @@ GROUPS = {
     '交货': ['交货期天数', '交货日期'],
 }
 LABEL = {'预付款_文件数': '预付款前需收到的文件数', '预付款_天数': '收到文件后支付预付款的天数（日历日）',
-         '交货期天数': '每批订单生效后交货天数', '签订日期': '签订日期'}
+         '交货期天数': '每批订单生效后交货天数', '签订日期': '签订日期', **SETTINGS['表单标签']}
 PCT = {'履约保函比例'}
 PAY_VARS = [k for k, v in V.items() if v.get('类别') == '付款' and v.get('类型') == '值']
 _auto_node = for_type(lib.pay.get('质保金模式追加'), CT)
 PAY_NODE_NAMES = {n: payment.pay_node(lib, n)['名称'] for n in payment.pay_nodes_available(lib) if n != _auto_node}
 PAY_NAME_TO_ID = {v: k for k, v in PAY_NODE_NAMES.items()}
 
-BOND = '履约保函比例'; BOND_ATOM = recipe.get('履约保函条款')     # 该类型合同没有履约保函条款时为 None
+BOND = '履约保函比例'; BOND_ATOM = SETTINGS['履约保函条款']     # 该类型合同没有履约保函条款时为 None
 required = [k for k, v in V.items() if v.get('类型') == '值' and v.get('类别') == '必填' and not k.endswith('_en') and k != BOND]
 GROUPS = {g: [k for k in names if k in V] for g, names in GROUPS.items()}
 grouped = {k for g in GROUPS.values() for k in g}
@@ -45,10 +45,10 @@ option_vars = sorted([k for k, v in V.items() if v.get('类型') == '选项' and
 
 # 可标注“不适用”的条款（付款条款与履约保函单独处理）
 ALL_ORDER = [it['原子'] for it in recipe['顺序'] if '原子' in it]
-REFS = numbering(atoms, ALL_ORDER, recipe.get('编号起始', 1))
+REFS = numbering(atoms, ALL_ORDER, SETTINGS['编号起始'])
 COND_ATOMS = {it['原子'] for it in recipe['顺序'] if it.get('条件') or it.get('仅当选项')}
 NA_LABEL = {f"{REFS[a]}　{atoms[a]['meta']['名称']}": a for a in ALL_ORDER
-            if a not in NA_EXCLUDE and a != BOND_ATOM and a not in COND_ATOMS}
+            if a not in SETTINGS['付款条款'] and a != BOND_ATOM and a not in COND_ATOMS}
 NA_ID_TO_LABEL = {v: k for k, v in NA_LABEL.items()}
 
 CFG_DIR = paths.CONFIGS; OUT_DIR = paths.OUTPUT
@@ -79,7 +79,7 @@ def load_cfg():
     if not f or f == '（新合同）':
         return
     cfg = yaml.safe_load(open(os.path.join(CFG_DIR, f), encoding='utf-8')) or {}
-    st.session_state['ctype'] = cfg.get('合同类型') or 'FA'
+    st.session_state['ctype'] = cfg.get('合同类型') or TYPES[0]
     st.session_state['_pending_cfg'] = cfg
 
 
@@ -219,11 +219,11 @@ with tabs[0]:
         pay_choice['付款可选单据'] = [_dl[x] for x in st.session_state['pay_docs']]
     pay_fields = [f for f in payment.pay_fields(lib, opts['付款方式'], plan, pay_choice) if f in V] if nodes else []
     PAY_LABEL = {'预付款比例': '预付款（%）', '进度款比例': '进度款（%）', '发货款比例': '发货款（%）', '到货款比例': '到货款（%）',
-                 '调试款比例': '调试款（%）', '质保比例': '质保款（%）' if CT == 'PO' else '质保函 / 质保金（%）',
+                 '调试款比例': '调试款（%）', '质保比例': '质保函 / 质保金（%）',
                  '付款天数': '收到单据后付款天数', '完工文件_原件份数': '完工文件原件份数', '完工文件_电子份数': '完工文件电子版份数',
                  '预付款_文件数': '预付款前需收到的文件数', '预付款_天数': '收到文件后支付预付款的天数',
                  '进度款_主材名称': '进度款：主要材料或构件名称', '信用证_开证提前天数': '信用证：装运前开证天数',
-                 '质保金_释放天数': '质保金：申请后释放天数'}
+                 '质保金_释放天数': '质保金：申请后释放天数', **SETTINGS['表单标签']}
     cols = st.columns(3)
     for i, f in enumerate(pay_fields):
         if key(f) not in st.session_state and V[f].get('默认值') not in (None, ''):

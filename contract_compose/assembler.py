@@ -15,7 +15,7 @@
 import os, re
 
 from . import paths
-from .constants import NA_MARK, NA_EXCLUDE, LABEL_MISSING, LABEL_ANNOTATE
+from .constants import NA_MARK, LABEL_MISSING, LABEL_ANNOTATE
 from .library import load_library
 from .options import choose
 from .values import derive_values, expand_options, resolve_values
@@ -35,11 +35,12 @@ def numbering(atoms, order, start=1):
 
 def build(cfg, regress=False, keep=None, mark_vars=False):
     """组装一份合同。
-    cfg：合同配置（合同类型、买方主体、变量、选项、条件、不适用）
+    cfg：合同配置（合同类型、买方主体、变量、选项、条件、不适用）；合同类型为空时取第一个类型
     regress：用母本值/默认值组装（与母本比对）；mark_vars：变量标注版（所有变量黄色标出变量名）
     返回 (doc, used 选用的写法, missing 未填变量, order 原子顺序, shown 标注不适用的原子)"""
-    lib = load_library(cfg.get('合同类型') or 'FA')
+    lib = load_library(cfg.get('合同类型'))
     atoms, opts, V, recipe, entities = lib.atoms, lib.opts, lib.V, lib.recipe, lib.entities
+    settings = lib.settings
     label = LABEL_ANNOTATE if mark_vars else LABEL_MISSING
     values = dict(cfg.get('变量') or {})
     ent = cfg.get('买方主体') or (next(iter(entities)) if entities else None)
@@ -61,10 +62,10 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
             for k, v in (it.get('仅当选项') or {}).items():
                 if k in opts and choose(k, opts[k], values, choices) != str(v):
                     na.add(it['原子'])
-    na -= set(NA_EXCLUDE)
+    na -= set(settings['付款条款'])
     chap = {a['meta']['章']: aid for aid, a in atoms.items() if a['meta']['层级'] == '章'}
     inherit = {aid for aid in order if chap.get(atoms[aid]['meta']['章']) in na}   # 整章不适用
-    refs = numbering(atoms, order, recipe.get('编号起始', 1))
+    refs = numbering(atoms, order, settings['编号起始'])
     used, missing = {}, set()
 
     def fill(text, is_na=False):
@@ -87,7 +88,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         first = lead + (head + NA_MARK if len(head) <= 80 else NA_MARK + head)   # 长条款文字：标注放在开头
         return first + ('\n' + rest if rest else '')
 
-    w = Writer(os.path.join(lib.dir, recipe['样式模板']), label)
+    w = Writer(os.path.join(lib.dir, settings['样式模板']), label)
     rendered = [(aid, mark(aid, fill(atoms[aid]['body'], aid in na or aid in inherit))) for aid in order]
     for item in recipe['顺序']:
         if '块' in item:
@@ -95,8 +96,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         elif '目录' in item:
             heads = [(refs[aid], re.sub(r'^# ', '', t.split('\n')[0]).replace('**', ''))
                      for aid, t in rendered if atoms[aid]['meta']['层级'] == '章']
-            w.toc(heads, item.get('标题', '目录CONTENT'),
-                  item.get('前置行', ['第一部分 合同条款 Part I Contract Text']), item.get('编号格式', '{n}'))
+            w.toc(heads, item.get('标题', '目录'), item.get('前置行') or [], item.get('编号格式', '{n}'))
             if item.get('附加块'):
                 w.block(os.path.join(lib.dir, paths.BLOCKS, item['附加块'] + '.xml'), fill_e)
     for aid, text in rendered:
