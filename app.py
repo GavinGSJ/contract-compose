@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 """合同生成工具入口。双击“启动表单.bat”，或运行：python -m streamlit run app.py"""
+import os, sys
 import streamlit as st
+
+from ui.stale import stale, purge
+
+# 表单运行期间更新了代码（如 git pull）时，进程里还留着旧的 contract_compose 模块，新旧混用会报错：
+# 发现磁盘上的代码比已加载的新，就清掉旧模块，各页面重新导入
+if stale(sys.modules.get('contract_compose'), os.path.join(os.path.dirname(os.path.abspath(__file__)), 'contract_compose')):
+    purge()
 
 st.set_page_config(page_title='合同生成', page_icon='📄', layout='wide')
 
