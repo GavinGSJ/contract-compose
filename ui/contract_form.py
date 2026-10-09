@@ -6,7 +6,7 @@ import streamlit as st
 
 from contract_compose import paths, payment, money, annexes
 from contract_compose.constants import SPECIAL
-from contract_compose.assembler import build, numbering
+from contract_compose.assembler import build, numbering, goods_rows
 from contract_compose.library import load_library, load_type, list_types, for_type
 from contract_compose.options import choose
 
@@ -18,6 +18,9 @@ CT = st.session_state['ctype']
 lib = load_library(CT)
 atoms, opts, V, recipe, entities = lib.atoms, lib.opts, lib.V, lib.recipe, lib.entities
 SETTINGS = lib.settings
+HIDE = set(SETTINGS['表单隐藏'])                                # 该类型不用的表单项（type.yaml“表单隐藏”）
+GOODS = SETTINGS['货物明细']                                    # 多行货物表（含税总价 = 各行合计）
+SHOW_PAY = '付款方式' not in HIDE and bool((opts.get('付款方式') or {}).get('选项'))
 conditions = sorted({it['条件'] for it in recipe['顺序'] if it.get('条件')})
 
 GROUPS = {
@@ -35,13 +38,14 @@ PAY_NODE_NAMES = {n: payment.pay_node(lib, n)['名称'] for n in payment.pay_nod
 PAY_NAME_TO_ID = {v: k for k, v in PAY_NODE_NAMES.items()}
 
 BOND = '履约保函比例'; BOND_ATOM = SETTINGS['履约保函条款']     # 该类型合同没有履约保函条款时为 None
-required = [k for k, v in V.items() if v.get('类型') == '值' and v.get('类别') == '必填' and not k.endswith('_en') and k != BOND]
-GROUPS = {g: [k for k in names if k in V] for g, names in GROUPS.items()}
+required = [k for k, v in V.items() if v.get('类型') == '值' and v.get('类别') == '必填' and not k.endswith('_en') and k != BOND
+            and k not in HIDE and not (GOODS and k == '货物明细')]
+GROUPS = {g: [k for k in names if k in V and k not in HIDE] for g, names in GROUPS.items()}
 grouped = {k for g in GROUPS.values() for k in g}
 GROUPS['其他必填'] = [k for k in required if k not in grouped]
-defaults = [k for k, v in V.items() if v.get('类型') == '值' and v.get('类别') == '有默认值' and not k.endswith('_en')]
+defaults = [k for k, v in V.items() if v.get('类型') == '值' and v.get('类别') == '有默认值' and not k.endswith('_en') and k not in HIDE]
 _pos = {it['原子']: i for i, it in enumerate(recipe['顺序']) if '原子' in it}
-option_vars = sorted([k for k, v in V.items() if v.get('类型') == '选项' and v.get('类别') != '付款'],
+option_vars = sorted([k for k, v in V.items() if v.get('类型') == '选项' and v.get('类别') != '付款' and k not in HIDE and k in opts],
                      key=lambda k: _pos.get(str(V[k].get('原子', [''])[0]), 999))
 
 # 可标注“不适用”的条款（付款条款与履约保函单独处理）
@@ -78,7 +82,7 @@ def label_of(name, i):
     s = x.get('名称') or x.get('中文') or i
     return f'{i}：{s}' + ('（待补）' if x.get('状态') == '待补' else '')
 OPT_LABELS, LABEL_TO_ID = {}, {}
-for _n in option_vars + ['付款方式', '质保方式']:
+for _n in option_vars + (['付款方式', '质保方式'] if SHOW_PAY else []):
     _o = opts[_n]; _auto = bool(_o.get('跟随变量') or _o.get('项目预设'))
     LABEL_TO_ID[_n] = {label_of(_n, i): i for i in _o['选项']}
     OPT_LABELS[_n] = ([AUTO] if _auto else []) + list(LABEL_TO_ID[_n])
@@ -95,6 +99,9 @@ def load_cfg():
     st.session_state['_pending_cfg'] = cfg
 
 
+GOODS_COLS = ['产品名称', '规格型号', '单位', '数量', '单价', '总金额', '备注']
+
+
 def apply_cfg(cfg):
     for k in list(st.session_state):
         if k.startswith(('v::', 'o::')): del st.session_state[k]
@@ -106,6 +113,8 @@ def apply_cfg(cfg):
     st.session_state['pay_nodes'] = [PAY_NODE_NAMES[n] for n in (cfg.get('选项') or {}).get('付款节点', []) if n in PAY_NODE_NAMES]
     st.session_state['_pending_docs'] = list((cfg.get('选项') or {}).get('付款可选单据') or [])
     if cfg.get('买方主体') in entities: st.session_state['entity'] = cfg['买方主体']
+    st.session_state['goods_base'] = [{c: '' if r.get(c) is None else str(r.get(c)) for c in GOODS_COLS} for r in cfg.get('货物') or []]
+    st.session_state.pop('goods_ed', None)
     st.session_state['ta'] = str((cfg.get('变量') or {}).get('有技术协议', '是')) != '否'
     for c in conditions: st.session_state['c::' + c] = c in (cfg.get('条件') or [])
     na = cfg.get('不适用') or []
@@ -124,7 +133,7 @@ if '_pending_cfg' in st.session_state:
 
 def change_type():
     for k in list(st.session_state):           # 换合同类型时清空条款写法与付款设置，以及未改动过的默认值
-        if k.startswith(('o::', 'ax::')) or k in ('pay_nodes', 'pay_docs', 'na'): del st.session_state[k]
+        if k.startswith(('o::', 'ax::')) or k in ('pay_nodes', 'pay_docs', 'na', 'goods_base', 'goods_ed'): del st.session_state[k]
         elif k.startswith('v::') and str(st.session_state[k]) == str(V.get(k[3:], {}).get('默认值', '')):
             del st.session_state[k]
 
@@ -180,9 +189,28 @@ with tabs[0]:
     if ss.get(key('币种')) not in CUR: ss[key('币种')] = 'RMB'
     if ss.get(key('增值税率')) not in RATES: ss[key('增值税率')] = AUTO
     c1, c2, c3 = st.columns(3)
-    c1.selectbox('币种', CUR, key=key('币种'), help='RMB 人民币 / USD 美元 / EUR 欧元 / GBP 英镑')
+    if '币种' not in HIDE:
+        c1.selectbox('币种', CUR, key=key('币种'), help='RMB 人民币 / USD 美元 / EUR 欧元 / GBP 英镑')
     c2.selectbox('增值税率', RATES, key=key('增值税率'), help='（自动）= 人民币 13%，外币不涉及增值税')
-    c3.text_input('含税总价', key=key('含税总价'), placeholder='如 1130000 或 1,130,000.00')
+    goods = []
+    if GOODS:                                   # 多行货物表：总金额不填时按 单价 × 数量；含税总价 = 各行合计
+        import pandas as pd
+        if 'goods_base' not in ss: ss['goods_base'] = []
+        st.caption('货物明细（可增删行；总金额不填时按 单价 × 数量 自动计算，数量不填按 1）')
+        _df = st.data_editor(pd.DataFrame(ss['goods_base'], columns=GOODS_COLS, dtype=str), key='goods_ed',
+                             num_rows='dynamic', use_container_width=True, hide_index=True,
+                             column_config={c: st.column_config.TextColumn(c) for c in GOODS_COLS})
+        goods = [{c: str(r[c]).strip() for c in GOODS_COLS if r.get(c) not in (None, '') and str(r[c]).strip() not in ('', 'nan', 'None')}
+                 for r in _df.to_dict('records')]
+        goods = [r for r in goods if r]
+        if any(r.get(c) and money.parse_amount(r[c]) is None for r in goods for c in ('数量', '单价', '总金额')):
+            ss[key('含税总价')] = '（非数字）'                    # 下方提示“只能填数字”
+        else:
+            _ta = goods_rows(goods)[2]
+            ss[key('含税总价')] = str(_ta) if goods else ''
+            if goods: c3.metric('含税总价（合计）', money.fmt_money(_ta, ''))
+    else:
+        c3.text_input('含税总价', key=key('含税总价'), placeholder='如 1130000 或 1,130,000.00')
     _pc = money.price_calc(ss.get(key('含税总价')), ss[key('币种')], ss[key('增值税率')])
     if str(ss.get(key('含税总价'), '')).strip():
         if '含税' in _pc:
@@ -193,79 +221,84 @@ with tabs[0]:
                     f"{money.CURRENCIES[_pc['币种']][1]}大写：{money.cn_upper(_pc['含税'])}\n\n"
                     f"{_pc['币种']} {money.en_words(_pc['含税'])}")
         else:
-            st.error('含税总价只能填数字（可带千分位逗号）。')
+            st.error(('货物明细中的数量、单价、总金额' if GOODS else '含税总价') + '只能填数字（可带千分位逗号）。')
+    st.session_state['_goods'] = goods
 
     # ---------------- 技术协议 ----------------
-    st.subheader('技术协议')
-    if 'ta' not in ss: ss['ta'] = True
-    st.checkbox('本合同有技术协议', key='ta', help='不勾选时，1.1 合同组成及目录中的“附件五 技术协议”标注不适用，其余条款原样保留')
-    if ss['ta']:
-        c1, c2, c3 = st.columns(3)
-        c1.text_input('技术协议号', key=key('技术协议号'))
-        c2.text_input('版本号', key=key('技术协议版本'), placeholder='如 Rev.0')
-        c3.text_input('日期', key=key('技术协议日期'), placeholder='如 2026-10-06')
-    TA_FIELDS = ['技术协议号', '技术协议版本', '技术协议日期'] if ss['ta'] else []
-    st.session_state['_extra'] = ['币种', '含税总价'] + TA_FIELDS
+    TA_FIELDS = []
+    if '技术协议' not in HIDE:
+        st.subheader('技术协议')
+        if 'ta' not in ss: ss['ta'] = True
+        st.checkbox('本合同有技术协议', key='ta', help='不勾选时，1.1 合同组成及目录中的“附件五 技术协议”标注不适用，其余条款原样保留')
+        if ss['ta']:
+            c1, c2, c3 = st.columns(3)
+            c1.text_input('技术协议号', key=key('技术协议号'))
+            c2.text_input('版本号', key=key('技术协议版本'), placeholder='如 Rev.0')
+            c3.text_input('日期', key=key('技术协议日期'), placeholder='如 2026-10-06')
+            TA_FIELDS = ['技术协议号', '技术协议版本', '技术协议日期']
+    st.session_state['_extra'] = [x for x in ['币种'] if x not in HIDE] + ([] if GOODS else ['含税总价']) + TA_FIELDS
 
-    st.subheader('付款方式')
-    def pay_select(name, label, horizontal=False):
-        labels = OPT_LABELS[name]
-        if st.session_state.get('o::' + name) not in labels:
-            st.session_state['o::' + name] = label_of(name, str(opts[name]['默认']))
-        if horizontal:
-            st.radio(label, labels, key='o::' + name, horizontal=True)
-        else:
-            st.selectbox(label, labels, key='o::' + name)
-        return LABEL_TO_ID[name][st.session_state['o::' + name]]
-    c1, c2 = st.columns(2)
-    with c1: plan = pay_select('付款方式', '付款方案')
-    with c2: mode = pay_select('质保方式', '质保担保方式', horizontal=True)
-    if plan == '自定义':
-        st.multiselect('选择付款节点（按合同顺序自动排列）', list(PAY_NODE_NAMES.values()), key='pay_nodes')
-    pay_choice = {'付款方式': plan, '质保方式': mode,
-                  '付款节点': [PAY_NAME_TO_ID[x] for x in st.session_state.get('pay_nodes', [])]}
-    nodes, _ = payment.payment_nodes(lib, opts['付款方式'], plan, {}, pay_choice)
-    st.caption('付款顺序：' + ' → '.join(payment.pay_node(lib, n)['名称'] for n in nodes) if nodes else '请选择付款节点')
-    _opt_docs = payment.pay_optional_docs(lib, nodes)
-    if _opt_docs:
-        _dl = {t[:70]: d for d, t in _opt_docs}
-        if '_pending_docs' in st.session_state:
-            _ids = st.session_state.pop('_pending_docs'); st.session_state['pay_docs'] = [l for l, d in _dl.items() if d in _ids]
-        st.session_state['pay_docs'] = [x for x in st.session_state.get('pay_docs', []) if x in _dl]
-        st.multiselect('加入的可选单据（母本中标为“可选/Optional”的单据）', list(_dl), key='pay_docs')
-        pay_choice['付款可选单据'] = [_dl[x] for x in st.session_state['pay_docs']]
-    pay_fields = [f for f in payment.pay_fields(lib, opts['付款方式'], plan, pay_choice) if f in V] if nodes else []
-    PAY_LABEL = {'预付款比例': '预付款（%）', '进度款比例': '进度款（%）', '发货款比例': '发货款（%）', '到货款比例': '到货款（%）',
-                 '调试款比例': '调试款（%）', '质保比例': '质保函 / 质保金（%）',
-                 '付款天数': '收到单据后付款天数', '完工文件_原件份数': '完工文件原件份数', '完工文件_电子份数': '完工文件电子版份数',
-                 '预付款_文件数': '预付款前需收到的文件数', '预付款_天数': '收到文件后支付预付款的天数',
-                 '进度款_主材名称': '进度款：主要材料或构件名称', '信用证_开证提前天数': '信用证：装运前开证天数',
-                 '质保金_释放天数': '质保金：申请后释放天数', **SETTINGS['表单标签']}
-    cols = st.columns(3)
-    for i, f in enumerate(pay_fields):
-        if key(f) not in st.session_state and V[f].get('默认值') not in (None, ''):
-            st.session_state[key(f)] = str(V[f]['默认值'])
-        cols[i % 3].text_input(PAY_LABEL.get(f, f), key=key(f), placeholder=V[f].get('说明') or '')
-    if BOND_ATOM:
-        if 'bond' not in st.session_state: st.session_state['bond'] = True
-        b1, b2 = st.columns([1, 2])
-        b1.checkbox('本合同需要履约保函', key='bond', help='不勾选时，履约保函条款仍保留在合同中并标注不适用')
-        if st.session_state['bond']:
-            field(b2, BOND); pay_fields.append(BOND)
-        else:
-            b2.caption('履约保函条款保留，标注“不适用”，比例写 N/A。')
-    st.session_state['_pay'] = (pay_choice, pay_fields, nodes)
-    nums, bad_num = [], False
-    for n in nodes:
-        sv = st.session_state.get(key(payment.pay_node(lib, n)['比例变量']), '').strip()
-        if sv:
-            try: nums.append(float(sv))
-            except ValueError: bad_num = True
-    if nums and not bad_num:
-        tot = sum(nums)
-        parts = ' + '.join(payment.pay_node(lib, n)['名称'].split('（')[0] for n in nodes)
-        (st.success if abs(tot - 100) < 1e-6 else st.warning)(
-            f'{parts} = {tot:g}%' + ('' if abs(tot - 100) < 1e-6 else '，不等于 100%'))
+    st.session_state['_pay'] = ({}, [], [])
+    if SHOW_PAY:
+        st.subheader('付款方式')
+        def pay_select(name, label, horizontal=False):
+            labels = OPT_LABELS[name]
+            if st.session_state.get('o::' + name) not in labels:
+                st.session_state['o::' + name] = label_of(name, str(opts[name]['默认']))
+            if horizontal:
+                st.radio(label, labels, key='o::' + name, horizontal=True)
+            else:
+                st.selectbox(label, labels, key='o::' + name)
+            return LABEL_TO_ID[name][st.session_state['o::' + name]]
+        c1, c2 = st.columns(2)
+        with c1: plan = pay_select('付款方式', '付款方案')
+        with c2: mode = pay_select('质保方式', '质保担保方式', horizontal=True)
+        if plan == '自定义':
+            st.multiselect('选择付款节点（按合同顺序自动排列）', list(PAY_NODE_NAMES.values()), key='pay_nodes')
+        pay_choice = {'付款方式': plan, '质保方式': mode,
+                      '付款节点': [PAY_NAME_TO_ID[x] for x in st.session_state.get('pay_nodes', [])]}
+        nodes, _ = payment.payment_nodes(lib, opts['付款方式'], plan, {}, pay_choice)
+        st.caption('付款顺序：' + ' → '.join(payment.pay_node(lib, n)['名称'] for n in nodes) if nodes else '请选择付款节点')
+        _opt_docs = payment.pay_optional_docs(lib, nodes)
+        if _opt_docs:
+            _dl = {t[:70]: d for d, t in _opt_docs}
+            if '_pending_docs' in st.session_state:
+                _ids = st.session_state.pop('_pending_docs'); st.session_state['pay_docs'] = [l for l, d in _dl.items() if d in _ids]
+            st.session_state['pay_docs'] = [x for x in st.session_state.get('pay_docs', []) if x in _dl]
+            st.multiselect('加入的可选单据（母本中标为“可选/Optional”的单据）', list(_dl), key='pay_docs')
+            pay_choice['付款可选单据'] = [_dl[x] for x in st.session_state['pay_docs']]
+        pay_fields = [f for f in payment.pay_fields(lib, opts['付款方式'], plan, pay_choice) if f in V] if nodes else []
+        PAY_LABEL = {'预付款比例': '预付款（%）', '进度款比例': '进度款（%）', '发货款比例': '发货款（%）', '到货款比例': '到货款（%）',
+                     '调试款比例': '调试款（%）', '质保比例': '质保函 / 质保金（%）',
+                     '付款天数': '收到单据后付款天数', '完工文件_原件份数': '完工文件原件份数', '完工文件_电子份数': '完工文件电子版份数',
+                     '预付款_文件数': '预付款前需收到的文件数', '预付款_天数': '收到文件后支付预付款的天数',
+                     '进度款_主材名称': '进度款：主要材料或构件名称', '信用证_开证提前天数': '信用证：装运前开证天数',
+                     '质保金_释放天数': '质保金：申请后释放天数', **SETTINGS['表单标签']}
+        cols = st.columns(3)
+        for i, f in enumerate(pay_fields):
+            if key(f) not in st.session_state and V[f].get('默认值') not in (None, ''):
+                st.session_state[key(f)] = str(V[f]['默认值'])
+            cols[i % 3].text_input(PAY_LABEL.get(f, f), key=key(f), placeholder=V[f].get('说明') or '')
+        if BOND_ATOM:
+            if 'bond' not in st.session_state: st.session_state['bond'] = True
+            b1, b2 = st.columns([1, 2])
+            b1.checkbox('本合同需要履约保函', key='bond', help='不勾选时，履约保函条款仍保留在合同中并标注不适用')
+            if st.session_state['bond']:
+                field(b2, BOND); pay_fields.append(BOND)
+            else:
+                b2.caption('履约保函条款保留，标注“不适用”，比例写 N/A。')
+        st.session_state['_pay'] = (pay_choice, pay_fields, nodes)
+        nums, bad_num = [], False
+        for n in nodes:
+            sv = st.session_state.get(key(payment.pay_node(lib, n)['比例变量']), '').strip()
+            if sv:
+                try: nums.append(float(sv))
+                except ValueError: bad_num = True
+        if nums and not bad_num:
+            tot = sum(nums)
+            parts = ' + '.join(payment.pay_node(lib, n)['名称'].split('（')[0] for n in nodes)
+            (st.success if abs(tot - 100) < 1e-6 else st.warning)(
+                f'{parts} = {tot:g}%' + ('' if abs(tot - 100) < 1e-6 else '，不等于 100%'))
 
 with tabs[1]:
     st.caption('不改动则使用模板默认写法。')
@@ -359,9 +392,9 @@ def collect():
     for n in order:
         v = str(st.session_state.get(key(n), '')).strip()
         if v: vals[n] = v
-    sel = {'付款方式': pay_choice['付款方式'], '质保方式': pay_choice['质保方式']}
+    sel = {k: pay_choice[k] for k in ('付款方式', '质保方式') if k in pay_choice}
     if pay_choice.get('付款可选单据'): sel['付款可选单据'] = pay_choice['付款可选单据']
-    if pay_choice['付款方式'] == '自定义': sel['付款节点'] = pay_choice['付款节点']
+    if pay_choice.get('付款方式') == '自定义': sel['付款节点'] = pay_choice['付款节点']
     for name in option_vars:
         sid = LABEL_TO_ID[name].get(st.session_state.get('o::' + name))
         if sid: sel[name] = sid
@@ -371,13 +404,14 @@ def collect():
             if v: vals[k] = v
     if st.session_state.get(key('增值税率')) not in (None, AUTO):
         vals['增值税率'] = st.session_state[key('增值税率')]
-    vals['有技术协议'] = '是' if st.session_state.get('ta', True) else '否'
+    if '技术协议' not in HIDE: vals['有技术协议'] = '是' if st.session_state.get('ta', True) else '否'
     cfg = {'合同类型': CT, '买方主体': st.session_state.get('entity'),
            '条件': [c for c in conditions if st.session_state.get('c::' + c)],
            '选项': sel, '变量': vals}
     na = [NA_LABEL[x] for x in st.session_state.get('na', []) if x in NA_LABEL]
     if BOND_ATOM and not st.session_state.get('bond', True): na.append(BOND_ATOM)
     if na: cfg['不适用'] = sorted(na, key=ALL_ORDER.index)
+    if GOODS: cfg['货物'] = st.session_state.get('_goods') or []
     if lib.annexes:
         cfg['附件'] = {a: (annexes.HAVE if st.session_state.get('ax::' + a, True) else annexes.HAVE_NOT)
                      for a in lib.annexes if not annexes.follows(lib, a)}
@@ -389,10 +423,11 @@ cfg = collect()
 pay_req = [payment.pay_node(lib, n)['比例变量'] for n in st.session_state['_pay'][2]] + ([BOND] if BOND_ATOM and st.session_state.get('bond', True) else [])
 _custom = ['质保期_自定义', '质保期_自定义_en'] if cfg['选项'].get('质保期') == '自定义' else []
 anx_req = [n for n in st.session_state.get('_anx', []) if V[n].get('默认值') in (None, '')]
-miss = [k for k in required + pay_req + _custom + anx_req + [x for x in st.session_state.get('_extra', []) if x != '币种'] if k not in cfg['变量']] + \
+goods_req = ['货物明细'] if GOODS and not cfg.get('货物') else []
+miss = goods_req + [k for k in required + pay_req + _custom + anx_req + [x for x in st.session_state.get('_extra', []) if x != '币种'] if k not in cfg['变量']] + \
        [k + '_en' for k in required if k + '_en' in V and k + '_en' not in cfg['变量']]
 bad = [n for n, s in cfg['选项'].items() if n in option_vars and opts[n]['选项'][s].get('状态') == '待补']
-if not st.session_state['_pay'][2]: bad.append('付款节点')
+if SHOW_PAY and not st.session_state['_pay'][2]: bad.append('付款节点')
 c1, c2 = st.columns([1, 3])
 go = c1.button('生成合同', type='primary', disabled=bool(bad))
 c2.write(f'必填项还有 **{len(miss)}** 项未填' + ('，生成后会在 Word 中标黄。' if miss else '。'))

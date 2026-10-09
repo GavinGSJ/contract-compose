@@ -14,11 +14,13 @@ def lib_copy(tmp_path, monkeypatch):
     from contract_compose import paths
     lib = tmp_path / 'library'
     shutil.copytree(paths.LIBRARY, lib, ignore=shutil.ignore_patterns('*.docx', 'reference', 'backups'))
-    for t in ('FA', 'PO'):                                   # 样式模板要保留
-        shutil.copytree(os.path.join(paths.type_dir(t), 'templates'), lib / t / 'templates', dirs_exist_ok=True)
+    for t in os.listdir(paths.LIBRARY):                      # 样式模板要保留
+        if os.path.isdir(os.path.join(paths.type_dir(t), 'templates')):
+            shutil.copytree(os.path.join(paths.type_dir(t), 'templates'), lib / t / 'templates', dirs_exist_ok=True)
     monkeypatch.setattr(paths, 'LIBRARY', str(lib))
     monkeypatch.setattr(paths, 'COMMON', str(lib / 'common'))
     monkeypatch.setattr(paths, 'PRESETS', str(lib / 'common' / 'presets'))
     monkeypatch.setattr(paths, 'PRESET_BACKUPS', str(tmp_path / 'backups'))
     monkeypatch.setattr(paths, 'CONTENT_BACKUPS', str(tmp_path / 'content_backups'))
+    monkeypatch.setattr('contract_compose.snapshots.SNAP', str(tmp_path / 'snapshots'))   # 保存条款时更新的快照也写到临时目录
     return lib

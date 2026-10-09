@@ -50,7 +50,11 @@ def test_generate_from_saved_config(tmp_path, monkeypatch):
         assert any('已生成' in s.value for s in at.success)
     assert len(glob.glob(str(out_dir / '*.docx'))) >= 2
     saved = [p for p in glob.glob(str(cfg_dir / '*.yaml')) if open(p, encoding='utf-8').read().startswith('# 由表单保存')]
-    assert sorted(yaml.safe_load(open(p, encoding='utf-8'))['合同类型'] for p in saved) == ['FA', 'PO']
+    cfgs = sorted((yaml.safe_load(open(p, encoding='utf-8')) for p in saved), key=lambda c: c['合同类型'])
+    assert [c['合同类型'] for c in cfgs] == ['FA', 'PO', 'S416']
+    s416 = cfgs[2]                                       # 货物明细逐行保存；没有付款方式、技术协议
+    assert [g['产品名称'] for g in s416['货物']] == ['货油泵', '压载泵']
+    assert '付款方式' not in s416['选项'] and '有技术协议' not in s416['变量'] and s416['选项']['物资类别'] == '设备'
 
 
 def test_presets_page():
