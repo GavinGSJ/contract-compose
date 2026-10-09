@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-合同生成工具：按 配方 × 原子 × 样式模板 × 变量/选项 组装 Word 合同（FA 框架合同、PO 实采合同）。用户主要通过 AI 维护本项目，用户本人只“说要什么”和“拍板”。
+合同生成工具：按 配方 × 原子 × 样式模板 × 变量/选项 组装 Word 合同（FA 框架合同、PO 实采合同、S416 VLCC 采购订单）。用户主要通过 AI 维护本项目，用户本人只“说要什么”和“拍板”。
 
 ## 必读
 - 架构、代码模块、维护约定：`docs/架构.md`
@@ -14,8 +14,8 @@ pip install -r requirements-dev.txt
 python -m pytest tests                          # 每次改动后必跑
 python tests/test_regression.py --update        # 仅在有意改变生成结果时更新快照
 python -m contract_compose configs/<配置>.yaml   # 生成合同 → output/
-python -m contract_compose --母本 FA|PO          # 默认值组装，与母本比对
-python -m contract_compose --标注 FA|PO          # 变量标注版
+python -m contract_compose --母本 FA|PO|S416     # 默认值组装，与母本比对
+python -m contract_compose --标注 FA|PO|S416     # 变量标注版
 python -m contract_compose.atom_index           # 增删原子后更新 原子总览.md
 ```
 

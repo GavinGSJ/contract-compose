@@ -114,10 +114,12 @@ class Writer:
                 self.list_num = self.new_num() if self.groups > 1 else None
             if kind == 'N1': num = (self.list_num or '1', '5')       # 数字列项 1) 2)：显式编号
             elif self.list_num: num = (self.list_num, '3')
-        elif kind == 'L2' and self.list_num:
-            num = (self.list_num, '4')
-        elif kind == 'N2':
-            num = (self.list_num or '1', '6')
+        elif kind in ('L2', 'N2'):
+            if self.prev not in ('L1', 'L2', 'N1', 'N2', 'CONT'):      # 直接以二级列项开头的一组：重新编号
+                self.groups += 1
+                self.list_num = self.new_num() if self.groups > 1 else None
+            if kind == 'N2': num = (self.list_num or '1', '6')
+            elif self.list_num: num = (self.list_num, '4')
         self.para(style, text.strip(), num)
         self.prev = kind
 
@@ -134,7 +136,8 @@ class Writer:
         for e in root:
             e = copy.deepcopy(e); strip_ids(e)
             if e.tag == qn('w:tbl'):
-                tpl = e.findall(qn('w:tr'))[-1]
+                trs = e.findall(qn('w:tr'))                         # 行模板：含 {{行.…}} 的行，否则为最后一行
+                tpl = next((tr for tr in trs if '{{行.' in ''.join(t.text or '' for t in tr.iter(qn('w:t')))), trs[-1])
                 for row in rows:
                     tr = copy.deepcopy(tpl)
                     for t in tr.iter(qn('w:t')):

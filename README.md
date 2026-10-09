@@ -1,4 +1,4 @@
-# 合同生成工具（FA 框架合同 / PO 实采合同）
+# 合同生成工具（FA 框架合同 / PO 实采合同 / S416 采购订单）
 
 > 目标：合同里只填少数几个变量，其余全部按公司模板自动生成。
 
@@ -28,7 +28,7 @@ python -m pytest tests                                    # 回归测试（先 p
 
 | 路径 | 内容 |
 |---|---|
-| `library/` | 内容库：`common/` 共用（变量字典、付款条款库、选项库、预存库），`FA/`、`PO/` 各类型（`type.yaml`、`recipe.yaml`、`atoms/`、`annexes/` 附件、`templates/`…） |
+| `library/` | 内容库：`common/` 共用（变量字典、付款条款库、选项库、预存库），`FA/`、`PO/`、`S416/` 各类型（`type.yaml`、`recipe.yaml`、`atoms/`、`annexes/` 附件、`templates/`…） |
 | `contract_compose/` | 组装引擎（Python 包） |
 | `ui/`、`app.py` | 表单页面：合同生成、预存信息管理、条款维护 |
 | `configs/`、`output/` | 合同配置；生成的合同 |

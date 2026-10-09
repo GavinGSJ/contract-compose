@@ -7,6 +7,7 @@ import yaml
 from . import paths
 from .options import merge_preset_options
 from .presets import load_presets
+from .constants import NA_MARK
 
 
 @dataclass
@@ -48,7 +49,8 @@ def list_types():
     return sorted(d for d in os.listdir(paths.LIBRARY) if os.path.exists(os.path.join(paths.LIBRARY, d, paths.TYPE_FILE)))
 
 
-TYPE_DEFAULTS = {'说明': '', '编号起始': 1, '付款条款': [], '履约保函条款': None, '表单标签': {}}
+TYPE_DEFAULTS = {'说明': '', '编号起始': 1, '付款条款': [], '履约保函条款': None, '表单标签': {}, '表单隐藏': [],
+                 '不适用标注': NA_MARK, '货物明细': False}
 
 
 def load_type(ctype):
@@ -63,6 +65,7 @@ def load_type(ctype):
     s['代码'] = ctype
     s['付款条款'] = list(s['付款条款'] or [])
     s['表单标签'] = dict(s['表单标签'] or {})
+    s['表单隐藏'] = list(s['表单隐藏'] or [])
     return s
 
 

@@ -22,7 +22,7 @@ def _add_type(x, src, new):
 
 
 def test_types_discovered():
-    assert list_types() == ['FA', 'PO']
+    assert list_types() == ['FA', 'PO', 'S416']
     assert load_type('PO')['编号起始'] == 0 and load_type('FA')['履约保函条款'] == 'PRI-06'
 
 
@@ -32,7 +32,7 @@ def test_new_type_without_code_change(lib_copy):
     for p in [lib_copy / 'common' / paths.PAYMENT_TERMS] + list((lib_copy / 'common' / paths.OPTIONS).glob('*.yaml')):
         d = yaml.safe_load(open(p, encoding='utf-8'))
         yaml.safe_dump(_add_type(d, 'FA', 'XX'), open(p, 'w', encoding='utf-8'), allow_unicode=True, sort_keys=False)
-    assert list_types() == ['FA', 'PO', 'XX']
+    assert list_types() == ['FA', 'PO', 'S416', 'XX']
     cfg = yaml.safe_load(open(CFG, encoding='utf-8'))
     fa = dump(build({**cfg, '合同类型': 'FA'}))
     xx = dump(build({**cfg, '合同类型': 'XX'}))
@@ -43,4 +43,4 @@ def test_missing_type_is_clear_error(lib_copy):
     with pytest.raises(SystemExit, match='没有合同类型'):
         build({'合同类型': 'NOPE'})
     os.remove(lib_copy / 'PO' / paths.TYPE_FILE)              # 去掉 type.yaml 即不再是合同类型
-    assert list_types() == ['FA']
+    assert list_types() == ['FA', 'S416']
