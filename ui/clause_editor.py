@@ -25,7 +25,7 @@ def k(*parts):
 
 
 def reset(ctype, kind, aid):
-    for x in ('body', 'name', 'reason'):
+    for x in ('body', 'name', 'name_en', 'reason'):
         ss.pop(k(x, ctype, kind, aid), None)
 
 
@@ -47,7 +47,8 @@ def reason(ctype, kind, aid):
 # ---------------- 回调 ----------------
 def do_save(ctype, kind, aid):
     res = mt.save(load_library(ctype), kind, aid, ss.get(k('body', ctype, kind, aid), ''),
-                  name=ss.get(k('name', ctype, kind, aid), '').strip() or None, reason=ss.get(k('reason', ctype, kind, aid), ''))
+                  name=ss.get(k('name', ctype, kind, aid), '').strip() or None, reason=ss.get(k('reason', ctype, kind, aid), ''),
+                  name_en=ss.get(k('name_en', ctype, kind, aid)) if kind == '附件' else None)
     if res['ok']: reset(ctype, kind, aid)
     finish(res, ctype, kind, success='已保存，旧版本已备份')
 
@@ -99,7 +100,7 @@ def do_default(ctype, aid):
 
 def do_add_annex(ctype, aid):
     res = sc.add_annex(load_library(ctype), aid, ss.get(k('axname', ctype), ''), ss.get(k('axname_en', ctype), ''),
-                       typ=ss.get(k('axtype', ctype), '正文'), default=ss.get(k('axdefault', ctype), '有'),
+                       typ=ss.get(k('axtype', ctype), '文件'), default=ss.get(k('axdefault', ctype), '有'),
                        body=ss.get(k('axbody', ctype), ''), reason=reason(ctype, '附件', aid))
     if res['ok']:
         for x in ('axname', 'axname_en', 'axbody'): ss.pop(k(x, ctype), None)
@@ -224,6 +225,9 @@ with right:
     bk, nk, rk = k('body', ctype, kind, aid), k('name', ctype, kind, aid), k('reason', ctype, kind, aid)
     if bk not in ss: ss[bk] = r['body']
     if nk not in ss: ss[nk] = r['name']
+    ek = k('name_en', ctype, kind, aid)
+    cur_en = (lib.annexes[aid]['meta'].get('名称_en') or '') if kind == '附件' else ''
+    if kind == '附件' and ek not in ss: ss[ek] = cur_en
     t_edit, t_view, t_struct, t_var, t_hist = st.tabs(['修改', '预览', '结构', '改成变量', '历史版本'])
 
     with t_edit:
@@ -232,6 +236,8 @@ with right:
         if unused:
             st.warning('这条条款目前不在合同中（已移除）。可在“结构”中放回。')
         st.text_input('名称（列表、修订记录中显示；附件名称会出现在目录和清单表中）', key=nk)
+        if kind == '附件':
+            st.text_input('英文名称（可不填；中文合同不显示）', key=ek)
         if not is_pdf:
             st.text_area('正文', key=bk, height=380, help='行首标记决定 Word 样式，{{…}} 为变量 / 引用，见下方“写法说明”')
         with st.expander('写法说明'):
@@ -242,7 +248,8 @@ with right:
                 '`{{附件:附件ID}}` 引用附件编号（附件五），`{{附件_en:附件ID}}`（Annex 5）\n'
                 '- `**加粗**`、`<u>下划线</u>`；空行只用于分段，不会在合同中留空行')
         new_body, new_name = ss.get(bk, r['body']), ss.get(nk, r['name']).strip()
-        changed = new_body.replace('\r\n', '\n').strip('\n') != r['body'].strip('\n') or new_name != r['name']
+        new_en = ss.get(ek, cur_en).strip() if kind == '附件' else ''
+        changed = new_body.replace('\r\n', '\n').strip('\n') != r['body'].strip('\n') or new_name != r['name'] or new_en != cur_en
         if not changed:
             st.caption('尚未修改。')
         else:
@@ -252,6 +259,8 @@ with right:
                 d = mt.diff_html(r['body'], new_body)
                 if new_name != r['name']:
                     d = f'<p>名称：<del style="background:#fde2e2">{r["name"]}</del> → <ins style="background:#dcfce7;text-decoration:none">{new_name}</ins></p>' + d
+                if new_en != cur_en:
+                    d = f'<p>英文名称：<del style="background:#fde2e2">{cur_en}</del> → <ins style="background:#dcfce7;text-decoration:none">{new_en}</ins></p>' + d
                 st.markdown(d or '（只有空行变化）', unsafe_allow_html=True)
             for e in errors: st.error(e)
             for w in warns: st.warning(w)
@@ -319,11 +328,11 @@ with right:
             st.markdown(f'**在 {r["no"]} 之后新增附件**')
             a1, a2 = st.columns(2)
             a1.text_input('中文名称', key=k('axname', ctype))
-            a2.text_input('英文名称', key=k('axname_en', ctype))
+            a2.text_input('英文名称（可不填）', key=k('axname_en', ctype))
             a3, a4 = st.columns(2)
-            a3.radio('类型', ['正文', '文件'], key=k('axtype', ctype), horizontal=True, help='文件：PDF 等单独的文件，只在清单表打钩')
+            a3.radio('类型', ['文件', '正文'], key=k('axtype', ctype), horizontal=True, help='文件：PDF 等单独的文件，只在附件清单中列出；正文：附件内容生成在合同中')
             a4.radio('默认', ['有', '无'], key=k('axdefault', ctype), horizontal=True)
-            if ss.get(k('axtype', ctype), '正文') == '正文':
+            if ss.get(k('axtype', ctype), '文件') == '正文':
                 st.text_area('正文（可留空，新增后再写）', key=k('axbody', ctype), height=120)
             st.button('新增附件', type='primary', on_click=do_add_annex, args=(ctype, aid))
             st.divider()

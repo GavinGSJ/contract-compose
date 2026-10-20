@@ -39,6 +39,7 @@ def test_generate_from_saved_config(tmp_path, monkeypatch):
     from contract_compose import paths
     cfg_dir, out_dir = tmp_path / 'configs', tmp_path / 'output'
     shutil.copytree(paths.CONFIGS, cfg_dir)
+    shutil.copy(os.path.join(ROOT, 'tests', 'cases', 'S416_材料.yaml'), cfg_dir / '测试_S416_材料.yaml')     # 材料类：含重量列、另加附件等
     monkeypatch.setattr(paths, 'CONFIGS', str(cfg_dir))
     monkeypatch.setattr(paths, 'OUTPUT', str(out_dir))
     at = _run(AppTest.from_file(APP))
@@ -51,10 +52,16 @@ def test_generate_from_saved_config(tmp_path, monkeypatch):
     assert len(glob.glob(str(out_dir / '*.docx'))) >= 2
     saved = [p for p in glob.glob(str(cfg_dir / '*.yaml')) if open(p, encoding='utf-8').read().startswith('# 由表单保存')]
     cfgs = sorted((yaml.safe_load(open(p, encoding='utf-8')) for p in saved), key=lambda c: c['合同类型'])
-    assert [c['合同类型'] for c in cfgs] == ['FA', 'PO', 'S416']
-    s416 = cfgs[2]                                       # 货物明细逐行保存；没有付款方式、技术协议
-    assert [g['产品名称'] for g in s416['货物']] == ['货油泵', '压载泵']
-    assert '付款方式' not in s416['选项'] and '有技术协议' not in s416['变量'] and s416['选项']['物资类别'] == '设备'
+    assert [c['合同类型'] for c in cfgs] == ['FA', 'PO', 'S416', 'S416']
+    mat, eq = sorted(cfgs[2:], key=lambda c: c['选项']['物资类别'])    # 材料、设备（按字符顺序）
+    assert [g['产品名称'] for g in eq['货物']] == ['货油泵', '压载泵'] and [g['数量'] for g in eq['货物']] == ['2', '3']
+    assert '付款方式' not in eq['选项'] and '有技术协议' not in eq['变量'] and eq['选项']['付款方案'] == '预付款+到货款+调试款'
+    assert eq['选项']['交货期方式'] == '天数+最晚日期' and eq['变量']['交货期数量'] == '180' and eq['变量']['交货日期'] == '2027年3月31日'
+    assert mat['货物'][0]['重量'] == '84000' and mat['货物'][0]['总金额'] == '672003.50'       # 重量列、手填总金额保留
+    assert mat['选项']['付款方案'] == '到货款一次付清' and mat['选项']['交货期单位'] == '周' and mat['变量']['交货期数量'] == '6'
+    assert mat['变量']['到货款比例'] == '100' and '预付款比例' not in mat['变量']           # 到货款一次付清：只有到货款比例
+    assert mat['自定义附件'] == [{'名称': '技术协议（签字盖章版）', '名称_en': 'Technical Agreement (Signed and Sealed)'}]
+    assert mat['附件']['ANX-NDA'] == '无' and mat['附件']['ANX-MINUTES'] == '有'
 
 
 def test_presets_page():
@@ -172,3 +179,34 @@ def test_editor_annex_order(lib_copy, tmp_path, monkeypatch):
     _click(at, '⬇ 下移')
     assert list(load_library('FA').annexes)[9] == 'ANX-RETURN'
     assert at.radio(key='ed::sel::FA::附件').value == 'ANX-RETURN'
+
+
+def test_s416_form_blocks(tmp_path, monkeypatch):
+    """S416 表单：付款方案、交货期随选项显示变量；切换写法时未改动的比例换成新写法的初始值；生成后配置正确"""
+    import glob, yaml
+    from contract_compose import paths
+    monkeypatch.setattr(paths, 'CONFIGS', str(tmp_path / 'configs'))
+    monkeypatch.setattr(paths, 'OUTPUT', str(tmp_path / 'output'))
+    (tmp_path / 'configs').mkdir()
+    at = _run(AppTest.from_file(APP))
+    at.selectbox(key='ctype').set_value('S416'); _run(at)
+    keys = lambda: {t.key for t in at.text_input}
+    pay = lambda n: next(o for o in at.radio(key='o::付款方案').options if o.replace(' ', '') == n)
+    assert at.radio(key='o::物资类别').value == '设备类'
+    assert at.text_input(key='v::到货款比例').value == '50' and 'v::调试款比例' in keys()
+    at.radio(key='o::付款方案').set_value(pay('到货款一次付清')); _run(at)
+    assert at.text_input(key='v::到货款比例').value == '100'
+    assert 'v::预付款比例' not in keys() and 'v::调试款比例' not in keys()
+    at.radio(key='o::付款方案').set_value(pay('预付款+到货款')); _run(at)
+    assert at.text_input(key='v::到货款比例').value == '90' and at.text_input(key='v::预付款比例').value == '10'
+    assert 'v::交货期数量' not in keys()                                   # 默认“最晚日期”：不显示天数
+    at.radio(key='o::交货期方式').set_value('起算后 N 天（周、月）内，且最晚日期'); _run(at)
+    assert {'v::交货期数量', 'v::交货期起算', 'v::交货日期'} <= keys()
+    assert at.selectbox(key='o::交货期单位').options == ['天', '周', '月', '工作日']
+    at.selectbox(key='o::交货期单位').set_value('周'); at.text_input(key='v::交货期数量').input('6'); _run(at)
+    at.text_input(key='v::交货日期').input('2026年11月25日'); _run(at)
+    at.button[0].click(); _run(at)
+    cfg = yaml.safe_load(open(glob.glob(str(tmp_path / 'configs' / '*.yaml'))[0], encoding='utf-8'))
+    assert cfg['选项']['付款方案'] == '预付款+到货款' and cfg['选项']['交货期方式'] == '天数+最晚日期' and cfg['选项']['交货期单位'] == '周'
+    assert cfg['变量']['到货款比例'] == '90' and cfg['变量']['交货期数量'] == '6' and '调试款比例' not in cfg['变量']
+    assert cfg['变量']['交货日期'] == '2026年11月25日' and cfg['变量']['交货期起算'] == '收到中标通知书后'

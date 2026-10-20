@@ -36,23 +36,35 @@ def numbering(atoms, order, start=1):
 
 
 # 段落级条件：行首写 <仅当 选项名=取值>，选项不符时该段保留并在开头标注不适用（如设备类合同才适用的段落）
-COND = re.compile(r'^<仅当 ([^=>]+)=([^>]+)> ?')
+COND = re.compile(r'^<仅当 ([^=>]+)=([^>]+)> ?')          # 值可写“甲|乙”表示任一
+NA_LINE = '\u0004'                                        # 内部标记：不适用的段落（其中的“N/A%”写成“N/A”）
 LEAD = re.compile(r'^(### |## |# |  - |  \+ |- |\+ |<顶格> |<居中> |    |  )?')
 
 
+GOODS_COLS = ['产品名称', '规格型号', '数量', '单位', '重量', '单价', '总金额', '备注']       # 货物明细的列（重量为可选列）
+
+
 def goods_rows(rows):
-    """多行货物表：[{产品名称, 规格型号, 单位, 数量, 单价, 总金额, 备注}] → (表格行, 单价合计, 总金额合计)。
-    总金额未填时按 单价 × 数量（数量未填按 1）计算"""
-    out, tp, ta = [], 0, 0
+    """多行货物表：[{产品名称, 规格型号, 数量, 单位, 重量, 单价, 总金额, 备注}] → (表格行, 总金额合计)。
+    总金额未填时按 单价 × 数量 计算（数量未填按 1）；数量、重量按填写的原样显示"""
+    out, ta = [], 0
     for i, r in enumerate(rows or [], 1):
         price, qty, amt = parse_amount(r.get('单价')), parse_amount(r.get('数量')), parse_amount(r.get('总金额'))
         if amt is None and price is not None:
             amt = price * (qty if qty is not None else 1)
-        tp += price or 0; ta += amt or 0
-        out.append({'行.序号': str(i), '行.产品名称': str(r.get('产品名称') or ''), '行.规格型号': str(r.get('规格型号') or ''),
-                    '行.单位': str(r.get('单位') or ''), '行.单价': fmt_money(price, '') if price is not None else '',
-                    '行.总金额': fmt_money(amt, '') if amt is not None else '', '行.备注': str(r.get('备注') or '')})
-    return out, tp, ta
+        ta += amt or 0
+        row = {'行.序号': str(i), '行.单价': fmt_money(price, '') if price is not None else '',
+               '行.总金额': fmt_money(amt, '') if amt is not None else ''}
+        for c in ('产品名称', '规格型号', '数量', '单位', '重量', '备注'):
+            row['行.' + c] = str(r.get(c) or '').strip()
+        out.append(row)
+    return out, ta
+
+
+def matches(chosen, want):
+    """选项取值是否符合条件：want 可以是单个值、“甲|乙”（任一）或列表"""
+    wants = want if isinstance(want, (list, tuple)) else str(want).split('|')
+    return chosen in [str(w).strip() for w in wants]
 
 
 def build(cfg, regress=False, keep=None, mark_vars=False):
@@ -61,6 +73,11 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
     regress：用母本值/默认值组装（与母本比对）；mark_vars：变量标注版（所有变量黄色标出变量名）
     返回 (doc, used 选用的写法, missing 未填变量, order 原子顺序, shown 标注不适用的原子)"""
     lib = load_library(cfg.get('合同类型'))
+    for i, a in enumerate(cfg.get('自定义附件') or [], 1):      # 本合同另加的附件（只在附件列表 / 清单中出现，文件另附）
+        if str(a.get('名称') or '').strip():
+            aid = f'ANX-X{i}'
+            lib.annexes[aid] = {'meta': {'id': aid, '名称': str(a['名称']).strip(), '名称_en': str(a.get('名称_en') or '').strip(),
+                                         '类型': '文件', '默认': '有'}, 'body': '', 'file': None}
     atoms, opts, V, recipe, entities = lib.atoms, lib.opts, lib.V, lib.recipe, lib.entities
     settings = lib.settings
     label = LABEL_ANNOTATE if mark_vars else LABEL_MISSING
@@ -72,13 +89,20 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         for k, v in entities[ent].items(): values.setdefault(k, v)
     goods = []
     if settings.get('货物明细'):                       # 多行货物表：含税总价 = 各行总金额之和
-        goods, tp, ta = goods_rows(cfg.get('货物'))
+        goods, ta = goods_rows(cfg.get('货物'))
         if goods:
-            values['含税总价'] = str(ta)
-            values['价款_单价合计'] = fmt_money(tp, ''); values['价款_合计'] = fmt_money(ta, '')
+            values['含税总价'] = str(ta); values['价款_合计'] = fmt_money(ta, '')
+            values['价格表样式'] = '含重量' if any(g['行.重量'] for g in goods) else '标准'     # 填了重量才出现重量列
+            units = {g['行.单位'] for g in goods}
+            if not values.get('计价单位') and len(units) == 1 and units != {''}:       # 单价单位：未填时取货物明细的单位
+                values['计价单位'] = units.pop()
     if regress: values = {}
     else: values.update(derive_values(values))
     choices = cfg.get('选项') or {}
+    for name, o in opts.items():                      # 选项的预设变量：该写法带出的变量值（如 付款方案 → 各节点比例），明确给出的值优先
+        if any(v.get('预设变量') for v in o['选项'].values()):
+            for var, val in (o['选项'][choose(name, o, values, choices)].get('预设变量') or {}).items():
+                values.setdefault(var, str(val))
     conds = set(cfg.get('条件') or [])
     # 所有条款一律保留；条件不成立或列入“不适用”的条款标注不适用（付款条款除外）
     order = [it['原子'] for it in recipe['顺序'] if '原子' in it]
@@ -91,14 +115,14 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
             for k, v in (it.get('仅当选项') or {}).items():
                 if k in opts:
                     cond_used.add(k)
-                    if choose(k, opts[k], values, choices) != str(v):
+                    if not matches(choose(k, opts[k], values, choices), v):
                         na.add(it['原子'])
     na -= set(settings['付款条款'])
     chap = {a['meta']['章']: aid for aid, a in atoms.items() if a['meta']['层级'] == '章'}
     inherit = {aid for aid in order if chap.get(atoms[aid]['meta']['章']) in na}   # 整章不适用
     refs = numbering(atoms, order, settings['编号起始'])
-    anums = annexes.numbers(lib)
     ast = annexes.states(lib, values, None if regress else cfg.get('附件'))   # {附件ID: 有/无}
+    anums = annexes.numbers(lib, ast)
     used, missing = {}, set()
     na_mark = settings['不适用标注']
 
@@ -111,15 +135,17 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
                 k, v = m.group(1).strip(), m.group(2).strip()
                 line = line[m.end():]
                 if k in opts: cond_used.add(k)
-                if k in opts and choose(k, opts[k], values, choices) != v:
+                if k in opts and not matches(choose(k, opts[k], values, choices), v):
                     lead = LEAD.match(line).group(1) or ''
-                    line = lead + na_mark + line[len(lead):]
+                    line = NA_LINE + lead + na_mark + line[len(lead):]
             out.append(line)
         return '\n'.join(out)
 
     def fill(text, is_na=False):
-        t = annexes.replace_refs(lib, text, anums)
-        t = expand_options(lib, t, values, choices, used)
+        t = annexes.replace_refs(lib, text, anums, ast)
+        for _ in range(3):                             # 选项文字中还可以再用选项（如 交货期方式 中的 交货期单位）
+            t = expand_options(lib, t, values, choices, used)
+            if '{{选项' not in t: break
         t = resolve_values(t, V, values, missing, regress, keep, is_na, mark_vars)
         t = resolve_values(t, V, values, missing, regress, keep, is_na, mark_vars)   # 计算变量中嵌套的 {{变量}}
         return re.sub(r'\{\{ref:([^}]+)\}\}', lambda m: refs[m.group(1)], t)
@@ -139,7 +165,11 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         return first + ('\n' + rest if rest else '')
 
     w = Writer(os.path.join(lib.dir, settings['样式模板']), label)
-    rendered = [(aid, mark(aid, fill(conditions(atoms[aid]['body']), aid in na or aid in inherit))) for aid in order]
+    def plain(t):
+        """不适用的段落（conditions 标记）：其中的“N/A%”写成“N/A”；去掉内部标记"""
+        return '\n'.join(l[1:].replace('N/A%', 'N/A') if l.startswith(NA_LINE) else l for l in t.split('\n'))
+
+    rendered = [(aid, mark(aid, plain(fill(conditions(atoms[aid]['body']), aid in na or aid in inherit)))) for aid in order]
     body_of = dict(rendered)
 
     def write_lines(text):
@@ -190,7 +220,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
             w.para('合同-正文（顶格）', fill(sec['清单说明']))
         if sec.get('清单表'):
             rows = [{'附件序号': annexes.label(lib, a, nums=anums), '附件名称': lib.annexes[a]['meta']['名称'],
-                     '附件名称_en': lib.annexes[a]['meta']['名称_en'], '附件提供': annexes.checkbox(ast[a])}
+                     '附件名称_en': lib.annexes[a]['meta'].get('名称_en') or '', '附件提供': annexes.checkbox(ast[a])}
                     for a in lib.annexes]
             w.table_rows(os.path.join(lib.dir, paths.TABLES, sec['清单表'] + '.xml'), rows, fill_e)
         w.plain = '合同-正文（顶格）'
@@ -206,7 +236,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
     for rel in w.doc.part.rels.values():
         if rel.reltype.endswith(('/header', '/footer')):
             fill_e(rel.target_part.element)
-    for k in cond_used:                                # 段落条件、“仅当选项”用到的选项也写入报告（放在最后，不改变已有顺序）
+    for k in sorted(cond_used):                                # 段落条件、“仅当选项”用到的选项也写入报告（放在最后，不改变已有顺序）
         used.setdefault(k, choose(k, opts[k], values, choices))
     shown = [a for a in order if a in na and not (a in inherit and atoms[a]['meta']['层级'] != '章')]
     return w.doc, used, missing, order, shown

@@ -21,9 +21,11 @@ REF = re.compile(r'\{\{(附件|附件_en|附件号):([^}]+)\}\}')
 HAVE, HAVE_NOT = '有', '无'
 
 
-def numbers(lib):
-    """{附件ID: 序号}，从 1 起"""
-    return {aid: i for i, aid in enumerate(lib.annexes, 1)}
+def numbers(lib, st=None):
+    """{附件ID: 序号}，从 1 起。类型设置“附件编号: 仅提供的”时，只给“有”的附件依次编号（st 为 {附件ID: 有/无}），
+    没有编号的附件在引用处写 N/A"""
+    ids = [a for a in lib.annexes if st is None or st.get(a)] if lib.settings.get('附件编号') == '仅提供的' else list(lib.annexes)
+    return {aid: i for i, aid in enumerate(ids, 1)}
 
 
 def cn_no(n):
@@ -31,20 +33,25 @@ def cn_no(n):
 
 
 def label(lib, aid, en=False, nums=None):
-    n = (nums or numbers(lib))[aid]
+    """附件五 / Annex 5；没有编号的附件（不提供，且按提供的附件编号）为空"""
+    n = (nums if nums is not None else numbers(lib)).get(aid)
+    if n is None:
+        return ''
     return f'Annex {n}' if en else f'附件{cn_no(n)}'
 
 
-def replace_refs(lib, text, nums=None):
-    """把 {{附件:ID}}、{{附件_en:ID}}、{{附件号:ID}} 换成实际编号"""
+def replace_refs(lib, text, nums=None, st=None):
+    """把 {{附件:ID}}、{{附件_en:ID}}、{{附件号:ID}} 换成实际编号（没有编号的附件写 N/A）"""
     if '{{附件' not in text:
         return text
-    nums = nums or numbers(lib)
+    nums = nums if nums is not None else numbers(lib, st)
 
     def rep(m):
         kind, aid = m.group(1), m.group(2).strip()
+        if aid not in lib.annexes:
+            raise SystemExit(f'引用的附件“{aid}”不在 library/{lib.ctype} 配方的“附件/顺序”中，已有：{list(lib.annexes)}')
         if aid not in nums:
-            raise SystemExit(f'引用的附件“{aid}”不在 library/{lib.ctype} 配方的“附件/顺序”中，已有：{list(nums)}')
+            return 'N/A'
         n = nums[aid]
         return {'附件': f'附件{cn_no(n)}', '附件_en': f'Annex {n}', '附件号': str(n)}[kind]
     return REF.sub(rep, text)
@@ -85,12 +92,13 @@ def has_body(lib, aid):
 def title(lib, aid, en=False, nums=None):
     """附件一 供货明细表 / Annex 1 Detailed Price List"""
     m = lib.annexes[aid]['meta']
-    return f"{label(lib, aid, en, nums)} {m['名称_en' if en else '名称']}"
+    return f"{label(lib, aid, en, nums)} {m.get('名称_en' if en else '名称') or ''}".strip()
 
 
 def full_title(lib, aid, nums=None):
-    """同一行的中英文标题：附件十 项目特殊条款 Annex 10 Project Special Requirements"""
-    return f'{title(lib, aid, nums=nums)} {title(lib, aid, en=True, nums=nums)}'
+    """同一行的中英文标题：附件十 项目特殊条款 Annex 10 Project Special Requirements（没有英文名称时只有中文）"""
+    en = title(lib, aid, en=True, nums=nums) if lib.annexes[aid]['meta'].get('名称_en') else ''
+    return f'{title(lib, aid, nums=nums)} {en}'.strip()
 
 
 def checkbox(on):
@@ -98,7 +106,8 @@ def checkbox(on):
 
 
 def summary(lib, st):
-    """生成报告用：无的附件"""
+    """生成报告用：无的附件（只给提供的附件编号时写名称）"""
     nums = numbers(lib)
-    off = [label(lib, a, nums=nums) for a, on in st.items() if not on]
+    off = [(label(lib, a, nums=nums) if lib.settings.get('附件编号') != '仅提供的' else lib.annexes[a]['meta']['名称'])
+           for a, on in st.items() if not on]
     return ('不提供：' + '、'.join(off)) if off else '全部提供'

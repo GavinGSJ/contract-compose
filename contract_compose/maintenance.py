@@ -85,6 +85,14 @@ def set_name(fm, name):
     return re.sub(r'(?m)^名称:.*$', lambda m: line, fm, count=1)
 
 
+def set_field(fm, key, value):
+    """改头信息中的一项（没有时追加）"""
+    line = yaml.safe_dump({key: value}, allow_unicode=True, width=10000).strip()
+    if re.search(rf'(?m)^{key}:.*$', fm):
+        return re.sub(rf'(?m)^{key}:.*$', lambda m: line, fm, count=1)
+    return fm.rstrip('\n') + '\n' + line + '\n'
+
+
 # ======================= 检查 =======================
 PH = re.compile(r'\{\{([^}]+)\}\}')
 
@@ -119,7 +127,9 @@ def check(lib, kind, aid, body):
         if m:
             o = lib.opts.get(m.group(1).strip())
             if o is None: errors.append(f'第 {i} 行：选项库中没有“{m.group(1).strip()}”')
-            elif m.group(2).strip() not in o['选项']: errors.append(f'第 {i} 行：“{m.group(1).strip()}”没有取值“{m.group(2).strip()}”')
+            else:
+                for v in m.group(2).split('|'):
+                    if v.strip() not in o['选项']: errors.append(f'第 {i} 行：“{m.group(1).strip()}”没有取值“{v.strip()}”')
         if line.count('**') % 2:
             warns.append(f'第 {i} 行的“**”（加粗）没有成对')
         if line.count('<u>') != line.count('</u>'):
@@ -324,8 +334,8 @@ def stamp(now=None):
     return f'{(now or datetime.datetime.now()):%Y-%m-%d %H:%M}'
 
 
-def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=None):
-    """保存条款 / 附件正文（及名称）。返回 {'ok', 'message', 'backup', 'snapshots'}"""
+def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=None, name_en=None):
+    """保存条款 / 附件正文（及名称；附件还可改英文名称）。返回 {'ok', 'message', 'backup', 'snapshots'}"""
     errors, _ = check(lib, kind, aid, body)
     if errors:
         return {'ok': False, 'message': '；'.join(errors)}
@@ -334,12 +344,17 @@ def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=
     fm, old_body = split_file(old_text)
     old_name = (lib.annexes if kind == '附件' else lib.atoms)[aid]['meta']['名称']
     new_fm = set_name(fm, name) if name and name != old_name else fm
+    old_en = (lib.annexes[aid]['meta'].get('名称_en') or '') if kind == '附件' else ''
+    if kind == '附件' and name_en is not None and name_en.strip() != old_en:
+        new_fm = set_field(new_fm, '名称_en', name_en.strip())
     new_text = join_file(new_fm, body)
     if new_text == old_text:
         return {'ok': False, 'message': '内容没有变化'}
     bak = backup_item(lib, kind, aid, now)
     no = next((r['no'] for r in items(lib, kind) if r['id'] == aid), '')
     extra = f'；名称“{old_name}”改为“{name}”' if name and name != old_name else ''
+    if kind == '附件' and name_en is not None and name_en.strip() != old_en:
+        extra += f'；英文名称“{old_en}”改为“{name_en.strip()}”'
     res = transaction(lib, {p: new_text}, f'- {stamp(now)}　{no} {old_name}（{aid}）：{reason.strip() or "（未填写原因）"}{extra}',
                       update_snapshots)
     if not res['ok']:
