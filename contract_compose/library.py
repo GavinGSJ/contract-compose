@@ -50,7 +50,7 @@ def list_types():
 
 
 TYPE_DEFAULTS = {'说明': '', '编号起始': 1, '付款条款': [], '履约保函条款': None, '表单标签': {}, '表单隐藏': [],
-                 '不适用标注': NA_MARK, '货物明细': False}
+                 '不适用标注': NA_MARK, '货物明细': False, '货物旁变量': [], '附件编号': '全部'}
 
 
 def load_type(ctype):
@@ -66,6 +66,7 @@ def load_type(ctype):
     s['付款条款'] = list(s['付款条款'] or [])
     s['表单标签'] = dict(s['表单标签'] or {})
     s['表单隐藏'] = list(s['表单隐藏'] or [])
+    s['货物旁变量'] = list(s['货物旁变量'] or [])
     return s
 
 

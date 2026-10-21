@@ -10,4 +10,4 @@ id: SCO-00
 
 # 货物名称、规格、数量和价格
 
-{{table:S416-PRICE}}
+{{table:S416-PRICE-$价格表样式}}

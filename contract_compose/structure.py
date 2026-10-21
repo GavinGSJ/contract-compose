@@ -348,8 +348,8 @@ def set_annex_default(lib, aid, on, reason=''):
 def add_annex(lib, after, name, name_en, typ='正文', default='有', body='', reason=''):
     """新增附件，放在 after 之后（after 为空则放最后）"""
     name, name_en = (name or '').strip(), (name_en or '').strip()
-    if not name or not name_en:
-        return fail('请填写中文和英文名称')
+    if not name:
+        return fail('请填写附件的中文名称（英文名称可不填）')
     nums = [int(m.group(1)) for a in lib.annexes for m in [re.fullmatch(r'ANX-(\d+)', a)] if m]
     existing = {os.path.basename(p).split('_')[0] for p in glob.glob(os.path.join(lib.dir, paths.ANNEXES, '*.md'))}
     n = max(nums + [0]) + 1

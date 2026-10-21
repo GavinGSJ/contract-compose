@@ -5,6 +5,9 @@
 生成：type.yaml、recipe.yaml、variables.yaml、options/物资类别.yaml、atoms/、annexes/、
       blocks/S416-COVER.xml、blocks/S416-SIGN.xml、tables/S416-PRICE.xml、templates/S416样式模板.docx、reference/
 母本中的明显错误按评审意见第二节修正（见 library/S416/修订记录.md），存疑项保持原文。
+
+注意：这是 2026-10-09 的一次性建库脚本。此后 library/S416 已直接修改（付款方案、价格表、附件、交货期等，见修订记录），
+重新运行会覆盖这些修改，不要再运行。
 """
 import os, re, sys, copy, shutil, zipfile
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
