@@ -22,6 +22,8 @@ class Library:
     entities: dict                                 # 预存库“买方主体”的条目
     pay: dict = field(default_factory=dict)        # 付款条款库
     annexes: dict = field(default_factory=dict)    # 合同附件，按配方“附件/顺序”排列 {附件ID: {'meta', 'body', 'file'}}
+    projects: dict = field(default_factory=dict)   # 预存库“项目信息”的条目 {项目编号(大写): {变量: 值}}
+    project_vars: list = field(default_factory=list)   # 填了项目编号后自动带入的变量（预存库“项目信息”的“带入变量”）
 
     @property
     def dir(self):
@@ -50,7 +52,8 @@ def list_types():
 
 
 TYPE_DEFAULTS = {'说明': '', '编号起始': 1, '付款条款': [], '履约保函条款': None, '表单标签': {}, '表单隐藏': [],
-                 '不适用标注': NA_MARK, '货物明细': False, '货物旁变量': [], '附件编号': '全部'}
+                 '不适用标注': NA_MARK, '货物明细': False, '货物旁变量': [], '附件编号': '全部',
+                 '附件编号格式': '数字', '项目附件字段': ''}
 
 
 def load_type(ctype):
@@ -109,4 +112,6 @@ def load_library(ctype=None):
     if lost:
         raise SystemExit(f'配方“附件/顺序”中的附件在 library/{ctype}/{paths.ANNEXES}/ 中找不到：{lost}')
     annexes = {a: found[a] for a in order}
-    return Library(ctype, settings, atoms, opts, V, recipe, entities, pay, annexes)
+    info = presets.get('项目信息') or {}
+    projects = {str(k).strip().upper(): v for k, v in (info.get('条目') or {}).items()}
+    return Library(ctype, settings, atoms, opts, V, recipe, entities, pay, annexes, projects, list(info.get('带入变量') or []))

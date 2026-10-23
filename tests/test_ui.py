@@ -210,3 +210,30 @@ def test_s416_form_blocks(tmp_path, monkeypatch):
     assert cfg['选项']['付款方案'] == '预付款+到货款' and cfg['选项']['交货期方式'] == '天数+最晚日期' and cfg['选项']['交货期单位'] == '周'
     assert cfg['变量']['到货款比例'] == '90' and cfg['变量']['交货期数量'] == '6' and '调试款比例' not in cfg['变量']
     assert cfg['变量']['交货日期'] == '2026年11月25日' and cfg['变量']['交货期起算'] == '收到中标通知书后'
+
+
+def test_po_project_preset_autofill(tmp_path, monkeypatch):
+    """PO 表单：填项目编号自动带入预存的项目信息；没改动的值随项目切换，改过的保留；附加附件显示在“④ 合同附件”"""
+    import glob, yaml
+    from contract_compose import paths
+    monkeypatch.setattr(paths, 'CONFIGS', str(tmp_path / 'configs'))
+    monkeypatch.setattr(paths, 'OUTPUT', str(tmp_path / 'output'))
+    (tmp_path / 'configs').mkdir()
+    at = _run(AppTest.from_file(APP))
+    at.selectbox(key='ctype').set_value('PO'); _run(at)
+    at.text_input(key='v::项目编号').input('f484'); _run(at)
+    assert at.text_input(key='v::项目名称').value == 'BALEINE III FPSO PROJECT'
+    assert at.text_input(key='v::业主中文名').value == '埃尼' and at.text_input(key='v::设施简称').value == 'FPSO'
+    assert any('附件M' in c.value and '附件N' in c.value for c in at.caption)
+    at.text_input(key='v::项目名称').input('My Project'); at.text_input(key='v::项目编号').input('F520'); _run(at)
+    assert at.text_input(key='v::项目名称').value == 'My Project'                   # 改过的保留
+    assert at.text_input(key='v::设施简称').value == 'FLNG'                          # 没改过的随项目切换
+    assert not any('附件M' in c.value for c in at.caption)                           # F520 只到附件 L
+    assert at.checkbox(key='ax::ANX-TA').disabled                                     # 附件B 技术协议随“有技术协议”
+    for k, v in (('LOA编号', 'LOA-1'), ('LOA日期', '2026年8月1日'), ('LOA日期_en', '1 August 2026')):
+        at.text_input(key='v::' + k).input(v)
+    _run(at)
+    at.button[0].click(); _run(at)
+    cfg = yaml.safe_load(open(glob.glob(str(tmp_path / 'configs' / '*.yaml'))[0], encoding='utf-8'))
+    assert cfg['变量']['项目名称'] == 'My Project' and cfg['变量']['设施全称_en'] == 'floating liquefaction production facility'
+    assert cfg['变量']['LOA编号'] == 'LOA-1' and cfg['附件']['ANX-NDA'] == '有' and 'ANX-TA' not in cfg['附件']

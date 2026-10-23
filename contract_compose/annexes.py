@@ -11,6 +11,8 @@
 
 条款中引用附件（编号随顺序自动变化）：
     {{附件:ID}} → 附件五    {{附件_en:ID}} → Annex 5    {{附件号:ID}} → 5
+    类型设置“附件编号格式: 字母”时：附件B / ATTACHMENT B / B（PO）。ID 写“末位”表示最后一个附件（如“附件C至{{附件号:末位}}”）
+每份合同可以带额外的附件：项目预设（预存库“项目信息”中类型设置“项目附件字段”指定的字段，每行“中文名 | 英文名”）和配置中的“自定义附件”。
 """
 import re
 
@@ -32,12 +34,55 @@ def cn_no(n):
     return num_cn(n)
 
 
+def no_text(lib, n):
+    """编号文字：数字（5）或字母（E，类型设置“附件编号格式: 字母”）"""
+    return chr(64 + n) if lib.settings.get('附件编号格式') == '字母' else str(n)
+
+
+def label_n(lib, n, en=False):
+    """第 n 个附件的称呼：附件五 / Annex 5（字母格式：附件E / ATTACHMENT E）"""
+    if lib.settings.get('附件编号格式') == '字母':
+        return f'ATTACHMENT {no_text(lib, n)}' if en else f'附件{no_text(lib, n)}'
+    return f'Annex {n}' if en else f'附件{cn_no(n)}'
+
+
 def label(lib, aid, en=False, nums=None):
     """附件五 / Annex 5；没有编号的附件（不提供，且按提供的附件编号）为空"""
     n = (nums if nums is not None else numbers(lib)).get(aid)
     if n is None:
         return ''
-    return f'Annex {n}' if en else f'附件{cn_no(n)}'
+    return label_n(lib, n, en)
+
+
+def parse_extra(text):
+    """项目预设中的附加附件：每行“中文名 | 英文名”（没有“|”时按第一个“ / ”分开）→ [(中文名, 英文名)]"""
+    out = []
+    for line in str(text or '').replace('\r', '').split('\n'):
+        line = line.strip()
+        if not line:
+            continue
+        sep = '|' if '|' in line else (' / ' if ' / ' in line else None)
+        zh, _, en = line.partition(sep) if sep else (line, '', '')
+        out.append((zh.strip(), en.strip()))
+    return out
+
+
+def add_extra(lib, prefix, items):
+    """把额外的附件（[(中文名, 英文名)]）接在附件库之后，ID 为 prefix1、prefix2…"""
+    for i, (zh, en) in enumerate(items, 1):
+        if zh:
+            aid = f'{prefix}{i}'
+            lib.annexes[aid] = {'meta': {'id': aid, '名称': zh, '名称_en': en, '类型': '文件', '默认': HAVE}, 'body': '', 'file': None}
+
+
+def toc_rows(lib, st, nums, na_mark):
+    """目录中的附件行（英文一行、中文一行）：ATTACHMENT B: TECHNICAL AGREEMENT / 附件B：技术协议（没有提供的附件在中文行后标注不适用）"""
+    rows = []
+    for aid, a in lib.annexes.items():
+        m = a['meta']
+        rows.append({'行.英文': f"{label(lib, aid, True, nums)}: {m.get('名称_en') or ''}".rstrip(': '),
+                     '行.中文': f"{label(lib, aid, False, nums)}：{m['名称']}" + ('' if st.get(aid) else na_mark)})
+    return rows
 
 
 def replace_refs(lib, text, nums=None, st=None):
@@ -48,12 +93,15 @@ def replace_refs(lib, text, nums=None, st=None):
 
     def rep(m):
         kind, aid = m.group(1), m.group(2).strip()
-        if aid not in lib.annexes:
+        if aid == '末位':                                   # 最后一个有编号的附件
+            n = max(nums.values(), default=0)
+        elif aid not in lib.annexes:
             raise SystemExit(f'引用的附件“{aid}”不在 library/{lib.ctype} 配方的“附件/顺序”中，已有：{list(lib.annexes)}')
-        if aid not in nums:
+        elif aid not in nums:
             return 'N/A'
-        n = nums[aid]
-        return {'附件': f'附件{cn_no(n)}', '附件_en': f'Annex {n}', '附件号': str(n)}[kind]
+        else:
+            n = nums[aid]
+        return {'附件': label_n(lib, n), '附件_en': label_n(lib, n, True), '附件号': no_text(lib, n)}[kind]
     return REF.sub(rep, text)
 
 

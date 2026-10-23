@@ -105,6 +105,8 @@ def resolve_values(text, V, values, missing, regress=False, keep=None, na=False,
                 return ''
         if v.get('默认值') not in (None, ''):
             return str(v['默认值'])
+        if v.get('缺省取自') and values.get(v['缺省取自']):      # 没有填时取另一个变量的值（如 项目中文名 取 项目名称）
+            return str(values[v['缺省取自']])
         if na:                                         # 不适用条款：未填变量写 N/A，不计入待填
             return 'N/A'
         missing.add(k)

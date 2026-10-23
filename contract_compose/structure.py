@@ -325,7 +325,7 @@ def move_annex(lib, aid, direction, reason=''):
         return fail('已经是第一个了' if direction == 'up' else '已经是最后一个了')
     a, b = pos[ids[k]], pos[ids[k2]]
     lines[a], lines[b] = lines[b], lines[a]
-    old = annexes.label(lib, aid); new = f'附件{annexes.cn_no(k2 + 1)}'
+    old = annexes.label(lib, aid); new = annexes.label_n(lib, k2 + 1)
     res = transaction(lib, {recipe_path(lib): '\n'.join(lines)},
                       f'- {stamp()}　附件顺序：{lib.annexes[aid]["meta"]["名称"]}（{aid}）{old} → {new}；{reason.strip() or "（未填写原因）"}')
     return {**res, 'message': f'已移动：{lib.annexes[aid]["meta"]["名称"]} {old} → {new}（引用该附件的编号已自动更新）' if res['ok'] else res['message']}

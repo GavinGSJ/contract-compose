@@ -8,16 +8,14 @@
 输出文件名: 示例_PO_离心泵采购合同.docx
 变量:
   合同编号: F520-PO-EXAMPLE-001
-  项目编号: F520
-  项目名称: Example FLNG Project
-  业主名称: Example Owner Ltd.
-  设施简称: FLNG
-  设施全称: 浮式液化天然气生产储卸装置
-  设施全称_en: floating liquefied natural gas production facility
+  项目编号: F520               # 项目名称、业主、设施、附加附件按预存库“项目信息”自动带入（也可在这里直接写，写了的优先）
   标的物名称: 离心泵
   标的物名称_en: Centrifugal Pumps
   签订日期: 2026年10月  日
   签订日期_en: October  , 2026
+  LOA编号: F520-LOA-001
+  LOA日期: 2026年8月1日
+  LOA日期_en: 1 August 2026
   卖方.名称: 示例泵业有限公司
   卖方.英文名: Example Pumps Co., Ltd.
   卖方.地址: 示例地址

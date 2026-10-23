@@ -9,10 +9,12 @@ id: DEF-00
 版本: F520-PO-rev04
 变量:
 - 业主名称
+- 业主中文名
 - 设施全称
 - 设施全称_en
 - 设施简称
 - 项目名称
+- 项目中文名
 ---
 
 # DEFINITIONS 定义
@@ -51,7 +53,7 @@ id: DEF-00
 
 **OWNER** means {{业主名称}} or its permitted successor or assignee.
 
-业主是指{{业主名称}}或其许可的继承人或受让人。
+业主是指{{业主中文名}}或其许可的继承人或受让人。
 
 **PARTIES** means both the BUYER and the SELLER and PARTY refers to either BUYER or SELLER, as the context so requires.
 
@@ -63,7 +65,7 @@ id: DEF-00
 
 **PROJECT** means {{项目名称}}.
 
-项目：{{项目名称}}
+项目：{{项目中文名}}
 
 **PROJECT LOCATION** means where the deliverable of the PROJECT will be finally deployed.
 

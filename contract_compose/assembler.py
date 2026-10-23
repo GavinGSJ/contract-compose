@@ -73,11 +73,6 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
     regress：用母本值/默认值组装（与母本比对）；mark_vars：变量标注版（所有变量黄色标出变量名）
     返回 (doc, used 选用的写法, missing 未填变量, order 原子顺序, shown 标注不适用的原子)"""
     lib = load_library(cfg.get('合同类型'))
-    for i, a in enumerate(cfg.get('自定义附件') or [], 1):      # 本合同另加的附件（只在附件列表 / 清单中出现，文件另附）
-        if str(a.get('名称') or '').strip():
-            aid = f'ANX-X{i}'
-            lib.annexes[aid] = {'meta': {'id': aid, '名称': str(a['名称']).strip(), '名称_en': str(a.get('名称_en') or '').strip(),
-                                         '类型': '文件', '默认': '有'}, 'body': '', 'file': None}
     atoms, opts, V, recipe, entities = lib.atoms, lib.opts, lib.V, lib.recipe, lib.entities
     settings = lib.settings
     label = LABEL_ANNOTATE if mark_vars else LABEL_MISSING
@@ -87,6 +82,13 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         if ent not in entities:
             raise SystemExit(f'预存库“买方主体”中没有“{ent}”，可选：{list(entities)}')
         for k, v in entities[ent].items(): values.setdefault(k, v)
+    proj = lib.projects.get(str(values.get('项目编号', '')).strip().upper()) or {}      # 预存库“项目信息”：填了项目编号即带入项目名称、业主、设施等
+    for k in lib.project_vars:
+        if proj.get(k) not in (None, ''): values.setdefault(k, proj[k])
+    if settings['项目附件字段']:                          # 各项目在附件库之后的附加附件（预存库中每行“中文名 | 英文名”）
+        annexes.add_extra(lib, 'ANX-P', annexes.parse_extra(proj.get(settings['项目附件字段'])))
+    annexes.add_extra(lib, 'ANX-X', [(str(a.get('名称') or '').strip(), str(a.get('名称_en') or '').strip())    # 本合同另加的附件
+                                     for a in cfg.get('自定义附件') or []])
     goods = []
     if settings.get('货物明细'):                       # 多行货物表：含税总价 = 各行总金额之和
         goods, ta = goods_rows(cfg.get('货物'))
@@ -146,6 +148,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         for _ in range(3):                             # 选项文字中还可以再用选项（如 交货期方式 中的 交货期单位）
             t = expand_options(lib, t, values, choices, used)
             if '{{选项' not in t: break
+        t = annexes.replace_refs(lib, t, anums, ast)       # 选项、付款条款文字中的附件引用
         t = resolve_values(t, V, values, missing, regress, keep, is_na, mark_vars)
         t = resolve_values(t, V, values, missing, regress, keep, is_na, mark_vars)   # 计算变量中嵌套的 {{变量}}
         return re.sub(r'\{\{ref:([^}]+)\}\}', lambda m: refs[m.group(1)], t)
@@ -205,7 +208,11 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
                      for aid, t in rendered if atoms[aid]['meta']['层级'] == '章']
             w.toc(heads, item.get('标题', '目录'), item.get('前置行') or [], item.get('编号格式', '{n}'))
             if item.get('附加块'):
-                w.block(os.path.join(lib.dir, paths.BLOCKS, item['附加块'] + '.xml'), fill_e)
+                p = os.path.join(lib.dir, paths.BLOCKS, item['附加块'] + '.xml')
+                if '{{行.' in open(p, encoding='utf-8').read():       # 附件目录：块中含 {{行.英文}}、{{行.中文}} 的段落按附件逐个复制
+                    w.block_rows(p, annexes.toc_rows(lib, ast, anums, na_mark), fill_e)
+                else:
+                    w.block(p, fill_e)
             if item.get('附件行') and lib.annexes:          # 目录中的第二部分与各附件（无的附件标注不适用）
                 sec = recipe['附件']
                 w.toc_lines([fill(sec['目录行'])] + [annexes.full_title(lib, a, anums) + ('' if ast[a] else na_mark)

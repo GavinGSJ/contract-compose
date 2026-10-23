@@ -1,9 +1,9 @@
-选用的写法：付款方式=简单合同、质保方式=质保函、质保期=通用_18_48、争议解决=仲裁
+选用的写法：付款方式=简单合同、质保方式=质保函、质保期=通用_18_48、争议解决=仲裁、附件=全部提供
 未填变量：
 条款原子：154
 标注不适用：
 
-sha256 word/document.xml: 6b1b8cdd701e7d2c158507202904e42013f9c22ee590e9ec35c1498e8adf8bf9
+sha256 word/document.xml: 9a3eadf11de7995de0eff1bae0904d68df998657c5da2d960255461b91372249
 sha256 word/footer1.xml: bc66c9c06f311f19de4d295c87d8a5a9cc83a3a8e7e0903dfa3f9bb634b9ece0
 sha256 word/header1.xml: 646c8fd09bd7df3f7e99ab481a811ab817b6acf2bca3f161f5ea309f40e6bc1c
 sha256 word/numbering.xml: ee7c9a9405e56b9fed9c65c9169448653993615de6084b0577a95246ae6bad36
@@ -106,11 +106,11 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [af1] ATTACHMENT
 [af1] 附件
 [] ATTACHMENT A: PROJECT SPECIAL REQUIREMENT
-[] 附件 A：项目特殊要求
-[] ATTACHMENT B: DETAILED PRICE LIST AND PROVISIONAL RATES
-[] 附件B：价格明细及可选项价格
-[] ATTACHMENT C: TECHNICAL AGREEMENT
-[] 附件C: 技术协议【变量：技术协议目录标注】
+[] 附件A：项目特殊要求
+[] ATTACHMENT B: TECHNICAL AGREEMENT
+[] 附件B：技术协议
+[] ATTACHMENT C: DETAILED PRICE LIST AND PROVISIONAL RATES
+[] 附件C：价格明细及可选项价格
 [] ATTACHMENT D: EXTENT OF SERVICES AND TREATMENT CONDITIONS OF SELLER’S TECHNICAL PERSONNEL
 [] 附件D：卖方技术人员的服务范围和待遇
 [] ATTACHMENT E: TREATMENT CONDITION OF BUYER’S TECHNICAL PERSONNEL
@@ -118,26 +118,27 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [] ATTACHMENT F: SHIPPING DOCUMENTATION REQUIREMENT
 [] 附件F：运输单据要求
 [] ATTACHMENT G: COMPLIANCE: Administrative and anti-corruption liability, Corporate Social Responsibility and Human Rights
-[] 附件G: 合规：行政和反腐败责任、企业社会责任和人权
-[] ATTACHMENT H:  PRIVACY
-[] 附件H: 隐私政策
+[] 附件G：合规：行政和反腐败责任、企业社会责任和人权
+[] ATTACHMENT H: PRIVACY
+[] 附件H：隐私政策
 [] ATTACHMENT I: SIGNED NDA
 [] 附件I：签订的保密协议
 [] ATTACHMENT J: TEMPLATES
-[] 附件J: 模板
-[] ATTACHMENT K：  Undertaking of Honest Conduct
-[] 附件K:廉洁从业承诺书
-[] ATTACHMENT L:  Return and Buy-back Term
-[] 附件L: 退货和回购条款
-[] ATTACHMENT M:  NOT USED
-[] 附件M:不使用
+[] 附件J：模板
+[] ATTACHMENT K: Undertaking of Honest Conduct
+[] 附件K：廉洁从业承诺书
+[] ATTACHMENT L: Return and Buy-back Term
+[] 附件L：退货和回购条款
 [] PREFACE前言
 [af1] This PURCHASE CONTRACT (or “CONTRACT”) is made on 【变量：签订日期_en】 (hereinafter referred to as the “EFFECTIVE DATE”) by and between 【变量：买方.英文名｜Wison Energy Trading (Qidong) Co., Ltd.】 (hereinafter referred to as “BUYER”), as one party, and 【变量：卖方.英文名】 (hereinafter referred to as “SELLER”) as the other party, whereby BUYER agrees to make compensation to SELLER and in return, SELLER agrees to sell the GOODS in accordance with the terms and conditions stipulated in this CONTRACT, which consists of the following documents and shall be construed in the following descending order of precedence where there is any discrepancy or conflict between these documents:
 [af1] 本采购合同（或“合同”）于【变量：签订日期】（以下简称“生效日期”）由【变量：买方.名称｜启东惠生能源贸易有限公司】（以下简称“买方”）与【变量：卖方.名称】（以下简称“卖方”）共同签订。买卖双方同意按照下列条款和条件，购买和出售货物，合同由下列文件组成，并在发生冲突或不一致时按下列先后顺序解释：
+[af1] This Procurement Package is evidenced by the written Letter of Award (No. 【变量：LOA编号｜XXXX】) executed by 【变量：买方.英文名｜Wison Energy Trading (Qidong) Co., Ltd.】 (hereinafter referred to as the “BUYER”) and 【变量：卖方.英文名】 (hereinafter referred to as the “SELLER”) on 【变量：LOA日期_en｜[DD Month YYYY]】. Following further negotiations between the Parties, BUYER and SELLER have entered into this binding CONTRACT for the sale and purchase of the GOODS. This CONTRACT shall consist of the documents set out below. In the event of any discrepancy or conflict between such documents, they shall be interpreted in descending order of precedence as follows:
+[af1] 本采购包已于【变量：LOA日期｜xx年xx月xx日】由【变量：买方.名称｜启东惠生能源贸易有限公司】（以下简称“买方”）与【变量：卖方.名称】（以下简称“卖方”）书面签署了中标通知书（编号为【变量：LOA编号｜XXXX】）。此后买卖双方经进一步谈判，就购买和出售货物事宜达成具有约束力的合同。该合同由下列文件组成，并且以下各文件在发生冲突或不一致时，优先等级按下列先后顺序为准：
 [af1] 
 [-2#3.3] ATTACHMENT A PROJECT SPECIAL REQUIREMENTS附件A项目特殊条款
+[-2#3.3] ATTACHMENT B TECHNICAL AGREEMENT附件B技术协议
 [-2#3.3] THE ARTICLES OF THIS PURCHASE CONTRACT本采购合同条款
-[-2#3.3] ATTACHMENT B to L (unless otherwise mentioned) 附件B至L（除非另有说明）
+[-2#3.3] ATTACHMENT C to L (unless otherwise mentioned) 附件C至L（除非另有说明）
 [-] DEFINITIONS 定义
 [-b] APPLICABLE LAW means any treaty, law, decree, order, regulation, decision, statute, ordinance, rule, directive, code or other document that has legal force according to the terms of any system of law, including, without limitation, local law, the laws of any other state or part thereof or international law, and which creates or purports to create any requirement or rule that may affect, restrict, prohibit or expressly allow the terms of this contract or any activity contemplated or carried out under this contract.
 [-b] 适用法律是指任何条约、法律、法令、命令、条例、决定、法规、条例、规则、指令、法典或其他从属任何法律体系（包括但不限于当地法律、任何其他国家或其部分法律或国际法）的条款以及具有法律效力的文件，以致影响、限制、禁止或明确允许本合同条款或根据本合同计划或开展的任何活动。
@@ -156,13 +157,13 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [-b] INDEMNIFIED COSTS or CLAIMS means any and all losses, damages, liabilities, claims, demands, actions, proceedings, payments, costs, expenses (including, with no limitation, legal costs, tribunal costs, experts’ and investigative fees), fines, penalties and interest.
 [-b] 赔偿费用或索赔是指任何和所有损失、损害、责任、索赔、要求、诉讼、付款、成本、费用（包括但不限于法律费用、法庭费用、专家和调查费用）、罚款、惩罚和利息。
 [-b] OWNER means 【变量：业主名称】 or its permitted successor or assignee.
-[-b] 业主是指【变量：业主名称】或其许可的继承人或受让人。
+[-b] 业主是指【变量：业主中文名】或其许可的继承人或受让人。
 [-b] PARTIES means both the BUYER and the SELLER and PARTY refers to either BUYER or SELLER, as the context so requires.
 [-b] 双方指买方和卖方；其中一方指合同上下文提及的买方或卖方。
 [-b] PERSONNEL means the personnel to be dispatched by SELLER GROUP in connection with the performance of the SUPPLY.
 [-b] 职员指卖方公司为执行完成本合同供货项目派遣的人员。
 [-b] PROJECT means 【变量：项目名称】.
-[-b] 项目：【变量：项目名称】
+[-b] 项目：【变量：项目中文名】
 [-b] PROJECT LOCATION means where the deliverable of the PROJECT will be finally deployed.
 [-b] 项目地点是指本项目交付物最终被使用的地点。
 [-b] SELLER GROUP includes the following: 卖方集团包括：
@@ -188,13 +189,13 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [-b] The table below details the scope of SUPPLY of this CONTRACT:
 [-b] 下表为本合同的详细供货范围：
 [表] No. | Description 描述 | Quantity 数量 | Subtotal合计
-[表] 1 | GOODS: 【变量：标的物名称_en】 【变量：标的物名称】Refer to ATTACHMENT B for detailed price breakdown and TECHNICAL AGREEMENT for detailed scope of GOODS详细价格请见附件B，详细供货范围请见技术协议 | 1 Lot | 【变量：价款_含税_表】
+[表] 1 | GOODS: 【变量：标的物名称_en】 【变量：标的物名称】Refer to ATTACHMENT C for detailed price breakdown and TECHNICAL AGREEMENT for detailed scope of GOODS详细价格请见附件C，详细供货范围请见技术协议 | 1 Lot | 【变量：价款_含税_表】
 [表] 2 | TECHNICAL SERVICE, if applicable, in accordance with TECHNICAL AGREEMENT根据技术协议提供技术服务（如适用） | 1 Lot | Included
 [表] 3 | TECHNICAL DOCUMENTATION in accordance with TECHNICAL AGREEMENT提供符合技术协议的技术文件 | 1 Lot | Included
 [表] TOTAL CONTRACT PRICE (Currency: 【变量：价款_币种代码｜RMB】) | 【变量：价款_含税_表】
 [表] TOTAL CONTRACT PRICE: 【变量：价款_币种代码｜RMB】 【变量：价款_英文大写】, 【变量：贸易术语_en】 (INCOTERMS 2020)合同总价：【变量：价款_币种中文｜人民币】【变量：价款_大写】，【变量：贸易术语】（按照《2020年国际贸易术语解释通则》解释）
-[-b] Remark：Details of specifications & SUPPLY scope refer to the signed TECHNICAL AGREEMENT mutually accepted by both of parties (No.: 【变量：技术协议号】) under ATTACHMENT C.
-[-b] 备注：具体的规格及供货范围见双方签字的编号为【变量：技术协议号】在附件C的技术协议。
+[-b] Remark：Details of specifications & SUPPLY scope refer to the signed TECHNICAL AGREEMENT mutually accepted by both of parties (No.: 【变量：技术协议号】) under ATTACHMENT B.
+[-b] 备注：具体的规格及供货范围见双方签字的编号为【变量：技术协议号】在附件B的技术协议。
 [-b] The TOTAL CONTRACT PRICE shall remain fixed and firm for the duration of this CONTRACT and shall not be subject to currency fluctuations or any escalation. SELLER’s liability for TAX is up to the delivery incoterm specified in the above table, unless otherwise stipulated.
 [-b] 在本合同期间，合同总价应为固定价格，不根据币值波动而调整。除非另有规定，否则卖方的税务责任以上表中规定的交货条款为限。
 [-b] All expenses to be incurred by the SELLER for the performance of SUPPLY under this CONTRACT are deemed to have been included in the TOTAL CONTRACT PRICE. No adjustment to the TOTAL CONTRACT PRICE shall be made for any reason including in relation to any unforeseen expenses or contingencies, all of which shall be considered irrecoverable, unless otherwise allowed by the express terms of the CONTRACT. SELLER agrees and acknowledges that it has informed itself and is deemed to have satisfied itself fully before entering into the CONTRACT and prior to commencing any SUPPLY as to the extent and nature of the SUPPLY, including the extent and nature of all management, engineering, design, supervision, PERSONNEL, facilities, premises and all other things whether of a temporary or permanent nature that the SELLER is required to provide and all contingencies thereto in accordance with the terms and conditions of the CONTRACT.
@@ -228,8 +229,8 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [-0] DELIVERY DATE OF CONTRACT GOODS 交货时间:
 [-b] On or before 【变量：交货日期_en】, 【变量：贸易术语_en】
 [-b] 不迟于【变量：交货日期】，【变量：贸易术语】
-[-b] For delivery in several batches, the DELIVERY DATE stipulated above is the contractual DELIVERY DATE of the last batch of shipment. The contractual delivery dates for all the batches could be found in ATTACHMENT B.
-[-b] 对于分批交货的情况，上述交货日期为最后一批货物的交货日期。所有批次的合同交货日期见附件B。
+[-b] For delivery in several batches, the DELIVERY DATE stipulated above is the contractual DELIVERY DATE of the last batch of shipment. The contractual delivery dates for all the batches could be found in ATTACHMENT C.
+[-b] 对于分批交货的情况，上述交货日期为最后一批货物的交货日期。所有批次的合同交货日期见附件C。
 [-b] Partial shipment or batch deliveries, if it has not been agreed upon in the CONTRACT, shall be allowed only at BUYER’s sole discretion upon SELLER’s request.
 [-b] 如果合同中没有约定，只有在卖方提出要求的情况下，买方可自行决定是否允许分批装运或分批交付。
 [-b] Note: SELLER shall not ship the CONTRACT GOODS without BUYER’s consent. Violation of this requirement shall constitute a rejection of the CONTRACT GOODS, BUYER may return or take other actions deemed required by BUYER that all costs associated costs shall be borne by the SELLER.
@@ -308,8 +309,8 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [-0] In case the SELLER is liable for paying to the BUYER any liquidated damages, the payment shall be made by T/T within ten (10) days after SELLER has received the claim from BUYER. Otherwise, BUYER will have the right to deduct the amount of liquidated damages from payment to be made to SELLER, or to recover such an amount as much as possible from the performance bond, warranty bond or retention fund, whichever is possible. If there is any unrecoverable amount from the above mentioned means, BUYER shall have the right to seek for such compensation from SELLER in accordance with Article 19 of this CONTRACT.
 [-b] 如果卖方有责任向买方支付任何违约赔偿金，则卖方应在收到买方的索赔通知后10天内通过电汇支付，否则买方有权从将支付给卖方的任何款项中扣除该金额，或尽可能从履约保函、质保函或质保金中收回违约赔偿金。如果通过上述方式仍有任何无法收回的款项，买方有权按照本合同第19条的约定向卖方要求赔偿。
 [-] GUARANTEE OF QUALITY 质量保证
-[-0] Quality Requirements: Conform to the design documents (drawings, specifications or other technical information) confirmed by both parties and the signed ATTACHMENT C: TECHNICAL AGREEMENT.
-[-b] 质量要求：符合双方确认的设计文件（图纸、规格书或其它技术资料）和已签署的附件C:《技术协议》。
+[-0] Quality Requirements: Conform to the design documents (drawings, specifications or other technical information) confirmed by both parties and the signed ATTACHMENT B: TECHNICAL AGREEMENT.
+[-b] 质量要求：符合双方确认的设计文件（图纸、规格书或其它技术资料）和已签署的附件B:《技术协议》。
 [-0] SELLER warrants and guarantees that the CONTRACT GOODS are brand-new and unused, made out of the best materials with first class workmanship, and comply in all respects with the quality, specifications and performance requirements as stipulated in any drawings, attachments and TECHNICAL AGREEMENT to the CONTRACT. SELLER further warrants and guarantees that the CONTRACT GOODS, when installed in accordance with the TECHNICAL AGREEMENT and the instruction of SELLER’s technical PERSONNEL and properly operated and maintained, shall be free from defect of any kind including in relation to design, material or manufacture and, fulfill satisfactorily its performance as specified in TECHNICAL AGREEMENT.
 [-b] 卖方保证合同货物为全新且未使用过，要使用最好的原材料和顶级工艺进行生产且完全符合合同图纸、附件、技术协议中对质量、规格和性能的要求。卖方应进一步保证当合同货物根据技术协议以及在卖方技术人员的指导下进行正确的安装、操作和保养时，货物应没有设计、原料或制造的缺陷，并且在合同质保期内满足技术协议中规定的性能要求。
 [-0] The Warranty period is (18) months after the provisional project acceptance or (48) months after BUYER’s acceptance of the GOODS upon delivery, whichever comes first.
@@ -390,8 +391,8 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [-] ERECTION, TEST-RUN, PERFORMANCE TEST 合同货物的安装、试运行和性能测试
 [-0] The erection, test-run, performance test of the CONTRACT GOODS shall be carried out by BUYER following the technical instructions given by SELLER’s representative. Each party shall authorize one representative to deal with all technical matters in connection with the acceptance of the CONTRACT GOODS during the site erection, installation, site acceptance test (SAT) up to the commissioning and start-up of the CONTRACT GOODS. The representatives of both PARTIES shall make detailed plan through friendly discussion. Any disagreement shall be settled through friendly negotiation without prejudice to the provisions of this CONTRACT.
 [-b] 合同货物的安装，试运行和性能测试应由买方按照卖方代表的技术指导下进行。从到现场、安装、现场验收试验（SAT）直到合同货物调试和启动期间，双方应授权一名代表在现场处理与合同货物验收有关的所有的技术问题。双方代表应通过友好协商做出详细安排。双方代表的任何不一致意见，应在合同项下条款范围内友好协商解决。
-[-b] During the site installation, SAT, commissioning and start-up as well as site training, SELLER shall dispatch competent technical PERSONNEL at his own costs for site TECHNICAL SERVICE which have been detailed in the TECHNICAL AGREEMENT. The number of days of free site services has been detailed out in ATTACHMENT B. Beyond that, BUYER shall compensate SELLER at the service rates given in ATTACHMENT B. SELLER’s PERSONNEL shall be authorized to give technical instructions and to solve all technical problems within the scope of the CONTRACT.
-[-b] 在现场组装、现场验收试验、试运行、启动和培训期间，卖方应自费派遣合格技术人员进行技术服务，详见技术协议。免费现场服务的天数已在附件B中详细说明。除此之外，买方应按附件B中规定的服务费率对卖方进行补偿。卖方技术人员有权应提供技术指导，并解决所有合同范围内的技术问题。
+[-b] During the site installation, SAT, commissioning and start-up as well as site training, SELLER shall dispatch competent technical PERSONNEL at his own costs for site TECHNICAL SERVICE which have been detailed in the TECHNICAL AGREEMENT. The number of days of free site services has been detailed out in ATTACHMENT C. Beyond that, BUYER shall compensate SELLER at the service rates given in ATTACHMENT C. SELLER’s PERSONNEL shall be authorized to give technical instructions and to solve all technical problems within the scope of the CONTRACT.
+[-b] 在现场组装、现场验收试验、试运行、启动和培训期间，卖方应自费派遣合格技术人员进行技术服务，详见技术协议。免费现场服务的天数已在附件C中详细说明。除此之外，买方应按附件C中规定的服务费率对卖方进行补偿。卖方技术人员有权应提供技术指导，并解决所有合同范围内的技术问题。
 [-0] If the GOODS or any of the BUYER’s properties damaged pursuant to the instructions given by SELLER’s PERSONNEL, all the losses shall be borne by SELLER.
 [-b] 如果货物或买方的任何财产由于卖方人员的指导而损坏，所有损失应由卖方承担。
 [-0] Technical instructions by SELLER's PERSONNEL shall be submitted in written form.
