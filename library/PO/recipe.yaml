@@ -1,5 +1,19 @@
 # PO 实采合同配方：条款顺序（类型设置见 type.yaml）；按顺序组装（章节号从 0 起：0. DEFINITIONS）
 # 带“仅当选项”的条款在选项不符时保留并标注不适用（如选诉讼时，19.1–19.3 仲裁细则不适用）
+附件:                          # 附件 A–L；L 之后的附加附件按项目预设（预存库“项目信息”的“附加附件”）
+  顺序:
+  - ANX-PSR              # 项目特殊要求
+  - ANX-TA              # 技术协议
+  - ANX-PRICE              # 价格明细及可选项价格
+  - ANX-SVC-SELLER              # 卖方技术人员的服务范围和待遇
+  - ANX-SVC-BUYER              # 买方技术人员的待遇条件
+  - ANX-SHIP              # 运输单据要求
+  - ANX-COMPLIANCE              # 合规：行政和反腐败责任、企业社会责任和人权
+  - ANX-PRIVACY              # 隐私政策
+  - ANX-NDA              # 签订的保密协议
+  - ANX-TEMPLATES              # 模板
+  - ANX-INTEGRITY              # 廉洁从业承诺书
+  - ANX-RETURN              # 退货和回购条款
 顺序:
 - 块: PO-COVER
 - 目录: 自动

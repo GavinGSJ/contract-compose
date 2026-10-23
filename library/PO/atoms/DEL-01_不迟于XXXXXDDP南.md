@@ -20,9 +20,9 @@ On or before {{交货日期_en}}, {{贸易术语_en}}
 
 不迟于{{交货日期}}，{{贸易术语}}
 
-For delivery in several batches, the DELIVERY DATE stipulated above is the contractual DELIVERY DATE of the last batch of shipment. The contractual delivery dates for all the batches could be found in ATTACHMENT B.
+For delivery in several batches, the DELIVERY DATE stipulated above is the contractual DELIVERY DATE of the last batch of shipment. The contractual delivery dates for all the batches could be found in {{附件_en:ANX-PRICE}}.
 
-对于分批交货的情况，上述交货日期为最后一批货物的交货日期。所有批次的合同交货日期见附件B。
+对于分批交货的情况，上述交货日期为最后一批货物的交货日期。所有批次的合同交货日期见{{附件:ANX-PRICE}}。
 
 Partial shipment or batch deliveries, if it has not been agreed upon in the CONTRACT, shall be allowed only at BUYER’s sole discretion upon SELLER’s request.
 

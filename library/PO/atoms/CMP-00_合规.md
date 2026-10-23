@@ -11,6 +11,6 @@ id: CMP-00
 
 # COMPLIANCE 合规
 
-ATTACHMENT G (COMPLIANCE: Administrative and anti-corruption liability, Corporate Social Responsibility and Human Rights) is incorporated herein as Article {{ref:CMP-00}}.
+{{附件_en:ANX-COMPLIANCE}} (COMPLIANCE: Administrative and anti-corruption liability, Corporate Social Responsibility and Human Rights) is incorporated herein as Article {{ref:CMP-00}}.
 
-参阅附件G：合规：行政和反腐败责任、企业社会责任和人权作为第{{ref:CMP-00}}条纳入本文。
+参阅{{附件:ANX-COMPLIANCE}}：合规：行政和反腐败责任、企业社会责任和人权作为第{{ref:CMP-00}}条纳入本文。

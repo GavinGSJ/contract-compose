@@ -256,7 +256,7 @@
     正文: 原材料制造商所在国授权机构出具的货物原产地证明副本一份。Certificate of Origin in one (1) copy issued by the authorities of the Raw Material Manufacturer’s country.
   PO_商业发票三份: Three (3) originals of signed commercial invoice issued by SELLER covering {{本节点比例}}% of the TOTAL CONTRACT PRICE; 卖方出具的金额相当于合同总价{{本节点比例}}%的正本商业发票三份；
   PO_ITP进度计划: The ITP and Progress Schedule 检验、试验计划（ITP）和生产进度计划；
-  PO_预付款保函: An irrevocable and unconditional Bank Letter of Guarantee issued by SELLER in accordance with the template available in the CONTRACT, from a bank approved by BUYER within thirty (30) days after the CONTRACT becomes effective in favor of the BUYER covering {{预付款比例}}% of the TOTAL CONTRACT PRICE. This guarantee shall be valid until thirty (30) days after the DELIVERY DATE. The specimen is as per ATTACHMENT J. 卖方应在合同生效后30天之内，由卖方根据附件J中提供的模板，从买方认可的银行开具不可撤销及无条件见索即付银行保函，保函金额为合同总价的{{预付款比例}}%，保函有效期应至货物交付后（30）天。
+  PO_预付款保函: An irrevocable and unconditional Bank Letter of Guarantee issued by SELLER in accordance with the template available in the CONTRACT, from a bank approved by BUYER within thirty (30) days after the CONTRACT becomes effective in favor of the BUYER covering {{预付款比例}}% of the TOTAL CONTRACT PRICE. This guarantee shall be valid until thirty (30) days after the DELIVERY DATE. The specimen is as per {{附件_en:ANX-TEMPLATES}}. 卖方应在合同生效后30天之内，由卖方根据{{附件:ANX-TEMPLATES}}中提供的模板，从买方认可的银行开具不可撤销及无条件见索即付银行保函，保函金额为合同总价的{{预付款比例}}%，保函有效期应至货物交付后（30）天。
   PO_主材到厂: The certification of main material or main component ({{进度款_主材名称}}) arriving to the factory. 主要材料（或主要构件）（{{进度款_主材名称}}）到厂验证报告。
   PO_技术文件提交:
     正文: The complete submission of the following technical documents 完成下列技术文件的提交：
@@ -264,7 +264,7 @@
   PO_发票_到货: Correct original copy of 100% of VAT invoice shall be provided by SELLER in mainland China or {{本节点比例}}% commercial invoice shall be provided by SELLER outside mainland China 在中国大陆境内的卖方需提供正确的100%增值税发票原件或中国大陆境外卖方需提供{{本节点比例}}%商业发票；
   PO_交付确认: Written confirmation from BUYER on the delivery completion 买方出具货物交付完成的书面确认；
   PO_商业发票_质保: Commercial invoice covering {{本节点比例}}% of the TOTAL CONTRACT PRICE issued by SELLER; 卖方出具的金额为合同总价{{本节点比例}}%的正本商业发票；
-  PO_质保函: An irrevocable and unconditional Bank Letter of Guarantee covering {{质保比例}}% of TOTAL CONTRACT PRICE, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per ATTACHMENT J. 由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为合同总价{{质保比例}}%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见附件J。
+  PO_质保函: An irrevocable and unconditional Bank Letter of Guarantee covering {{质保比例}}% of TOTAL CONTRACT PRICE, issued by SELLER’s bank or advised by BUYER’s bank in favor of BUYER as a security of SELLER’s liabilities within the quality guarantee period of the CONTRACT GOODS, valid until forty-five (45) days after the quality guarantee period expires. The specimen is as per {{附件_en:ANX-TEMPLATES}}. 由卖方银行出具或由买方银行通知的、以买方为受益人的不可撤销且无条件见索即付的保函，金额为合同总价{{质保比例}}%的银行保函作为卖方在合同货物质保期内卖方义务的担保，保函的有效期至质保期结束后45天。保函样本见{{附件:ANX-TEMPLATES}}。
   PO_完工文件: BUYER’s written confirmation that {{完工文件_原件份数}} original(s) and {{完工文件_电子份数}} electronic copies of the final approved as-built documents have been delivered successfully. 买方书面确认审批通过的完工文件原件{{完工文件_原件份数}}份、电子版{{完工文件_电子份数}}份已交付完成。
   PO_发运单据_电汇:
     组:

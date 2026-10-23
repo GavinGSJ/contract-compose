@@ -130,6 +130,30 @@ class Writer:
             strip_ids(e); fill(e)
             self.add(e)
 
+    def block_rows(self, path, rows, fill):
+        """插入块；块中连续的、含 {{行.xxx}} 的段落是行模板：按 rows（[{占位名: 值}]）逐行复制并替换其中的 {{占位名}}"""
+        root = etree.parse(path).getroot()
+        kids = [copy.deepcopy(e) for e in root]
+        has = lambda e: any('{{行.' in (t.text or '') for t in e.iter(qn('w:t')))
+        i = 0
+        while i < len(kids):
+            if not has(kids[i]):
+                strip_ids(kids[i]); fill(kids[i]); self.add(kids[i]); i += 1
+                continue
+            j = i
+            while j < len(kids) and has(kids[j]):
+                j += 1
+            group = kids[i:j]
+            for row in rows:
+                for e in group:
+                    e = copy.deepcopy(e); strip_ids(e)
+                    for t in e.iter(qn('w:t')):
+                        for k, v in row.items():
+                            if t.text and '{{%s}}' % k in t.text:
+                                t.text = t.text.replace('{{%s}}' % k, v)
+                    fill(e); self.add(e)
+            i = j
+
     def table_rows(self, path, rows, fill):
         """插入表格，最后一行为行模板：按 rows（[{占位名: 值}]）逐行复制并替换其中的 {{占位名}}"""
         root = etree.parse(path).getroot()

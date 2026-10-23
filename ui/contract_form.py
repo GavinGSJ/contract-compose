@@ -33,7 +33,7 @@ OWNED_VALS = {x for x in _owned if x not in opts}               # 随选项显�
 SIDE_VARS = SETTINGS['货物旁变量']                                # 放在货物明细旁边的变量（如 计价单位）
 
 GROUPS = {
-    '合同信息': ['合同编号', '项目编号', '项目名称', '业主名称', '设施简称', '设施全称', '标的物名称', '签订日期'],
+    '合同信息': ['合同编号', '项目编号', '项目名称', '项目中文名', '业主名称', '业主中文名', '设施简称', '设施全称', '标的物名称', '签订日期'],
     '卖方信息': [k for k in ('卖方.名称', '卖方.英文名', '卖方.地址', '卖方.电话', '卖方.传真', '卖方.邮编', '卖方.开户行', '卖方.账号', '卖方.信用代码', '卖方.SWIFT') if k in V]
              + sorted(k for k in V if k.startswith('卖方.') and k not in ('卖方.名称', '卖方.英文名', '卖方.地址', '卖方.电话', '卖方.传真', '卖方.邮编', '卖方.开户行', '卖方.账号', '卖方.信用代码', '卖方.SWIFT') and not k.endswith('_en')),
     '交货': ['交货期天数', '交货日期'],
@@ -53,7 +53,7 @@ GROUPS = {g: [k for k in names if k in V and k not in HIDE and k not in OWNED_VA
 grouped = {k for g in GROUPS.values() for k in g}
 GROUPS['其他必填'] = [k for k in required if k not in grouped]
 defaults = [k for k, v in V.items() if v.get('类型') == '值' and v.get('类别') == '有默认值' and not k.endswith('_en')
-            and k not in HIDE and k not in OWNED_VALS and k not in SIDE_VARS]
+            and k not in HIDE and k not in OWNED_VALS and k not in SIDE_VARS and k not in grouped]
 option_vars = sorted([k for k, v in V.items() if v.get('类型') == '选项' and v.get('类别') != '付款' and k not in HIDE and k in opts
                       and k not in FORM_TOP + FORM_BLOCK + SUB_OPTS], key=_at)
 
@@ -227,6 +227,23 @@ def option_block(name):
             ' + '.join(LABEL.get(v, v).split('（')[0] for v in tot) + f' = {sum(nums):g}%' + ('' if abs(sum(nums) - 100) < 1e-6 else '，不等于 100%'))
 
 
+def autofill_project():
+    """填了项目编号后，把预存库“项目信息”里的项目名称、业主、设施等带入表单；没改动过的值随项目编号切换"""
+    ss = st.session_state
+    pid = str(ss.get(key('项目编号'), '')).strip().upper()
+    prev = ss.get('_proj')
+    if pid == prev or not lib.project_vars:
+        return
+    new, old = lib.projects.get(pid, {}), lib.projects.get(prev, {}) if prev else {}
+    for v in lib.project_vars:
+        cur = ss.get(key(v))
+        if cur in (None, '') or str(cur) == str(old.get(v, '') or ''):
+            ss[key(v)] = str(new.get(v, '') or '')
+    ss['_proj'] = pid
+
+
+autofill_project()
+PID = str(st.session_state.get(key('项目编号'), '')).strip().upper()
 tabs = st.tabs(['① 必填信息', '② 条款写法', '③ 默认条款参数', '④ 合同附件'])
 
 with tabs[0]:
@@ -235,6 +252,9 @@ with tabs[0]:
     for g, names in GROUPS.items():
         if not names: continue
         st.subheader(g)
+        if g == '合同信息' and lib.project_vars and PID:
+            st.caption(f'已按项目编号 {PID} 自动带入预存的项目信息（项目名称、业主、设施等，可直接修改）。' if PID in lib.projects
+                       else f'预存库中没有项目 {PID}，请手动填写（可在“预存信息管理 → 项目信息”中新增，下次自动带入）。')
         if g == '卖方信息':
             cols = st.columns(2)
             for i, name in enumerate(n for n in names if n in V):
@@ -467,6 +487,14 @@ with tabs[3]:
                 cols[i % 3].text_input(V[name].get('说明') or name, key=vk)
                 anx_fields.append(name)
     st.session_state['_anx'] = anx_fields
+    _pf = SETTINGS['项目附件字段']
+    if _pf:
+        _items = annexes.parse_extra(lib.projects.get(PID, {}).get(_pf))
+        if _items:
+            st.caption(f'项目 {PID} 的附加附件（来自预存库，接在上面的附件之后自动编号）：'
+                       + '；'.join(f"{annexes.label_n(lib, len(lib.annexes) + i)} {zh}" for i, (zh, _) in enumerate(_items, 1)))
+        elif PID:
+            st.caption(f'项目 {PID} 没有附加附件（可在“预存信息管理 → 项目信息”的“附加附件”中设置）。')
     import pandas as pd
     st.markdown('**本合同另加的附件**（可增删行；只列在合同末尾的附件清单中，文件另附；编号接在上面的附件之后；英文名称可不填）')
     if 'extra_base' not in st.session_state: st.session_state['extra_base'] = []

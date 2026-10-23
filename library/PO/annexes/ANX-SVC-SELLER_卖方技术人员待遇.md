@@ -1,0 +1,7 @@
+---
+id: ANX-SVC-SELLER
+名称: 卖方技术人员的服务范围和待遇
+名称_en: EXTENT OF SERVICES AND TREATMENT CONDITIONS OF SELLER’S TECHNICAL PERSONNEL
+类型: 文件
+默认: 有
+---

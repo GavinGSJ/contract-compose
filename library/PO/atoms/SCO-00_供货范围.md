@@ -19,9 +19,9 @@ The table below details the scope of SUPPLY of this CONTRACT:
 
 {{table:PO-SCO-$价款_计税}}
 
-Remark：Details of specifications & SUPPLY scope refer to the signed TECHNICAL AGREEMENT mutually accepted by both of parties (No.: {{技术协议号}}) under ATTACHMENT C.
+Remark：Details of specifications & SUPPLY scope refer to the signed TECHNICAL AGREEMENT mutually accepted by both of parties (No.: {{技术协议号}}) under {{附件_en:ANX-TA}}.
 
-备注：具体的规格及供货范围见双方签字的编号为{{技术协议号}}在附件C的技术协议。
+备注：具体的规格及供货范围见双方签字的编号为{{技术协议号}}在{{附件:ANX-TA}}的技术协议。
 
 The TOTAL CONTRACT PRICE shall remain fixed and firm for the duration of this CONTRACT and shall not be subject to currency fluctuations or any escalation. SELLER’s liability for TAX is up to the delivery incoterm specified in the above table, unless otherwise stipulated.
 

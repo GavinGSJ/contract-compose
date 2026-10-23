@@ -114,7 +114,7 @@ def check(lib, kind, aid, body):
             if not glob.glob(os.path.join(lib.dir, sub, pat + '.xml')):
                 errors.append(f'{sub}/ 中找不到 {k.split(":", 1)[1]}.xml')
         elif k.startswith(('附件:', '附件_en:', '附件号:')):
-            if k.split(':', 1)[1] not in lib.annexes: errors.append(f'引用的附件 {k.split(":", 1)[1]} 不存在')
+            if k.split(':', 1)[1] not in lib.annexes and k.split(':', 1)[1] != '末位': errors.append(f'引用的附件 {k.split(":", 1)[1]} 不存在')
         elif k.startswith(('选项:', '选项列表:')):
             n = k.split(':', 1)[1]; n = n[:-3] if n.endswith('_en') else n
             if n not in lib.opts: errors.append(f'选项库中没有“{n}”')
