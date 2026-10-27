@@ -2,11 +2,12 @@
 # 带“仅当选项”的条款在选项不符时保留并标注“（不适用）”；条款内的段落用行首 <仅当 选项名=值> 标记（值可写 甲|乙）。
 附件:
   顺序:
-  - ANX-PRICELIST              # 供货明细表（PDF，默认无）
+  - ANX-PRICELIST              # 供货明细表（PDF，默认有）
   - ANX-INTEGRITY              # 廉洁承诺书（PDF）
-  - ANX-NDA                    # 保密协议（PDF）
-  - ANX-MINUTES                # 合同谈判纪要（签字盖章版）（PDF，默认无）
-  - ANX-AWARD                  # 中标通知书（签字盖章版）（PDF，默认无）
+  - ANX-NDA                    # 保密协议（PDF，默认无）
+  - ANX-MINUTES                # 合同谈判纪要（签字盖章版）（PDF，默认有）
+  - ANX-AWARD                  # 中标通知书（签字盖章版）（PDF，默认有）
+  - ANX-TA                     # 技术协议（PDF，默认有）
 顺序:
 - 块: S416-COVER
 - 原子: SCO-00
@@ -21,6 +22,7 @@
 - 原子: PAY-01
 - 原子: PAY-02
 - 原子: PAY-03
+- 原子: PAY-04
 - 原子: ORI-00
 - 原子: SPE-00
 - 原子: IPC-00

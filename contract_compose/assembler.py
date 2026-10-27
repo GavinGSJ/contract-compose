@@ -36,7 +36,18 @@ def numbering(atoms, order, start=1):
 
 
 # 段落级条件：行首写 <仅当 选项名=取值>，选项不符时该段保留并在开头标注不适用（如设备类合同才适用的段落）
-COND = re.compile(r'^<仅当 ([^=>]+)=([^>]+)> ?')          # 值可写“甲|乙”表示任一
+COND = re.compile(r'^<(仅当|不出现于) ([^=>]+)=([^>]+)> ?')   # <仅当 选项=值>：不符时标注不适用；<不出现于 选项=值>：相符时整段不出现；值可写“甲|乙”表示任一
+
+
+def split_conditions(line):
+    """行首的段落条件（可连写多个）→ ([(种类, 选项名, 取值)], 去掉条件后的行)"""
+    conds = []
+    while True:
+        m = COND.match(line)
+        if not m:
+            return conds, line
+        conds.append((m.group(1), m.group(2).strip(), m.group(3).strip()))
+        line = line[m.end():]
 NA_LINE = '\u0004'                                        # 内部标记：不适用的段落（其中的“N/A%”写成“N/A”）
 LEAD = re.compile(r'^(### |## |# |  - |  \+ |- |\+ |<顶格> |<居中> |    |  )?')
 
@@ -94,12 +105,15 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         goods, ta = goods_rows(cfg.get('货物'))
         if goods:
             values['含税总价'] = str(ta); values['价款_合计'] = fmt_money(ta, '')
-            values['价格表样式'] = '含重量' if any(g['行.重量'] for g in goods) else '标准'     # 填了重量才出现重量列
+            values['价格表样式'] = ('含重量' if any(g['行.重量'] for g in goods) else '标准') \
+                + ('' if any(g['行.备注'] for g in goods) else '-无备注')                # 填了重量才出现重量列；没有备注时去掉备注列
             units = {g['行.单位'] for g in goods}
-            if not values.get('计价单位') and len(units) == 1 and units != {''}:       # 单价单位：未填时取货物明细的单位
+            if values.get('计价单位'):                                                    # 表头已有“元/”，填了“元/船套”也只取“船套”
+                values['计价单位'] = re.sub(r'^\s*元\s*/\s*', '', str(values['计价单位']))
+            elif len(units) == 1 and units != {''}:                                     # 单价单位：未填时取货物明细的单位
                 values['计价单位'] = units.pop()
     if regress: values = {}
-    else: values.update(derive_values(values))
+    else: values.update(derive_values(values, V))
     choices = cfg.get('选项') or {}
     for name, o in opts.items():                      # 选项的预设变量：该写法带出的变量值（如 付款方案 → 各节点比例），明确给出的值优先
         if any(v.get('预设变量') for v in o['选项'].values()):
@@ -132,14 +146,19 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         """段落级条件：<仅当 名称=值> 不符时在段落开头标注不适用"""
         out = []
         for line in text.split('\n'):
-            m = COND.match(line)
-            if m:
-                k, v = m.group(1).strip(), m.group(2).strip()
-                line = line[m.end():]
-                if k in opts: cond_used.add(k)
-                if k in opts and not matches(choose(k, opts[k], values, choices), v):
-                    lead = LEAD.match(line).group(1) or ''
-                    line = NA_LINE + lead + na_mark + line[len(lead):]
+            conds, line = split_conditions(line)
+            hide = na_line = False
+            for kind, k, v in conds:
+                if k not in opts: continue
+                cond_used.add(k)
+                ok = matches(choose(k, opts[k], values, choices), v)
+                hide |= kind == '不出现于' and ok
+                na_line |= kind == '仅当' and not ok
+            if hide:
+                continue
+            if na_line:
+                lead = LEAD.match(line).group(1) or ''
+                line = NA_LINE + lead + na_mark + line[len(lead):]
             out.append(line)
         return '\n'.join(out)
 

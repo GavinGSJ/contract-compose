@@ -193,7 +193,12 @@ def test_s416_form_blocks(tmp_path, monkeypatch):
     keys = lambda: {t.key for t in at.text_input}
     pay = lambda n: next(o for o in at.radio(key='o::付款方案').options if o.replace(' ', '') == n)
     assert at.radio(key='o::物资类别').value == '设备类'
-    assert at.text_input(key='v::到货款比例').value == '50' and 'v::调试款比例' in keys()
+    assert at.radio(key='o::付款方案').value == '到货款 + 质保金'                    # 默认方案：到货款 95% + 质保金 5%
+    assert at.text_input(key='v::到货款比例').value == '95' and at.text_input(key='v::质保比例').value == '5'
+    assert at.text_input(key='v::付款天数').value == '60' and at.text_input(key='v::质保金_释放天数').value == '30'
+    assert 'v::预付款比例' not in keys() and 'v::调试款比例' not in keys()
+    at.radio(key='o::付款方案').set_value(pay('预付款+到货款+调试款')); _run(at)
+    assert at.text_input(key='v::到货款比例').value == '50' and at.text_input(key='v::调试款比例').value == '40'
     at.radio(key='o::付款方案').set_value(pay('到货款一次付清')); _run(at)
     assert at.text_input(key='v::到货款比例').value == '100'
     assert 'v::预付款比例' not in keys() and 'v::调试款比例' not in keys()
@@ -205,11 +210,23 @@ def test_s416_form_blocks(tmp_path, monkeypatch):
     assert at.selectbox(key='o::交货期单位').options == ['天', '周', '月', '工作日']
     at.selectbox(key='o::交货期单位').set_value('周'); at.text_input(key='v::交货期数量').input('6'); _run(at)
     at.text_input(key='v::交货日期').input('2026年11月25日'); _run(at)
+    # 按批次交货：填批数、首批日期、间隔后自动生成每批交货日期，可以再手工修改
+    at.radio(key='o::交货期方式').set_value('按批次（船套）逐条列出交货日期'); _run(at)
+    assert at.text_area(key='v::交货计划').value == ''
+    at.text_input(key='v::交货批数').input('3'); at.text_input(key='v::首批交货日期').input('2027年1月26日'); _run(at)
+    plan = at.text_area(key='v::交货计划').value
+    assert plan.split('\n') == ['首船套交期：2027年1月26日', '第二条船交期：2027年4月26日', '第三条船交期：2027年7月26日']
+    at.text_input(key='v::交货间隔月数').input('2'); _run(at)                       # 没手工改过：随输入更新
+    assert '第二条船交期：2027年3月26日' in at.text_area(key='v::交货计划').value
+    at.text_area(key='v::交货计划').input('首船套交期：2027年1月26日\n第二条船交期：2027年6月1日'); _run(at)
+    at.text_input(key='v::交货间隔月数').input('3'); _run(at)                       # 手工改过：不再覆盖
+    assert at.text_area(key='v::交货计划').value.endswith('第二条船交期：2027年6月1日')
     at.button[0].click(); _run(at)
     cfg = yaml.safe_load(open(glob.glob(str(tmp_path / 'configs' / '*.yaml'))[0], encoding='utf-8'))
-    assert cfg['选项']['付款方案'] == '预付款+到货款' and cfg['选项']['交货期方式'] == '天数+最晚日期' and cfg['选项']['交货期单位'] == '周'
-    assert cfg['变量']['到货款比例'] == '90' and cfg['变量']['交货期数量'] == '6' and '调试款比例' not in cfg['变量']
-    assert cfg['变量']['交货日期'] == '2026年11月25日' and cfg['变量']['交货期起算'] == '收到中标通知书后'
+    assert cfg['选项']['付款方案'] == '预付款+到货款' and cfg['选项']['交货期方式'] == '按批次交货'
+    assert cfg['变量']['到货款比例'] == '90' and '调试款比例' not in cfg['变量']
+    assert cfg['变量']['交货批数'] == '3' and cfg['变量']['首批交货日期'] == '2027年1月26日'
+    assert cfg['变量']['交货计划'] == '首船套交期：2027年1月26日\n第二条船交期：2027年6月1日'
 
 
 def test_po_project_preset_autofill(tmp_path, monkeypatch):

@@ -15,7 +15,7 @@ import yaml
 
 from . import paths, annexes
 from .constants import MISS_L, MISS_R
-from .assembler import numbering, COND
+from .assembler import numbering, split_conditions
 from .values import expand_options, resolve_values
 from .library import list_types
 
@@ -123,19 +123,18 @@ def check(lib, kind, aid, body):
         elif k not in lib.V and k != '本节点比例':
             errors.append(f'变量“{k}”不在变量字典中（新增变量请先在变量字典中登记）')
     for i, line in enumerate(body.split('\n'), 1):
-        m = COND.match(line)                           # 段落条件 <仅当 选项名=取值>
-        if m:
-            o = lib.opts.get(m.group(1).strip())
-            if o is None: errors.append(f'第 {i} 行：选项库中没有“{m.group(1).strip()}”')
+        for _, name, val in split_conditions(line)[0]:       # 段落条件 <仅当 选项名=取值>、<不出现于 选项名=取值>
+            o = lib.opts.get(name)
+            if o is None: errors.append(f'第 {i} 行：选项库中没有“{name}”')
             else:
-                for v in m.group(2).split('|'):
-                    if v.strip() not in o['选项']: errors.append(f'第 {i} 行：“{m.group(1).strip()}”没有取值“{v.strip()}”')
+                for v in val.split('|'):
+                    if v.strip() not in o['选项']: errors.append(f'第 {i} 行：“{name}”没有取值“{v.strip()}”')
         if line.count('**') % 2:
             warns.append(f'第 {i} 行的“**”（加粗）没有成对')
         if line.count('<u>') != line.count('</u>'):
             warns.append(f'第 {i} 行的“<u>”（下划线）没有成对')
     old = src[aid]['body'] if aid in src else body
-    lead = lambda t: (re.match(r'(#+ |<顶格> |- |\+ )?', COND.sub('', next((x for x in t.split('\n') if x.strip()), ''))).group(1) or '')
+    lead = lambda t: (re.match(r'(#+ |<顶格> |- |\+ )?', split_conditions(next((x for x in t.split('\n') if x.strip()), ''))[1]).group(1) or '')
     if kind == '条款' and lead(old) != lead(body):
         warns.append(f'首行标记由“{lead(old).strip() or "无"}”变为“{lead(body).strip() or "无"}”，条款的层级 / 编号会变化')
     if not body.strip() and (kind == '条款' or (aid in lib.annexes and annexes.has_body(lib, aid))):
@@ -182,9 +181,8 @@ def preview_html(lib, kind, aid, body):
     for line in preview_text(lib, kind, aid, body).split('\n'):
         if not line.strip():
             continue
-        m = COND.match(line)                           # 段落条件：去掉前缀，在段落开头灰字注明
-        cond = f'<span style="color:#888">〔仅当{html.escape(m.group(1).strip())}={html.escape(m.group(2).strip())}〕</span>' if m else ''
-        line = line[m.end():] if m else line
+        conds, line = split_conditions(line)           # 段落条件：去掉前缀，在段落开头灰字注明
+        cond = ''.join(f'<span style="color:#888">〔{k}{html.escape(n)}={html.escape(v)}〕</span>' for k, n, v in conds)
         if line.strip() == '<分页>':
             out.append('<hr style="border-top:1px dashed #999">'); continue
         ind, label, style = (0 if kind == '附件' else 2), '', ''

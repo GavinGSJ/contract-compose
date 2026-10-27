@@ -6,9 +6,10 @@ from .constants import MISS_L, MISS_R, NA_MARK, YES, SPECIAL
 from .money import CURRENCIES, price_calc, fmt_money, cn_upper, en_words, num_en, num_cn
 from .options import end_punct, choose
 from .payment import render_payment
+from . import schedule
 
 
-def derive_values(values):
+def derive_values(values, V=None):
     """由表单填写的值计算出合同中使用的变量（不覆盖已有的同名计算变量以外的内容）"""
     d = {}
     # ---- 质保期自定义：补句号
@@ -21,6 +22,15 @@ def derive_values(values):
     else:
         d['技术协议说明'] = d['技术协议目录标注'] = NA_MARK
         if not values.get('技术协议号'): d['技术协议号'] = 'N/A'
+    # ---- 卖方联系方式：电话，邮箱（没有邮箱时只写电话，见变量“缺省取自”）
+    if values.get('卖方.邮箱'):
+        d['卖方联系方式'] = '，'.join(x for x in (values.get('卖方.电话'), values['卖方.邮箱']) if x)
+    # ---- 分批交货计划：没有直接给“交货计划”时，由 首批交货日期、交货批数、交货间隔月数 算出每批的交货日期
+    if not values.get('交货计划') and values.get('交货批数') and values.get('首批交货日期'):
+        dflt = lambda k, x: values.get(k) or (V or {}).get(k, {}).get('默认值') or x            # 没填时取变量字典的默认值
+        lines = schedule.plan_lines(values['首批交货日期'], values['交货批数'], dflt('交货间隔月数', 3),
+                                    dflt('交货批次首行', '第一批交期：{日期}'), dflt('交货批次行', '第{序号}批交期：{日期}'))
+        if lines: d['交货计划'] = '\n'.join(lines)
     # ---- 合同价款
     c = price_calc(values.get('含税总价'), values.get('币种') or 'RMB', values.get('增值税率'))
     sym, cn, code = CURRENCIES[c['币种']]
