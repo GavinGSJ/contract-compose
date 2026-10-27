@@ -4,7 +4,8 @@
 由 S416-PRICE-底稿.xml（母本 7 列价格表：序号/产品名称/规格型号/单位/单价/总金额/备注）生成两张表：
     library/S416/tables/S416-PRICE-标准.xml    序号/产品名称/规格型号/数量/单位/单价/总金额/备注
     library/S416/tables/S416-PRICE-含重量.xml  序号/产品名称/规格型号/数量/单位/重量（KG）/单价/总金额/备注
-合计行只留总金额（单价相加没有意义）。组装时按货物明细里是否填了“重量”选用哪张（变量 价格表样式）。
+    以及各自去掉备注列的 S416-PRICE-标准-无备注.xml、S416-PRICE-含重量-无备注.xml（备注列的宽度分给产品名称、规格型号）
+合计行只留总金额（单价相加没有意义）。组装时按货物明细里是否填了“重量”“备注”选用哪张（变量 价格表样式）。
 
 用法（项目根目录）：python -I new_types/S416/建价格表脚本.py
 """
@@ -71,17 +72,26 @@ def build(base, cols):
         trs[1].append(cell(r_tpl, w, '{{行.%s}}' % k))
     trs[2].append(cell(t_label, before, '合 计（元）', idx))
     trs[2].append(cell(t_money, cols[idx][2], '{{价款_合计}}'))
-    trs[2].append(cell(t_blank, after, '', len(cols) - idx - 1))
+    if after:                                                   # 总金额后面还有列（备注）时留一个空格
+        trs[2].append(cell(t_blank, after, '', len(cols) - idx - 1))
     first = sum(w for _, _, w in cols[:3])                      # “总金额（大写）”占前三列，其后为大写金额
     trs[3].append(cell(b_label, first, '总金额（大写）', 3))
     trs[3].append(cell(b_text, TOTAL - first, '人民币（大写）：{{价款_大写}}', len(cols) - 3))
     return tbl
 
 
+def without_remark(cols):
+    """去掉备注列，宽度分给产品名称和规格型号"""
+    w = cols[-1][2]
+    out = [c for c in cols if c[0] != '备注']
+    return [(k, t, ww + (w // 2 if k == '规格型号' else w - w // 2 if k == '产品名称' else 0)) for k, t, ww in out]
+
+
 if __name__ == '__main__':
     src = os.path.join(ROOT, 'new_types', 'S416', 'S416-PRICE-底稿.xml')
     base = etree.parse(src).getroot()[0]
-    for name, cols in (('标准', STANDARD), ('含重量', WEIGHT)):
+    for name, cols in (('标准', STANDARD), ('含重量', WEIGHT), ('标准-无备注', without_remark(STANDARD)), ('含重量-无备注', without_remark(WEIGHT))):
+        assert sum(w for _, _, w in cols) == TOTAL
         root = etree.Element('block', nsmap={'w': W})
         root.append(build(base, cols))
         out = os.path.join(ROOT, 'library', 'S416', 'tables', f'S416-PRICE-{name}.xml')

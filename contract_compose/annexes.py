@@ -25,7 +25,7 @@ HAVE, HAVE_NOT = '有', '无'
 
 def numbers(lib, st=None):
     """{附件ID: 序号}，从 1 起。类型设置“附件编号: 仅提供的”时，只给“有”的附件依次编号（st 为 {附件ID: 有/无}），
-    没有编号的附件在引用处写 N/A"""
+    没有编号的附件在引用处写“附件/”"""
     ids = [a for a in lib.annexes if st is None or st.get(a)] if lib.settings.get('附件编号') == '仅提供的' else list(lib.annexes)
     return {aid: i for i, aid in enumerate(ids, 1)}
 
@@ -86,7 +86,7 @@ def toc_rows(lib, st, nums, na_mark):
 
 
 def replace_refs(lib, text, nums=None, st=None):
-    """把 {{附件:ID}}、{{附件_en:ID}}、{{附件号:ID}} 换成实际编号（没有编号的附件写 N/A）"""
+    """把 {{附件:ID}}、{{附件_en:ID}}、{{附件号:ID}} 换成实际编号（没有编号的附件写“附件/”）"""
     if '{{附件' not in text:
         return text
     nums = nums if nums is not None else numbers(lib, st)
@@ -97,8 +97,8 @@ def replace_refs(lib, text, nums=None, st=None):
             n = max(nums.values(), default=0)
         elif aid not in lib.annexes:
             raise SystemExit(f'引用的附件“{aid}”不在 library/{lib.ctype} 配方的“附件/顺序”中，已有：{list(lib.annexes)}')
-        elif aid not in nums:
-            return 'N/A'
+        elif aid not in nums:                                # 没有提供的附件：写“附件/”
+            return {'附件': '附件/', '附件_en': label_n(lib, 0, True).rsplit(' ', 1)[0] + ' /', '附件号': '/'}[kind]
         else:
             n = nums[aid]
         return {'附件': label_n(lib, n), '附件_en': label_n(lib, n, True), '附件号': no_text(lib, n)}[kind]

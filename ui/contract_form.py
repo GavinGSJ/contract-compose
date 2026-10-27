@@ -4,7 +4,7 @@ import os, re, io, glob, datetime
 import yaml
 import streamlit as st
 
-from contract_compose import paths, payment, money, annexes
+from contract_compose import paths, payment, money, annexes, schedule
 from contract_compose.constants import SPECIAL
 from contract_compose.assembler import build, numbering, goods_rows, GOODS_COLS
 from contract_compose.library import load_library, load_type, list_types, for_type
@@ -214,6 +214,9 @@ def option_block(name):
             with cols[i % len(cols)]:
                 if var in opts:
                     option_select(var)
+                elif V.get(var, {}).get('多行'):
+                    st.text_area(LABEL.get(var, var), key=key(var), help=V.get(var, {}).get('说明') or None, height=170)
+                    OWNED_SHOWN.append(var)
                 else:
                     st.text_input(LABEL.get(var, var), key=key(var), help=V.get(var, {}).get('说明') or None)
                     OWNED_SHOWN.append(var)
@@ -242,7 +245,22 @@ def autofill_project():
     ss['_proj'] = pid
 
 
+def autofill_schedule():
+    """按批次交货：由 首批交货日期、交货批数、交货间隔月数 生成“交货计划”（每批一行）；没改动过的计划随输入更新，手工改过的保留"""
+    ss = st.session_state
+    if '交货计划' not in V or '交货批数' not in V:
+        return
+    g = lambda k: str(ss.get(key(k), '') or V.get(k, {}).get('默认值', '') or '').strip()
+    lines = schedule.plan_lines(g('首批交货日期'), g('交货批数'), g('交货间隔月数') or 3, g('交货批次首行'), g('交货批次行'))
+    new = '\n'.join(lines) if lines else ''
+    cur = ss.get(key('交货计划'))
+    if cur in (None, '') or cur == ss.get('_plan_auto'):
+        ss[key('交货计划')] = new
+    ss['_plan_auto'] = new
+
+
 autofill_project()
+autofill_schedule()
 PID = str(st.session_state.get(key('项目编号'), '')).strip().upper()
 tabs = st.tabs(['① 必填信息', '② 条款写法', '③ 默认条款参数', '④ 合同附件'])
 
