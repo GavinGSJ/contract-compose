@@ -26,7 +26,7 @@ def main(ct):
         refs = sorted({x[4:] for x in ph if x.startswith('ref:')} | {x.split(':', 1)[1] for x in ph if x.startswith(('附件:', '附件_en:', '附件号:'))})
         note = []
         if it.get('条件'): note.append(f"条件：{it['条件']}（不成立时标注不适用）")
-        if it.get('仅当选项'): note.append('仅当 ' + '、'.join(f'{k}={v}' for k, v in it['仅当选项'].items()) + '（否则标注不适用）')
+        if it.get('仅当选项'): note.append('仅当 ' + '、'.join(f'{k}={v}' for k, v in it['仅当选项'].items()) + ('（否则整条不出现）' if it.get('不符时') == '不出现' else '（否则标注不适用）'))
         rows.append(f"| {nos[aid]} | {aid} | {m['名称']} | {m['层级']} | `{fn}` | {'、'.join(vals)} | {'、'.join(ops)} | {'、'.join(refs)} | {'；'.join(note)} |")
     out = [f'# {ct} 原子总览', '',
            '按合同顺序列出全部条款原子。“编号”为默认组装（全部条款）时的条款号；改条款文字时打开“文件”列对应的 `atoms/` 文件。',

@@ -326,3 +326,27 @@ def test_editor_new_clause_blocked_until_valid(lib_copy, tmp_path, monkeypatch):
     assert save().disabled and any('XXX-99' in e.value for e in at.error)
     at.text_area(key='nw::body').input('只有文字的新条款。'); _run(at)
     assert not save().disabled and at.text_input(key='nw::name').value == ''              # 名称留空时取内容开头
+
+
+def test_fa_new_form_options_and_annex_names(tmp_path, monkeypatch):
+    """FA：计算方法、交货地点、第 18 章在“必填信息”中选择；附件名称可按合同修改并随配置保存、重新打开"""
+    import glob, shutil, yaml
+    from contract_compose import paths
+    cfg_dir = tmp_path / 'configs'; cfg_dir.mkdir()
+    monkeypatch.setattr(paths, 'CONFIGS', str(cfg_dir))
+    monkeypatch.setattr(paths, 'OUTPUT', str(tmp_path / 'output'))
+    at = _run(AppTest.from_file(APP))
+    assert at.selectbox(key='ctype').value == 'FA'
+    for n in ('计算方法', '交货地点', '沟通渠道'):
+        assert at.radio(key='o::' + n)
+    at.radio(key='o::沟通渠道').set_value('不包含'); at.radio(key='o::计算方法').set_value(at.radio(key='o::计算方法').options[2]); _run(at)
+    at.text_input(key='an::ANX-TA').set_value('技术协议（最终签字版）'); at.text_input(key='ane::ANX-TA').set_value('Technical Agreement (Signed)'); _run(at)
+    at.button[0].click(); _run(at)
+    saved = [p for p in glob.glob(str(cfg_dir / '*.yaml'))]
+    cfg = yaml.safe_load(open(saved[0], encoding='utf-8'))
+    assert cfg['选项']['沟通渠道'] == '不包含' and cfg['选项']['计算方法'] == 'c' and cfg['选项']['交货地点'] == '惠生场地'
+    assert cfg['附件名称'] == {'ANX-TA': {'名称': '技术协议（最终签字版）', '名称_en': 'Technical Agreement (Signed)'}}
+    # 重新打开：改过的名称带回表单
+    at2 = _run(AppTest.from_file(APP))
+    at2.selectbox(key='cfg_file').set_value(os.path.basename(saved[0])); _run(at2); _run(at2)
+    assert at2.text_input(key='ane::ANX-TA').value == 'Technical Agreement (Signed)' and at2.radio(key='o::沟通渠道').value == '不包含'

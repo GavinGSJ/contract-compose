@@ -1,9 +1,9 @@
-选用的写法：计算方法=a、质保期=F484、付款方式=预付_到货、质保方式=质保函、支付方式=银行转账、交货时间=按订单、交货地点=DDP、包装方式=g、运输方式=a、附件=不提供：附件九
+选用的写法：计算方法=a、质保期=F484、付款方式=预付_到货、质保方式=质保函、支付方式=银行转账、交货时间=按订单、交货地点=惠生场地、包装方式=g、运输方式=a、附件=不提供：附件九、沟通渠道=包含
 未填变量：卖方.SWIFT、卖方.传真、卖方.信用代码、卖方.开户行、卖方.账号、卖方.邮编、预付款_天数、预付款_文件数
 条款原子：106
 标注不适用：
 
-sha256 word/document.xml: 173ffc35eaed6378bf9654fc7cfde2af41478f8f98bf922792c3712d58656d7d
+sha256 word/document.xml: 86bfa33dd3252634848dfd647152832618665b0d5c31be7ee34dd15934754d83
 sha256 word/footer1.xml: e4dc14e8d34dcb7d0448422f577ae31128b17d82f8b32efded191451fc8deb56
 sha256 word/footer2.xml: 814659d03483f8480a14cb9fc1c7a1392919a5f45684e13c51730b37b81ea494
 sha256 word/header1.xml: 317f67624f16cad543b445f058e047ba6e2f6abea5c565d327649c6b1bb0a339
@@ -13,8 +13,8 @@ sha256 word/numbering.xml: 916a52f694d57eb73fa0ff229f7743eb6dc788af58c6bd5310483
 sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807bcf6cfe1f
 
 ---- 正文 ----
-[-5] 框架采购合同
-[-5] Frame Master Contract
+[-5] 防腐油漆框架采购合同
+[-5] Frame Master Contract for Anti-corrosion Paint
 [-6] 项目名称：F484	合同编号：F484-FA-EXAMPLE-001
 [] 
 [-7] 签订地点：上海浦东新区
@@ -75,11 +75,11 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-0] 合同的组成 Contract components
 [-b] 本订货合同由以下部分组成：This order contract consists of the following parts:
 [-2] ATTACHMENT 10 PROJECT SPECIAL REQUIREMENTS 附件 10项目特殊条款（如有）
-[-2] ATTACHMENT 5 TECHNICAL AGREEMENT 附件 5 技术协议（编号 No.：EX-TA-001；版本 Rev.：Rev.0；日期 Date：2026-09-30）
+[-2] ATTACHMENT 5 TECHNICAL AGREEMENT 附件 5 技术协议（编号：EX-TA-001；版本：Rev.0；日期：2026-09-30）
 [-2] 合同正文Contract Text
 [-2] 合同附件Contract Annexes
-[-0] 合同正文与合同附件不一致时，以合同正文为准。本合同的其它附件与附件五《技术协议》（以下简称《技术协议》，编号：N/A，版本：N/A，日期：N/A）不一致时，以《技术协议》为准。
-[-b] In case of any inconsistency between the Contract Text and Contract Annexes, the Contract Text shall prevail. In case of any inconsistency between the other annexes of this CONTRACT and Annex 5 "Technical Agreement" (hereinafter referred to as "Technical Agreement", No. N/A, Rev. N/A, Date: N/A), the "Technical Agreement" shall prevail.
+[-0] 合同正文与合同附件不一致时，以合同正文为准。本合同的其它附件与附件五《技术协议》（以下简称《技术协议》，编号：EX-TA-001，版本：Rev.0，日期：2026-09-30）不一致时，以《技术协议》为准。
+[-b] In case of any inconsistency between the Contract Text and Contract Annexes, the Contract Text shall prevail. In case of any inconsistency between the other annexes of this CONTRACT and Annex 5 "Technical Agreement" (hereinafter referred to as "Technical Agreement", No. EX-TA-001, Rev. Rev.0, Date: 2026-09-30), the "Technical Agreement" shall prevail.
 [-0] 本合同为框架合同，买方可依据本合同向卖方下发采购订单（简称“订单”），该等订单受本合同条款约束。但本合同不构成买方向卖方的采购承诺，也不构成买方向卖方的独家采购承诺，买方在任何情况下都没有义务发出采购订单，也无义务做出任何有关最低订单数量的承诺。
 [-b] This Contract is a framework contract, BUYER may place Purchase Orders (hereinafter referred to as the "Order") with the SELLER under this CONTRACT, and such orders shall be subject to the terms of this CONTRACT. This Contract does not constitute a procurement commitment or an exclusive purchase commitment from BUYER to SELLER. BUYER shall not be obliged to issue Orders under any circumstances, nor shall it be obliged to make any commitment regarding minimum order quantities.
 [-0] Definitions
@@ -162,7 +162,7 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-] 合同价款及支付方式 Contract Price and Payment Terms
 [-0] 合同价款构成 Contract price breakdown：
 [表] 序号 No. | 描述 Description | 固定单价Fixed unit price  | 预估数量Estimated Quantity | 预估总金额合计Estimated Subtotal
-[表] 1 | 货物 GOODS: 防腐油漆 Anti-corrosion Paint详细价格请见附件一 供货明细表，详细供货范围请见技术协议 Detailed Price breakdown refer to Annex 1 "Supply Details Table" and Detailed scope of supply refer to Annex 5 "Technical Agreement" | 详见附件一Refer to Annex 1 | 1 批/Lot | ￥1,130,000.00
+[表] 1 | 货物 GOODS: 防腐油漆 Anti-corrosion Paint详细价格请见附件一 供货明细表，详细供货范围请见技术协议 Detailed Price breakdown refer to Annex 1 "Supply Details Table" and Detailed scope of supply refer to Annex 5 "Technical Agreement" | 详见附件一Refer to Annex 1 | 1 批/Lot | ￥1,000,000.00
 [表] 2 | 根据技术协议提供技术服务（如适用）Technical Service in accordance with the Technical Agreement | 已包含Include | 1 批/Lot | 已包含Included
 [表] 3 | 提供符合技术协议的技术文件Documentation in accordance with the Technical Agreement | 已包含Include | 1 批/Lot | 已包含Included
 [表]  | 不包含增值税的合同总价 Estimated Total Price with VAT excluded： | ￥1,000,000.00
@@ -209,7 +209,7 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-2] 卖方送货或发运至买方的施工现场或仓库，或买方指定的其它地点The SELLER shall deliver or ship the GOODS to the BUYER's construction site or warehouse, or other location designated by the BUYER。
 [-2] 买方在卖方工厂、仓库或其他指定地点提货，卖方配合装货并捆扎固定The BUYER shall pick up the GOODS at the SELLER's factory, warehouse, or other designated location, and the SELLER shall cooperate in loading and tying them in place。
 [-0] 交付要求：标的物发运或送货的，卖方应提前（1）天将[发货通知单]由惠生一体化平台推送给买方合同经办人及收货人。如规定买方派人到卖方现场验收或监造的，必须由买方检验合格，并出具[产品检验放行单]后，卖方才能组织发货，运输超限物资的，卖方应提供标的物运输定位信息给合同收货人，具体详见附件三《交货要求》。Delivery Requirements: If the GOODS is shipped or delivered, the SELLER shall submit [Delivery Notice] to the BUYER's contract agent and consignee on the Wison Integrated Platform (1) days in advance. If it is stipulated that the BUYER shall send personnel to the SELLER's site for acceptance or supervision, the BUYER must inspect and pass the inspection and issue a Product Inspection Release Form before the SELLER can organize shipment. If the transportation of oversized materials is exceeded, the SELLER shall provide the transportation positioning information of the GOODS to the contract consignee. For details, please refer to Annex 3 "Delivery Requirements".
-[-0] 交货地点：买方的施工现场或仓库Delivery location: The BUYER's construction site or warehouse.
+[-0] 交货地点：惠生启东场地（江苏省南通市启东市吕四港经济开发区卫海大道18号）或者买方指定的施工现场或仓库Delivery location: Wison Qidong Site (Address: No. 18 Weihai Avenue, Lvsi Port Economic Development Zone, Qidong, Nantong, Jiangsu, China) or any construction site or warehouse designated by the BUYER.
 [-0] 交货状态：按附件五《技术协议》要求（外购配套件需经主机厂发往现场，如直接发货时，应书面取得买方同意，并遵守发货要求；随机资料单独装箱，不得与设备混装）。Delivery status: According to the requirements of Annex 5 "Technical Agreement" (purchased accessories need to be sent to the site from the SELLER. If shipped directly, the BUYER's consent should be obtained in writing and the delivery requirements should be followed; documentation should be packed separately and not mixed with equipment).
 [-0] 文件资料交付Delivery of Documents and Materials：
 [-2] 文件资料的数量、内容、交付时间等详细要求按《技术协议》执行，格式见本合同附件二《文件资料交付要求》，不符合约定的文件资料视为无效，卖方须修改升版直至完全符合约定要求。The detailed requirements for the quantity, content, delivery time, and other details of the documentation shall be executed in accordance with the Technical Agreement. The format is shown in Annex 2 "Documentation Delivery Requirements" of this CONTRACT. Any documentation that do not comply with the agreement shall be deemed invalid, and the SELLER shall modify and upgrade them until they fully meet the agreed requirements

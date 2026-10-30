@@ -13,7 +13,7 @@ if stale(sys.modules.get('contract_compose'), os.path.join(os.path.dirname(os.pa
 st.set_page_config(page_title='合同生成', page_icon='📄', layout='wide')
 
 # 切换页面时保留合同表单中已填写的内容（Streamlit 默认会清掉未显示页面的输入）
-KEEP = ('v::', 'o::', 'c::', 'ax::', 'ed::', 'nw::', 'ins::', 'edv::')
+KEEP = ('v::', 'o::', 'c::', 'ax::', 'ed::', 'nw::', 'ins::', 'edv::', 'an::', 'ane::')
 for k in list(st.session_state.keys()):
     if k.startswith(KEEP) or k in ('ctype', 'entity', 'bond', 'na', 'ta', 'pay_nodes', 'pay_docs', 'cfg_file'):
         st.session_state[k] = st.session_state[k]
