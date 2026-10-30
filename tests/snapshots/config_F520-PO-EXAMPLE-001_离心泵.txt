@@ -3,7 +3,7 @@
 条款原子：154
 标注不适用：
 
-sha256 word/document.xml: a7615263658908bbaac330d0e4067cd314cd6174eb87f04d1ccd7df37a65b320
+sha256 word/document.xml: d23529864d2b72725c1b647bda4828a6a997cba500a7042e46fe83dcd55916f0
 sha256 word/footer1.xml: bc66c9c06f311f19de4d295c87d8a5a9cc83a3a8e7e0903dfa3f9bb634b9ece0
 sha256 word/header1.xml: dc47730e3d31552902182bd9ff1271f85ada8a8ca73a4a3010c3d965fcc45b87
 sha256 word/numbering.xml: ee7c9a9405e56b9fed9c65c9169448653993615de6084b0577a95246ae6bad36
@@ -49,7 +49,7 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [] ⏎
 [] 
 [表] 买 方BUYER: | 启东惠生能源贸易有限公司 | 卖 方SELLER: | 示例泵业有限公司
-[表] 地 址Address: | 江苏省南通市启东市昌四港经济开发区卫海大道 18 号 | 地 址Address: | 示例地址
+[表] 地 址Address: | 江苏省南通市启东市吕四港经济开发区卫海大道 18 号 | 地 址Address: | 示例地址
 [表] 电 话/Tel: | 0513-85358800 | 电 话Tel: | 【待填：卖方.电话】
 [表] 传 真/Fax： | 0513-85968855 | 传 真/Fax： | 【待填：卖方.传真】
 [表] 邮 编/Postcode： | 226200 | 邮 编/Postcode： | 【待填：卖方.邮编】
@@ -677,7 +677,7 @@ sha256 word/styles.xml: 79e94109f7ab9edaaf6d0704a7aafc46db5a38c0d3d7d36e3cde701e
 [-b] All reports, notices, and other communications to be sent pursuant to CONTRACT shall be made in writing and delivered by hand or international courier, postage prepaid, and addressed to the following legal address of each party or to such changed address as shall be given by written notice or email. Notices may also be made by electronic mail.
 [-b] 所有依照合同发出的报告、通知和其他信函都应以书面形式，并且由专人递送或通过国际快递，邮资已付，按照下列合法地址进行传达，对于地址变更，变更方应以书面或电子邮件的形式通知对方。
 [表] BUYER 买方 | 启东惠生能源贸易有限公司 | SELLER 卖方 | 示例泵业有限公司
-[表] Address地址 | 江苏省南通市启东市昌四港经济开发区卫海大道 18 号 | Address地址 | 示例地址
+[表] Address地址 | 江苏省南通市启东市吕四港经济开发区卫海大道 18 号 | Address地址 | 示例地址
 [表] Attn 收件人 | Gavin | Attn 收件人 | Zhang San
 [表] Tel 电话 | 0513-85358800 | Tel 电话 | 【待填：卖方.电话】
 [表] Email 邮箱 | buyer@example.com | Email 邮箱 | sales@example.com

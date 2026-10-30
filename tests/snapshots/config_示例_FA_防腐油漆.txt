@@ -3,7 +3,7 @@
 条款原子：106
 标注不适用：
 
-sha256 word/document.xml: 86bfa33dd3252634848dfd647152832618665b0d5c31be7ee34dd15934754d83
+sha256 word/document.xml: 5d223fa079a6a5a685fcb19bf710ec663fb8de02f6c842488dc6340afe8c4400
 sha256 word/footer1.xml: e4dc14e8d34dcb7d0448422f577ae31128b17d82f8b32efded191451fc8deb56
 sha256 word/footer2.xml: 814659d03483f8480a14cb9fc1c7a1392919a5f45684e13c51730b37b81ea494
 sha256 word/header1.xml: 317f67624f16cad543b445f058e047ba6e2f6abea5c565d327649c6b1bb0a339
@@ -20,7 +20,7 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-7] 签订地点：上海浦东新区
 [-7] Signed at: Pudong, Shanghai
 [表] 买 方BUYER: | 启东惠生能源贸易有限公司 | 卖 方SELLER: | 示例涂料有限公司
-[表] 地 址Address: | 江苏省南通市启东市昌四港经济开发区卫海大道 18 号 | 地 址Address: | 示例地址
+[表] 地 址Address: | 江苏省南通市启东市吕四港经济开发区卫海大道 18 号 | 地 址Address: | 示例地址
 [表] 电 话/Tel: | 0513-85358800 | 电 话Tel: | 021-00000000
 [表] 传 真/Fax： | 0513-85968855 | 传 真/Fax： | 【待填：卖方.传真】
 [表] 邮 编/Postcode： | 226200 | 邮 编/Postcode： | 【待填：卖方.邮编】

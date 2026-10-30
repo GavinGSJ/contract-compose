@@ -3,7 +3,7 @@
 条款原子：106
 标注不适用：
 
-sha256 word/document.xml: 2889910ebcece6027aa1f87bfcb1add565fc3307e66026bd346d724bcdc000f2
+sha256 word/document.xml: 098fb54d724bc81e80e90027284cce09cb032b99130f00f1cb0aaa311d9e6e99
 sha256 word/footer1.xml: e4dc14e8d34dcb7d0448422f577ae31128b17d82f8b32efded191451fc8deb56
 sha256 word/footer2.xml: 814659d03483f8480a14cb9fc1c7a1392919a5f45684e13c51730b37b81ea494
 sha256 word/header1.xml: 44d2d63550d2145763b3c7bad34a9608181f690b784cfd9c924f502e79d1975f
@@ -20,7 +20,7 @@ sha256 word/styles.xml: 94d08b15abb321535672aef971b3c10dda69e9f6fdd635d2439e807b
 [-7] 签订地点：上海浦东新区
 [-7] Signed at: Pudong, Shanghai
 [表] 买 方BUYER: | 【变量：买方.名称｜启东惠生能源贸易有限公司】 | 卖 方SELLER: | 【变量：卖方.名称】
-[表] 地 址Address: | 【变量：买方.地址｜江苏省南通市启东市昌四港经济开发区卫海大道 18 号】 | 地 址Address: | 【变量：卖方.地址】
+[表] 地 址Address: | 【变量：买方.地址｜江苏省南通市启东市吕四港经济开发区卫海大道 18 号】 | 地 址Address: | 【变量：卖方.地址】
 [表] 电 话/Tel: | 【变量：买方.电话｜0513-85358800】 | 电 话Tel: | 【变量：卖方.电话】
 [表] 传 真/Fax： | 【变量：买方.传真｜0513-85968855】 | 传 真/Fax： | 【变量：卖方.传真】
 [表] 邮 编/Postcode： | 【变量：买方.邮编｜226200】 | 邮 编/Postcode： | 【变量：卖方.邮编】
