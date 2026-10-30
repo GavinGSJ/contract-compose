@@ -98,6 +98,7 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         if proj.get(k) not in (None, ''): values.setdefault(k, proj[k])
     if settings['项目附件字段']:                          # 各项目在附件库之后的附加附件（预存库中每行“中文名 | 英文名”）
         annexes.add_extra(lib, 'ANX-P', annexes.parse_extra(proj.get(settings['项目附件字段'])))
+    annexes.rename(lib, cfg.get('附件名称'))             # 本合同中改过名称的附件（目录、附件清单、附件标题）
     annexes.add_extra(lib, 'ANX-X', [(str(a.get('名称') or '').strip(), str(a.get('名称_en') or '').strip())    # 本合同另加的附件
                                      for a in cfg.get('自定义附件') or []])
     goods = []
@@ -119,12 +120,20 @@ def build(cfg, regress=False, keep=None, mark_vars=False):
         if any(v.get('预设变量') for v in o['选项'].values()):
             for var, val in (o['选项'][choose(name, o, values, choices)].get('预设变量') or {}).items():
                 values.setdefault(var, str(val))
+    cond_used = set()
+    if not regress:                                    # 配方中写了“不符时: 不出现”的条款：选项不符时整条（整章）不出现，不标注不适用
+        shown_items = []
+        for it in recipe['顺序']:
+            wants = {k: v for k, v in (it.get('仅当选项') or {}).items() if k in opts} if it.get('不符时') == '不出现' else {}
+            cond_used.update(wants)
+            if all(matches(choose(k, opts[k], values, choices), v) for k, v in wants.items()):
+                shown_items.append(it)
+        recipe = {**recipe, '顺序': shown_items}
     conds = set(cfg.get('条件') or [])
     # 所有条款一律保留；条件不成立或列入“不适用”的条款标注不适用（付款条款除外）
     order = [it['原子'] for it in recipe['顺序'] if '原子' in it]
     na = set() if regress else {it['原子'] for it in recipe['顺序']
                                 if '原子' in it and it.get('条件') and it['条件'] not in conds}
-    cond_used = set()
     if not regress:
         na |= set(cfg.get('不适用') or [])
         for it in recipe['顺序']:                  # 仅在某选项取某值时适用（如 仲裁细则 仅当 争议解决=仲裁）

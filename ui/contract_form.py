@@ -112,7 +112,11 @@ def load_cfg():
 
 def apply_cfg(cfg):
     for k in list(st.session_state):
-        if k.startswith(('v::', 'o::', '_ch::')): del st.session_state[k]
+        if k.startswith(('v::', 'o::', '_ch::', 'an::', 'ane::')): del st.session_state[k]
+    for aid, n in (cfg.get('附件名称') or {}).items():
+        if aid in lib.annexes:
+            st.session_state['an::' + aid] = str(n.get('名称') or lib.annexes[aid]['meta']['名称'])
+            st.session_state['ane::' + aid] = str(n.get('名称_en') or lib.annexes[aid]['meta'].get('名称_en') or '')
     for k, v in (cfg.get('变量') or {}).items():
         st.session_state[key(k)] = '' if v is None else str(v)
     for k, v in (cfg.get('选项') or {}).items():
@@ -143,7 +147,7 @@ if '_pending_cfg' in st.session_state:
 
 def change_type():
     for k in list(st.session_state):           # 换合同类型时清空条款写法与付款设置，以及未改动过的默认值
-        if k.startswith(('o::', 'ax::', '_ch::')) or k in ('pay_nodes', 'pay_docs', 'na', 'goods_base', 'goods_ed', 'extra_base', 'extra_ed'):
+        if k.startswith(('o::', 'ax::', '_ch::', 'an::', 'ane::')) or k in ('pay_nodes', 'pay_docs', 'na', 'goods_base', 'goods_ed', 'extra_base', 'extra_ed'):
             del st.session_state[k]
         elif k.startswith('v::') and str(st.session_state[k]) == str(V.get(k[3:], {}).get('默认值', '')):
             del st.session_state[k]
@@ -505,6 +509,15 @@ with tabs[3]:
                 cols[i % 3].text_input(V[name].get('说明') or name, key=vk)
                 anx_fields.append(name)
     st.session_state['_anx'] = anx_fields
+    with st.expander('修改附件名称（只改本份合同，目录、附件清单和附件标题随之改变）'):
+        st.caption('附件库中的名称是默认值，这里改了只对本份合同有效；要长期改名，用“条款维护 → 附件”。')
+        for aid, a in lib.annexes.items():
+            m = a['meta']
+            c1, c2, c3 = st.columns([1, 3, 3])
+            c1.write(annexes.label(lib, aid, nums=ANUMS) or '（未编号）')
+            for kk, col, base, ph in (('an::', c2, m['名称'], '中文名称'), ('ane::', c3, m.get('名称_en') or '', '英文名称')):
+                if kk + aid not in st.session_state: st.session_state[kk + aid] = base
+                col.text_input(ph, key=kk + aid, label_visibility='collapsed', placeholder=ph)
     _pf = SETTINGS['项目附件字段']
     if _pf:
         _items = annexes.parse_extra(lib.projects.get(PID, {}).get(_pf))
@@ -553,6 +566,12 @@ def collect():
     if na: cfg['不适用'] = sorted(na, key=ALL_ORDER.index)
     if GOODS: cfg['货物'] = st.session_state.get('_goods') or []
     if st.session_state.get('_extras'): cfg['自定义附件'] = st.session_state['_extras']
+    names = {}
+    for a, x in lib.annexes.items():
+        zh, en = (str(st.session_state.get('an::' + a, x['meta']['名称'])).strip(), str(st.session_state.get('ane::' + a, x['meta'].get('名称_en') or '')).strip())
+        n = {**({'名称': zh} if zh and zh != x['meta']['名称'] else {}), **({'名称_en': en} if en and en != (x['meta'].get('名称_en') or '') else {})}
+        if n: names[a] = n
+    if names: cfg['附件名称'] = names
     if lib.annexes:
         cfg['附件'] = {a: (annexes.HAVE if st.session_state.get('ax::' + a, True) else annexes.HAVE_NOT)
                      for a in lib.annexes if not annexes.follows(lib, a)}

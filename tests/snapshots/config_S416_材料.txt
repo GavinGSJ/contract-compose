@@ -3,7 +3,7 @@
 条款原子：91
 标注不适用：SCO-03、QTY-03、INS-06、ERE-00、LIA-05、SPC-02
 
-sha256 word/document.xml: 1699f55a4a6015221358adabf84fe1a1947983e141e33a14481263c83240b90a
+sha256 word/document.xml: a1ce258d7e87cf0dbda7d089f1ce85979437ee71283c112a7d511e86d8ad6894
 sha256 word/footer1.xml: b2c99193ff46ea939a12ba466b5b9d90fd7de7def8c0862657b040960c9ade6d
 sha256 word/header1.xml: 9a1ec43fdd94b39b273e71171543e4509c3c34df28aba685bdeeb7e858d335e8
 sha256 word/numbering.xml: e170b029010d289731dbc33c0e33e0e83a0e888037b1aff1a60505a3bd274378
@@ -12,7 +12,7 @@ sha256 word/styles.xml: 991c9c63ed44ccb61cd0d21910dd1c5e18027c98c9e6296847ad6f74
 ---- 正文 ----
 [] 采 购 订 单
 [表] 买方：启东惠生能源贸易有限公司 | 合同号：S416-PO-EXAMPLE-002
-[表] 地址：江苏省南通市启东市昌四港经济开发区卫海大道 18 号 | 签订时间：2026年10月  日
+[表] 地址：江苏省南通市启东市吕四港经济开发区卫海大道 18 号 | 签订时间：2026年10月  日
 [] 
 [] 卖方：示例钢铁有限公司
 [] 地址：示例地址

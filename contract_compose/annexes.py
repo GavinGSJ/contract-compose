@@ -12,6 +12,7 @@
 条款中引用附件（编号随顺序自动变化）：
     {{附件:ID}} → 附件五    {{附件_en:ID}} → Annex 5    {{附件号:ID}} → 5
     类型设置“附件编号格式: 字母”时：附件B / ATTACHMENT B / B（PO）。ID 写“末位”表示最后一个附件（如“附件C至{{附件号:末位}}”）
+每份合同可以在配置的“附件名称”中改附件的中 / 英文名称（目录、附件清单、附件标题同步）。
 每份合同可以带额外的附件：项目预设（预存库“项目信息”中类型设置“项目附件字段”指定的字段，每行“中文名 | 英文名”）和配置中的“自定义附件”。
 """
 import re
@@ -73,6 +74,18 @@ def add_extra(lib, prefix, items):
         if zh:
             aid = f'{prefix}{i}'
             lib.annexes[aid] = {'meta': {'id': aid, '名称': zh, '名称_en': en, '类型': '文件', '默认': HAVE}, 'body': '', 'file': None}
+
+
+def rename(lib, names):
+    """本合同中改过名称的附件：{附件ID: {名称, 名称_en}}（只写改过的；英文名留空即不改）"""
+    for aid, n in (names or {}).items():
+        if aid not in lib.annexes:
+            raise SystemExit(f'配置“附件名称”中有未知的附件：{aid}，已有：{list(lib.annexes)}')
+        m = lib.annexes[aid]['meta']
+        if str(n.get('名称') or '').strip():
+            m['名称'] = str(n['名称']).strip()
+        if str(n.get('名称_en') or '').strip():
+            m['名称_en'] = str(n['名称_en']).strip()
 
 
 def toc_rows(lib, st, nums, na_mark):

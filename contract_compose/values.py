@@ -17,11 +17,12 @@ def derive_values(values, V=None):
         if values.get(k): d[k] = end_punct(values[k], en)
     # ---- 技术协议
     if str(values.get('有技术协议', '是')) in [str(y) for y in YES]:
-        d['技术协议说明'] = ('（编号 No.：{{技术协议号}}；版本 Rev.：{{技术协议版本}}；日期 Date：{{技术协议日期}}）')
+        d['技术协议说明'] = '（编号：{{技术协议号}}；版本：{{技术协议版本}}；日期：{{技术协议日期}}）'
         d['技术协议目录标注'] = ''
     else:
         d['技术协议说明'] = d['技术协议目录标注'] = NA_MARK
-        if not values.get('技术协议号'): d['技术协议号'] = 'N/A'
+        for k in ('技术协议号', '技术协议版本', '技术协议日期'):         # 没有技术协议时 1.2 中的编号、版本、日期写 N/A
+            if not values.get(k): d[k] = 'N/A'
     # ---- 卖方联系方式：电话，邮箱（没有邮箱时只写电话，见变量“缺省取自”）
     if values.get('卖方.邮箱'):
         d['卖方联系方式'] = '，'.join(x for x in (values.get('卖方.电话'), values['卖方.邮箱']) if x)

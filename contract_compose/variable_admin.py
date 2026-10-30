@@ -126,6 +126,28 @@ def set_default(lib, var, value, desc=None, scope='auto', reason=''):
     return {**res, 'message': f'已修改“{var}”的默认值（{scope_txt}）' if res['ok'] else res['message']}
 
 
+# ======================= 新增条款时一并登记新变量 =======================
+def new_variable_writes(lib, specs, aid):
+    """新变量 [{'name', 'default', 'desc', 'scope'(type / common)}] → ({变量文件: 新文本}, [新建的变量名])。
+    已有的变量跳过；没有默认值的变量为“必填”（表单中必须填写，未填在 Word 中标黄）。变量名不合法时抛 ValueError"""
+    writes, made = {}, []
+    for s in specs or []:
+        var = (s.get('name') or '').strip()
+        if not var or var in lib.V:
+            continue
+        if not NAME_RE.match(var) or var.startswith(SPECIAL):
+            raise ValueError(f'变量名“{var}”不合法：只能用中文、英文、数字、下划线和点，如“质保月数”“卖方.传真”')
+        default = str(s.get('default') or '').replace('\n', ' ').strip()
+        fields = {'默认值': default, '说明': (s.get('desc') or '').strip() or '由条款维护页面新建', '原子': [aid],
+                  '类别': '有默认值' if default else '必填', '类型': '值'}
+        p = common_file() if s.get('scope') == 'common' else type_file(lib)
+        cur = writes[p] if p in writes else (open(p, encoding='utf-8').read() if os.path.exists(p) else '')
+        writes[p] = cur.rstrip('\n') + '\n' + yaml.safe_dump({var: fields}, allow_unicode=True, sort_keys=False, width=10 ** 6)
+        lib.V[var] = fields                                  # 供检查使用
+        made.append(var)
+    return writes, made
+
+
 # ======================= 把文字改成变量 =======================
 def make_variable(lib, kind, aid, text, var, default=None, desc='', scope='type', replace_all=True, reason=''):
     """把条款 / 附件正文中的 text 换成 {{var}}。var 不存在时新建（默认值默认为原文字，合同内容不变）"""

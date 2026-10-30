@@ -2,18 +2,22 @@
 """页面：条款维护。
 
 条款 / 附件：按章浏览或查找 → 修改文字（保存前对比与检查）、预览、调整结构（新增 / 移除 / 移动）、把文字改成变量、历史版本。
+＋ 新增条款：选位置（章、放在哪一条之后）、写名称和内容（可复制已有条款作模板、插入变量 / 引用、正文里直接写新变量并一并登记）、
+  实时预览和检查，保存后自动编号、更新目录和引用。
 变量：查看变量用在哪里，修改默认值与说明。
 所有保存都会自动备份、记入修订记录，并用示例合同试生成，出错自动还原。
 """
 import streamlit as st
 
 from contract_compose import maintenance as mt, structure as sc, variable_admin as va
+from contract_compose.constants import SPECIAL
 from contract_compose.library import load_library, load_type, list_types
 
 ss = st.session_state
 TYPES = list_types()
 TYPE_NAMES = {t: load_type(t)['名称'] for t in TYPES}
-MODES = ['条款', '附件', '变量']
+MODES = ['条款', '附件', '变量', '新增条款']
+MODE_LABEL = {'新增条款': '＋ 新增条款'}
 
 
 def flash(kind, text):
@@ -48,7 +52,8 @@ def reason(ctype, kind, aid):
 def do_save(ctype, kind, aid):
     res = mt.save(load_library(ctype), kind, aid, ss.get(k('body', ctype, kind, aid), ''),
                   name=ss.get(k('name', ctype, kind, aid), '').strip() or None, reason=ss.get(k('reason', ctype, kind, aid), ''),
-                  name_en=ss.get(k('name_en', ctype, kind, aid)) if kind == '附件' else None)
+                  name_en=ss.get(k('name_en', ctype, kind, aid)) if kind == '附件' else None,
+                  variables=ss.get(k('vspecs', ctype, kind, aid)))
     if res['ok']: reset(ctype, kind, aid)
     finish(res, ctype, kind, success='已保存，旧版本已备份')
 
@@ -107,6 +112,87 @@ def do_add_annex(ctype, aid):
     finish(res, ctype, '附件', res.get('id'))
 
 
+def append_text(bodykey, text):
+    ss[bodykey] = ss.get(bodykey, '') + text
+
+
+def ins(bodykey, selkey, pattern):
+    """把所选的变量 / 条款 / 附件按 pattern（如 {{%s}}）插入到正文末尾"""
+    if ss.get(selkey):
+        append_text(bodykey, pattern % ss[selkey])
+
+
+def insert_bar(lib, bodykey, tag):
+    """正文下方的插入工具：变量、引用条款号、引用附件、列项；插入到正文末尾（也可以直接在正文里手写）"""
+    with st.expander('插入变量 / 引用 / 列项'):
+        vs = sorted(n for n, v in lib.V.items() if v.get('类型') != '选项' and not n.endswith('_en'))
+        c1, c2 = st.columns([3, 1])
+        c1.selectbox('变量（合同表单中填写或取默认值）', vs, key=f'{tag}::iv', format_func=lambda n: f"{n}　{str(lib.V[n].get('说明') or '')[:24]}")
+        c2.write(''); c2.button('插入', key=f'btn::{tag}::bv', on_click=ins, args=(bodykey, f'{tag}::iv', '{{%s}}'))
+        order = sc.current_order(lib)
+        by = {r['id']: r for r in mt.items(lib, '条款')}
+        c1, c2 = st.columns([3, 1])
+        c1.selectbox('引用其他条款的编号（编号变了会自动跟着变）', order, key=f'{tag}::ir', format_func=lambda a: f"{by[a]['no']}　{by[a]['name']}"[:40])
+        c2.write(''); c2.button('插入', key=f'btn::{tag}::br', on_click=ins, args=(bodykey, f'{tag}::ir', '{{ref:%s}}'))
+        if lib.annexes:
+            c1, c2 = st.columns([3, 1])
+            c1.selectbox('引用附件的编号', list(lib.annexes), key=f'{tag}::ia', format_func=lambda a: lib.annexes[a]['meta']['名称'])
+            c2.write(''); c2.button('插入', key=f'btn::{tag}::ba', on_click=ins, args=(bodykey, f'{tag}::ia', '{{附件:%s}}'))
+        st.caption('列项（加在正文末尾）：')
+        b1, b2, b3, b4 = st.columns(4)
+        b1.button('＋ 列项 a)', key=f'btn::{tag}::m1', on_click=append_text, args=(bodykey, '\n\n- '))
+        b2.button('＋ 数字列项 1)', key=f'btn::{tag}::m2', on_click=append_text, args=(bodykey, '\n\n+ '))
+        b3.button('＋ 二级列项', key=f'btn::{tag}::m3', on_click=append_text, args=(bodykey, '\n\n  - '))
+        b4.button('＋ 续行', key=f'btn::{tag}::m4', on_click=append_text, args=(bodykey, '\n\n  '))
+
+
+def new_var_panel(lib, body, tag):
+    """正文里用到、变量字典里还没有的变量：填默认值和说明，保存时一并新建。返回 [{'name', 'default', 'desc', 'scope'}]"""
+    names = mt.unknown_variables(lib, body)
+    specs = []
+    if names:
+        st.markdown('**正文里用到了新变量**：保存时一并新建。默认值留空表示每份合同都必须填写（未填在 Word 中标黄）。')
+        scope = st.radio('新变量放在', ['本类型专属', '共用（各合同类型都可用）'], key=f'{tag}::vscope', horizontal=True)
+        for n in names:
+            c1, c2 = st.columns([1, 2])
+            d = c1.text_input(f'“{n}”的默认值', key=f'{tag}::vd::{n}')
+            t = c2.text_input('说明（表单中的提示）', key=f'{tag}::vs::{n}')
+            if not va.NAME_RE.match(n) or n.startswith(SPECIAL):
+                st.error(f'变量名“{n}”不合法：只能用中文、英文、数字、下划线和点')
+            specs.append({'name': n, 'default': d, 'desc': t, 'scope': 'common' if scope.startswith('共用') else 'type'})
+    return specs
+
+
+def load_template(ctype):
+    """“复制已有条款”：把所选条款的层级、名称、原文带进新增表单"""
+    tid = ss.get('nw::tpl')
+    if not tid or tid == '—':
+        return
+    r = next((x for x in mt.items(load_library(ctype), '条款') if x['id'] == tid), None)
+    if r:
+        ss['nw::lv'] = r['level'] if r['level'] in ('条款', '子条款') else '条款'
+        ss['nw::name'] = r['name'] + '（副本）'
+        ss['nw::body'] = r['body']
+
+
+def do_new(ctype):
+    p = ss.get('nw::pending')
+    if not p:
+        return flash('error', '表单还没有填完整')
+    res = sc.insert_atom(load_library(ctype), p['after'], p['lv'], p['name'], p['body'], code=p['code'],
+                         reason=ss.get('nw::reason', ''), variables=p['specs'])
+    if res['ok']:
+        for key in [x for x in ss if x.startswith('nw::') and x not in ('nw::lv',)]:
+            del ss[key]
+    finish(res, ctype, '条款', res.get('id'))
+
+
+def go_new(ctype, after):
+    """从条款列表进入“新增条款”：位置预设为当前所选条款之后"""
+    ss['ed::kind'] = '新增条款'
+    ss['nw::after_hint'] = after
+
+
 def do_make_var(ctype, kind, aid):
     g = lambda x: ss.get(k(x, ctype, kind, aid), '')
     res = va.make_variable(load_library(ctype), kind, aid, g('mvtext'), g('mvname'), default=g('mvdefault'),
@@ -144,11 +230,141 @@ if goto:
             ss[k('ch', gct)] = next(i for i, c in enumerate(mt.chapters(grows)) if gid in [x['id'] for x in c[2]])
         ss[k('sel', gct, gkind)] = gid
 
-c1, c2, c3 = st.columns([1.2, 1.3, 3])
+c1, c2, c3 = st.columns([1.1, 2.1, 2.4])
 ctype = c1.selectbox('合同类型', TYPES, key='ed::ctype', format_func=lambda t: TYPE_NAMES.get(t, t))
-kind = c2.radio('内容', MODES, horizontal=True, key='ed::kind')
-kw = c3.text_input('查找', key='ed::kw', placeholder='编号、名称或正文中的文字，如：质保期、3.4、HSE' if kind != '变量' else '变量名、说明或用到它的条款')
+kind = c2.radio('内容', MODES, horizontal=True, key='ed::kind', format_func=lambda m: MODE_LABEL.get(m, m))
+kw = c3.text_input('查找', key='ed::kw', placeholder='编号、名称或正文中的文字，如：质保期、3.4、HSE' if kind != '变量' else '变量名、说明或用到它的条款',
+                   disabled=kind == '新增条款')
 lib = load_library(ctype)
+
+# ======================= 新增条款 =======================
+def pick(label, options, key, fmt, **kw):
+    """selectbox：当前值不在选项里（换章后）时重置为第一项"""
+    if ss.get(key) not in options:
+        ss[key] = options[0]
+    return st.selectbox(label, options, key=key, format_func=fmt, **kw)
+
+
+def auto_name(text):
+    """名称留空时取正文第一段的开头"""
+    first = next((l for l in str(text).replace('\r', '').split('\n') if l.strip()), '')
+    first = first.strip().lstrip('#-+ ').replace('{{', '').replace('}}', '').replace('**', '')
+    return first[:16]
+
+
+WRITING_HELP = (
+    '- 一般只写文字，段落之间空一行；系统自动加上条款标记，不用写 `## `。想完全控制格式，可以直接以 `## ` 开头写原文。\n'
+    '- 段落以 `- ` 开头是 a) 列项，`  - ` 二级列项，`+ ` 数字列项，两个空格开头是续行（如中文译文）；`**加粗**`、`<u>下划线</u>`。\n'
+    '- `{{变量名}}` 是每份合同可以不同的内容（如 `{{质保月数}}`）：已有的变量直接用，没有的**直接写**，下面会让你填默认值和说明，保存时一并新建。\n'
+    '- `{{ref:条款ID}}` 引用其他条款的编号，`{{附件:附件ID}}` 引用附件编号；用上面的“插入”按钮最方便。')
+
+if kind == '新增条款':
+    inc = [r for r in mt.items(lib, '条款') if r['no'] != mt.UNUSED]
+    by = {r['id']: r for r in inc}
+    chs = [c for c in mt.chapters(inc) if c[2] and c[2][0]['level'] == '章']
+    style = sc.heading_style(lib)
+    st.subheader('新增条款')
+    st.caption('三步：① 选位置　② 写名称和内容　③ 检查、预览后保存。保存后自动编号，目录和引用随之更新；'
+               '新增的条款随时可以在“条款 → 结构”中移除（文件保留）。')
+    if not chs:
+        st.warning('这个合同类型里还没有章。'); st.stop()
+    chap_ids = [c[2][0]['id'] for c in chs]
+    chap_label = {c[2][0]['id']: f'{c[0]}　{c[1]}' for c in chs}
+    hint = ss.pop('nw::after_hint', None)                          # 从条款列表进入：位置预设为所选条款之后
+    if hint in by:
+        g = next(c for c in chs if hint in [r['id'] for r in c[2]])
+        ss['nw::ch'] = ss['nw::chafter'] = g[2][0]['id']
+        h = by[hint]
+        if h['level'] == '条款':
+            ss['nw::pos'] = hint
+        elif h['level'] == '子条款':
+            ss['nw::pos'] = next((r['id'] for r in reversed(g[2][:[r['id'] for r in g[2]].index(hint)]) if r['level'] == '条款'), g[2][0]['id'])
+        else:
+            ss['nw::pos'] = h['id']
+    left, right = st.columns([1.1, 1.2], gap='large')
+    with left:
+        st.markdown('**① 位置**')
+        lv = st.radio('新增什么', ['条款', '子条款', '章'], horizontal=True, key='nw::lv',
+                      help='条款：如 3.5；子条款：如 3.5.1，属于某一条；章：新的一章')
+        code, after, no, pos_ok = '', None, '', False
+        if lv == '章':
+            if 'nw::chafter' not in ss: ss['nw::chafter'] = chap_ids[-1]
+            after = pick('放在哪一章之后', chap_ids, 'nw::chafter', chap_label.get)
+            code = st.text_input('章代码（2–4 个大写字母，用于条款 ID，如 WAR；留空自动分配）', key='nw::code', placeholder='如 WAR').strip().upper()
+        else:
+            ch = pick('所在章', chap_ids, 'nw::ch', chap_label.get)
+            grp = next(c for c in chs if c[2][0]['id'] == ch)[2]
+            clauses = [r for r in grp if r['level'] == '条款']
+            lab = lambda r: f"{r['no']}　{r['name']}"[:40]
+            if lv == '条款':
+                ids = [ch] + [r['id'] for r in clauses]
+                names = {ch: '本章开头（第一条之前）', **{r['id']: lab(r) + ' 之后' for r in clauses}}
+                after = pick('放在哪里', ids, 'nw::pos', names.get)
+            elif not clauses:
+                st.warning('这一章下面还没有条款，请先新增条款。')
+            else:
+                parent = pick('属于哪一条', [r['id'] for r in clauses], 'nw::parent', lambda a: lab(by[a]))
+                start = [r['id'] for r in grp].index(parent) + 1
+                subs = []
+                for r in grp[start:]:
+                    if r['level'] != '子条款': break
+                    subs.append(r)
+                ids = [parent] + [r['id'] for r in subs]
+                names = {parent: '作为第一个子条款', **{r['id']: lab(r) + ' 之后' for r in subs}}
+                after = pick('放在哪里', ids, 'nw::pos2', names.get)
+        if after:
+            try:
+                order = sc.current_order(lib); fake = '__new__'
+                pos = sc.insert_pos(lib, order, after, lv)
+                no = sc.label_of(lib, order[:pos] + [fake] + order[pos:], fake, {fake: {'层级': lv, '章': ''}})
+                pos_ok = True
+                st.info(f'将新增为 {lv} **{no}**，后面的条款号自动顺延。')
+            except (ValueError, StopIteration) as e:
+                st.error(str(e) or '这个位置不能新增')
+
+        st.markdown('**② 内容**')
+        if lv != '章':
+            tpl = ['—'] + [r['id'] for r in inc if r['level'] != '章']
+            st.selectbox('（可选）复制已有条款作为模板', tpl, key='nw::tpl', on_change=load_template, args=(ctype,),
+                         format_func=lambda a: '不使用' if a == '—' else f"{by[a]['no']}　{by[a]['name']}"[:40])
+        name = st.text_input('名称', key='nw::name', placeholder='章标题，如：售后服务' if lv == '章' else '如：质保延期（列表中显示；留空时取内容开头）')
+        if lv == '章':
+            st.caption('章只有标题；这一章的条款内容，保存后在这一章下面再新增条款。')
+            body_text = ''
+        else:
+            ph = ('直接写条款内容，段落之间空一行。\n第一段就是条款号后面的正文，后面的段落接在它下面。' if style == '正文' else
+                  '写条款内容，段落之间空一行（系统自动加上标题“名称”）。' + ('\n中英文合同：每段先写中文，再写英文（同一段，英文在后）。' if any(n.endswith('_en') for n in lib.V) else ''))
+            body_text = st.text_area('内容', key='nw::body', height=260, placeholder=ph)
+            insert_bar(lib, 'nw::body', 'nw')
+            with st.expander('写法说明'):
+                st.markdown(WRITING_HELP)
+        final_name = name.strip() or auto_name(body_text)
+        body = sc.compose_body(lib, lv, final_name, body_text, style) if final_name else ''
+        specs = new_var_panel(lib, body, 'nw')
+
+    with right:
+        st.markdown('**③ 检查与预览**')
+        known = [x['name'] for x in specs if va.NAME_RE.match(x['name']) and not x['name'].startswith(SPECIAL)]
+        errors, warns = mt.check(lib, '条款', '__new__', body, known=known) if body else ([], [])
+        if any(not va.NAME_RE.match(x['name']) or x['name'].startswith(SPECIAL) for x in specs):
+            errors.append('有变量名不合法（只能用中文、英文、数字、下划线和点）')
+        if lv == '章' and code and not (2 <= len(code) <= 4 and code.isalpha() and code.isascii()):
+            errors.append('章代码需要 2–4 个大写英文字母，如 WAR')
+        for e in errors: st.error(e)
+        for w in warns: st.warning(w)
+        with st.container(border=True):
+            try:
+                st.markdown(mt.preview_html(lib, '条款', '__new__', body, no=no) or '（填写内容后在这里预览：蓝底为变量的值，黄底为需要填写的变量）',
+                            unsafe_allow_html=True)
+            except SystemExit as e:
+                st.error(f'无法预览：{e}')
+        st.text_input('新增原因（写入修订记录）', key='nw::reason', placeholder='如：按 2026 年新版模板新增质保延期条款')
+        ready = bool(final_name and pos_ok and not errors and (body_text.strip() or lv == '章'))
+        ss['nw::pending'] = {'after': after, 'lv': lv, 'name': final_name, 'body': body, 'code': code, 'specs': specs} if ready else None
+        st.button('保存新增条款', type='primary', disabled=not ready, on_click=do_new, args=(ctype,))
+        if not ready:
+            st.caption('填好位置、名称和内容，并且没有错误后才能保存。')
+    st.stop()
 
 # ======================= 变量 =======================
 if kind == '变量':
@@ -211,6 +427,9 @@ with left:
     ids = [r['id'] for r in shown]
     sk = k('sel', ctype, kind)
     if ss.get(sk) not in ids: ss[sk] = ids[0]
+    if kind == '条款':
+        st.button('＋ 新增条款', on_click=lambda: go_new(ctype, ss.get(sk)),        # 不设 key：在“新增条款”页与列表页之间来回切换时不会冲突
+                  help='在所选条款之后新增条款、子条款或新的一章')
     lab = lambda i: f"{by_id[i]['no']}　{by_id[i]['name']}" + ('　（PDF）' if kind == '附件' and by_id[i]['level'] == '文件' else '')
     aid = st.radio('条款', ids, key=sk, format_func=lab, label_visibility='collapsed')
     if unused_ax:
@@ -240,11 +459,12 @@ with right:
             st.text_input('英文名称（可不填；中文合同不显示）', key=ek)
         if not is_pdf:
             st.text_area('正文', key=bk, height=380, help='行首标记决定 Word 样式，{{…}} 为变量 / 引用，见下方“写法说明”')
+            insert_bar(lib, bk, f'ins::{ctype}::{kind}::{aid}')
         with st.expander('写法说明'):
             st.markdown(
                 '- 行首：`# ` 章标题，`## ` 条款，`### ` 子条款，`- ` 列项 a)，`  - ` 二级列项 1)，`+ ` 数字列项，'
                 '两个空格开头为续行（如中文译文），`<居中> ` 居中，`<分页>` 单独一行分页\n'
-                '- `{{变量}}` 值变量（须已在变量字典中，新变量用“改成变量”），`{{选项:名称}}` 选项写法，`{{ref:条款ID}}` 引用条款编号，'
+                '- `{{变量}}` 值变量（没有的变量直接写，保存前会让你填默认值和说明，一并新建），`{{选项:名称}}` 选项写法，`{{ref:条款ID}}` 引用条款编号，'
                 '`{{附件:附件ID}}` 引用附件编号（附件五），`{{附件_en:附件ID}}`（Annex 5）\n'
                 '- `**加粗**`、`<u>下划线</u>`；空行只用于分段，不会在合同中留空行')
         new_body, new_name = ss.get(bk, r['body']), ss.get(nk, r['name']).strip()
@@ -253,7 +473,9 @@ with right:
         if not changed:
             st.caption('尚未修改。')
         else:
-            errors, warns = mt.check(lib, kind, aid, new_body)
+            specs = new_var_panel(lib, new_body, f'edv::{ctype}::{kind}::{aid}')
+            ss[k('vspecs', ctype, kind, aid)] = specs
+            errors, warns = mt.check(lib, kind, aid, new_body, known=[x['name'] for x in specs if va.NAME_RE.match(x['name'])])
             st.markdown('**修改对比**（红色删除线为删除，绿色为新增）')
             with st.container(border=True):
                 d = mt.diff_html(r['body'], new_body)
