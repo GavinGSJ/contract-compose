@@ -118,8 +118,12 @@ def test_clause_editor_rejects_unknown_variable(lib_copy):
     at.switch_page(os.path.join(ROOT, 'ui', 'clause_editor.py')); _run(at)
     sel = at.radio(key='ed::sel::FA::条款').value
     bk = f'ed::body::FA::条款::{sel}'
-    at.text_area(key=bk).input(at.text_area(key=bk).value + '\n\n{{没有这个变量}}'); _run(at)
-    assert any('变量字典' in e.value for e in at.error)
+    base = at.text_area(key=bk).value
+    at.text_area(key=bk).input(base + '\n\n{{没有这个变量}}'); _run(at)           # 合法的新变量：提示登记，可以保存
+    assert any('正文里用到了新变量' in m.value for m in at.markdown)
+    assert not next(b for b in at.button if b.label == '保存').disabled
+    at.text_area(key=bk).input(base + '\n\n{{a b}}'); _run(at)                  # 名称不合法：不能保存
+    assert any('不合法' in e.value for e in at.error)
     assert next(b for b in at.button if b.label == '保存').disabled
 
 
@@ -254,3 +258,71 @@ def test_po_project_preset_autofill(tmp_path, monkeypatch):
     cfg = yaml.safe_load(open(glob.glob(str(tmp_path / 'configs' / '*.yaml'))[0], encoding='utf-8'))
     assert cfg['变量']['项目名称'] == 'My Project' and cfg['变量']['设施全称_en'] == 'floating liquefaction production facility'
     assert cfg['变量']['LOA编号'] == 'LOA-1' and cfg['附件']['ANX-NDA'] == '有' and 'ANX-TA' not in cfg['附件']
+
+
+def test_editor_new_clause_with_new_variable(lib_copy, tmp_path, monkeypatch):
+    """“＋ 新增条款”：选位置、写内容（正文里直接写新变量）、预览检查、保存；新条款按位置编号，新变量一并登记"""
+    from contract_compose import load_library, structure as sc
+    at = _editor(lib_copy, tmp_path, monkeypatch)
+    at.selectbox(key='ed::ctype').set_value('S416'); _run(at)
+    at.radio(key='ed::kind').set_value('新增条款'); _run(at)
+    assert at.radio(key='nw::lv').value == '条款'
+    at.selectbox(key='nw::ch').set_value('SCO-00'); _run(at)
+    at.selectbox(key='nw::pos').set_value('SCO-01'); _run(at)                            # 放在 1.1 之后
+    assert any('1.2' in i.value for i in at.info)                                         # 预告编号
+    at.text_input(key='nw::name').input('质保延长说明')
+    at.text_area(key='nw::body').input('卖方应在合同货物质保期届满前{{质保延长天数}}天内书面通知买方是否需要延长质保。\n\n- 延长期限由双方另行协商。'); _run(at)
+    assert any('新变量' in m.value for m in at.markdown)                                   # 提示登记新变量
+    assert next(b for b in at.button if b.label == '保存新增条款').disabled is False
+    at.text_input(key='nw::vd::质保延长天数').input('30')
+    at.text_input(key='nw::vs::质保延长天数').input('质保届满前几天通知买方')
+    at.text_input(key='nw::reason').input('页面测试新增'); _run(at)
+    _click(at, '保存新增条款')
+    assert any('已新增条款' in s.value for s in at.success), [e.value for e in at.error]
+    lib = load_library('S416')
+    new = [a for a in lib.atoms if lib.atoms[a]['meta']['名称'] == '质保延长说明']
+    assert len(new) == 1 and sc.current_order(lib).index(new[0]) == sc.current_order(lib).index('SCO-01') + 1
+    assert lib.atoms[new[0]]['body'].startswith('## 卖方应在合同货物质保期届满前{{质保延长天数}}天内书面通知买方') and '\n\n- 延长期限由双方另行协商。' in lib.atoms[new[0]]['body']
+    v = lib.V['质保延长天数']
+    assert v['默认值'] == '30' and v['类别'] == '有默认值' and v['说明'] == '质保届满前几天通知买方' and v['原子'] == new
+    assert '新建变量 质保延长天数' in open(lib_copy / 'S416' / '修订记录.md', encoding='utf-8').read()
+    assert at.radio(key='ed::kind').value == '条款' and at.radio(key='ed::sel::S416::条款').value == new[0]     # 保存后跳到新条款
+
+
+def test_editor_new_chapter_and_subclause(lib_copy, tmp_path, monkeypatch):
+    from contract_compose import load_library, structure as sc
+    at = _editor(lib_copy, tmp_path, monkeypatch)
+    at.selectbox(key='ed::ctype').set_value('S416'); _run(at)
+    at.radio(key='ed::kind').set_value('新增条款'); _run(at)
+    at.radio(key='nw::lv').set_value('章'); _run(at)
+    at.text_input(key='nw::name').input('售后服务'); _run(at)                              # 章代码留空自动分配，放在最后一章之后
+    _click(at, '保存新增条款')
+    assert any('已新增章' in s.value for s in at.success), [e.value for e in at.error]
+    lib = load_library('S416')
+    assert lib.atoms['CHA-00']['meta']['名称'] == '售后服务' and sc.current_order(lib)[-1] == 'CHA-00'
+    at.radio(key='ed::kind').set_value('新增条款'); _run(at)
+    at.radio(key='nw::lv').set_value('条款'); _run(at)
+    at.selectbox(key='nw::ch').set_value('CHA-00'); _run(at)
+    at.text_input(key='nw::name').input('响应时间'); at.text_area(key='nw::body').input('卖方应在收到通知后24小时内响应。'); _run(at)
+    _click(at, '保存新增条款')
+    assert any('已新增条款' in s.value for s in at.success), [e.value for e in at.error]
+    at.radio(key='ed::kind').set_value('新增条款'); _run(at)
+    at.radio(key='nw::lv').set_value('子条款'); _run(at)
+    at.selectbox(key='nw::ch').set_value('CHA-00'); _run(at)
+    at.text_input(key='nw::name').input('紧急情况'); at.text_area(key='nw::body').input('紧急情况下应在4小时内响应。'); _run(at)
+    _click(at, '保存新增条款')
+    assert any('已新增子条款' in s.value for s in at.success), [e.value for e in at.error]
+    lib = load_library('S416'); order = sc.current_order(lib)
+    assert order[-3:] == ['CHA-00', 'CHA-01', 'CHA-01-1']
+
+
+def test_editor_new_clause_blocked_until_valid(lib_copy, tmp_path, monkeypatch):
+    at = _editor(lib_copy, tmp_path, monkeypatch)
+    at.selectbox(key='ed::ctype').set_value('S416'); _run(at)
+    at.radio(key='ed::kind').set_value('新增条款'); _run(at)
+    save = lambda: next(b for b in at.button if b.label == '保存新增条款')
+    assert save().disabled                                                                  # 没有内容不能保存
+    at.text_area(key='nw::body').input('引用不存在的条款 {{ref:XXX-99}}'); _run(at)
+    assert save().disabled and any('XXX-99' in e.value for e in at.error)
+    at.text_area(key='nw::body').input('只有文字的新条款。'); _run(at)
+    assert not save().disabled and at.text_input(key='nw::name').value == ''              # 名称留空时取内容开头

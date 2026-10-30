@@ -112,3 +112,57 @@ def test_variables(lib_copy, monkeypatch):
     assert out().split('---- 正文 ----')[1] == before.split('---- 正文 ----')[1]   # 默认值为原文，合同文字不变
     assert not va.make_variable(fa(), '条款', 'QUA-04', '找不到的文字', 'x')['ok']
     assert not va.make_variable(fa(), '条款', 'QUA-04', '质量保证期', 'a b')['ok']
+
+
+def test_heading_style_and_compose_body():
+    """三种合同类型的条款都是：条款号后面直接是条款正文（## 后面就是第一段），再接其余段落；每段长度多为几十到几百字"""
+    assert sc.heading_style(fa()) == sc.heading_style(load_library('PO')) == '正文'
+    s416 = load_library('S416')
+    assert sc.heading_style(s416) == '正文'
+    assert sc.compose_body(fa(), '条款', '质保延期', '第一段。\n\n第二段。', style='标题') == '## 质保延期\n\n第一段。\n\n第二段。'     # 另一种写法：标题 + 正文
+    assert sc.compose_body(fa(), '条款', '质保延期', '第一段。\n\n第二段。') == '## 第一段。\n\n第二段。'
+    assert sc.compose_body(s416, '条款', '质保延期', '第一段。\n\n第二段。\n\n- 列项') == '## 第一段。\n\n第二段。\n\n- 列项'
+    assert sc.compose_body(s416, '子条款', '名称', '只有一段。') == '### 只有一段。'
+    assert sc.compose_body(s416, '章', '售后服务', '') == '# 售后服务'
+    assert sc.compose_body(s416, '条款', '名称', '## 已经带标记\n\n原样使用') == '## 已经带标记\n\n原样使用'
+
+
+def test_new_clause_registers_new_variables(lib_copy, monkeypatch):
+    """新增条款时正文里的新变量一并登记（本类型专属 / 共用）；没有默认值的为必填"""
+    monkeypatch.setattr('contract_compose.snapshots.SNAP', str(lib_copy.parent / 'snap'))
+    body = '## 质保延期\n\n质保期届满前{{延期通知天数}}天内，由{{延期联系人}}书面通知买方。'
+    r = sc.insert_atom(fa(), 'QUA-02', '条款', '质保延期', body, reason='测试',
+                       variables=[{'name': '延期通知天数', 'default': '30', 'desc': '提前几天通知', 'scope': 'type'},
+                                  {'name': '延期联系人', 'default': '', 'desc': '', 'scope': 'common'}])
+    assert r['ok'], r
+    V = fa().V
+    assert V['延期通知天数']['默认值'] == '30' and V['延期通知天数']['类别'] == '有默认值' and V['延期通知天数']['原子'] == [r['id']]
+    assert V['延期联系人']['类别'] == '必填' and va.defined_in(fa(), '延期联系人') == '共用' and va.defined_in(fa(), '延期通知天数') == '本类型'
+    assert '新建变量 延期通知天数、延期联系人' in open(lib_copy / 'FA' / '修订记录.md', encoding='utf-8').read()
+    out_text = out()
+    assert '质保期届满前30天内' in out_text                                       # 有默认值：直接出现在合同中
+    # 没有登记的变量、不合法的变量名都不能保存
+    assert not sc.insert_atom(fa(), 'QUA-02', '条款', 'x', '## x\n\n{{没登记的变量}}')['ok']
+    bad = sc.insert_atom(fa(), 'QUA-02', '条款', 'x', '## x\n\n{{a/b}}', variables=[{'name': 'a/b'}])
+    assert not bad['ok'] and '不合法' in bad['message']
+
+
+def test_free_chapter_code_and_auto_code(lib_copy, monkeypatch):
+    monkeypatch.setattr('contract_compose.snapshots.SNAP', str(lib_copy.parent / 'snap'))
+    assert sc.free_chapter_code(fa()) == 'CHA'
+    r = sc.insert_atom(fa(), 'QUA-04', '章', '自动代码章')                           # 不填章代码：自动 CHA
+    assert r['ok'] and r['id'] == 'CHA-00' and sc.free_chapter_code(fa()) == 'CHB'
+
+
+def test_unknown_variables_and_save_with_variables(lib_copy, monkeypatch):
+    monkeypatch.setattr('contract_compose.snapshots.SNAP', str(lib_copy.parent / 'snap'))
+    lib = fa()
+    body = lib.atoms['QUA-04']['body'] + '\n\n补充：{{新增质保说明}}，{{ref:QUA-01}}，{{中文数字:另一个新变量}}。'
+    assert mt.unknown_variables(lib, body) == ['新增质保说明', '另一个新变量']
+    errors, _ = mt.check(lib, '条款', 'QUA-04', body)
+    assert errors and not mt.check(lib, '条款', 'QUA-04', body, known=['新增质保说明', '另一个新变量'])[0]
+    r = mt.save(lib, '条款', 'QUA-04', body, reason='测试', variables=[{'name': '新增质保说明', 'default': '见技术协议'},
+                                                                   {'name': '另一个新变量', 'default': '5'}])
+    assert r['ok'], r
+    assert '新增质保说明' in fa().V and '新建变量 新增质保说明、另一个新变量' in open(lib_copy / 'FA' / '修订记录.md', encoding='utf-8').read()
+    assert not mt.save(fa(), '条款', 'QUA-04', body + '{{又一个新变量}}', reason='x')['ok']          # 没登记不能保存

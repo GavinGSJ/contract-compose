@@ -168,14 +168,50 @@ def safe_name(name, n=16):
     return re.sub(r'[\\/:*?"<>|\s，。、；：（）()“”‘’《》【】]', '', name)[:n] or 'new'
 
 
-def insert_atom(lib, after, lv, name, body='', code=None, reason=''):
-    """在 after 之后新增章 / 条款 / 子条款。返回 {'ok', 'message', 'id'}"""
+def heading_style(lib):
+    """本类型条款的写法：'标题'（## 标题，下面是正文段落，如 FA / PO）或 '正文'（## 后面直接是条款正文，如 S416）"""
+    heads = []
+    for a in lib.atoms.values():
+        if a['meta']['层级'] == '条款':
+            first = next((l for l in a['body'].split('\n') if l.startswith('## ')), '')
+            heads.append(len(first) - 3)
+    return '正文' if heads and sum(1 for n in heads if n > 40) * 2 > len(heads) else '标题'
+
+
+def compose_body(lib, lv, name, text, style=None):
+    """把用户写的条款内容（段落之间空一行）组成条款文件的正文。
+    已经以“#”开头的按原文使用；写法“标题”：## 名称 + 正文段落；写法“正文”：第一段放在条款号后面，其余段落照旧。
+    章只有标题，正文写在章下面的条款里"""
+    text = (text or '').replace('\r\n', '\n').strip('\n')
+    if text.lstrip().startswith('#'):
+        return text
+    mark = MARK[lv]
+    if lv == '章' or not text:
+        return mark + name + ('\n\n' + text if text else '')
+    if (style or heading_style(lib)) == '正文':
+        first, _, rest = text.partition('\n\n')
+        return mark + first.strip() + ('\n\n' + rest.strip('\n') if rest.strip() else '')
+    return mark + name + '\n\n' + text
+
+
+def free_chapter_code(lib):
+    """没有填章代码时自动分配：CHA、CHB…（没有被占用的第一个）"""
+    used = {a.split('-')[0] for a in lib.atoms}
+    return next(c for c in (f'CH{x}' for x in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') if c not in used)
+
+
+def insert_atom(lib, after, lv, name, body='', code=None, reason='', variables=None):
+    """在 after 之后新增章 / 条款 / 子条款。variables：正文里用到的新变量 [{'name', 'default', 'desc', 'scope'}]，一并登记。
+    返回 {'ok', 'message', 'id'}"""
+    from . import variable_admin as va
     name = (name or '').strip()
     if not name:
         return fail('请填写名称')
     order = current_order(lib)
     if after not in order:
         return fail(f'{after} 不在合同中')
+    if lv == '章' and not (code or '').strip():
+        code = free_chapter_code(lib)
     try:
         pos = insert_pos(lib, order, after, lv)
         aid = new_atom_id(lib, order, pos, lv, code)
@@ -190,15 +226,20 @@ def insert_atom(lib, after, lv, name, body='', code=None, reason=''):
     err = validate(lib, new_order, {aid: lv})
     if err:
         return fail(err)
-    errors, _ = check(lib, '条款', aid, body)
+    try:
+        var_writes, made = va.new_variable_writes(lib, variables, aid)
+    except ValueError as e:
+        return fail(str(e))
+    errors, _ = check(lib, '条款', aid, body, known=made)
     if errors:
         return fail('；'.join(errors))
     import yaml
     fm = '\n' + yaml.safe_dump(meta, allow_unicode=True, sort_keys=False, width=10000)
     p = os.path.join(lib.dir, paths.ATOMS, f'{aid}_{safe_name(name)}.md')
     no = label_of(lib, new_order, aid, {aid: meta})
-    res = transaction(lib, {p: join_file(fm, body), recipe_path(lib): write_order(lib, new_order)},
-                      f'- {stamp()}　新增{lv} {no} {name}（{aid}）：{reason.strip() or "（未填写原因）"}')
+    res = transaction(lib, {p: join_file(fm, body), recipe_path(lib): write_order(lib, new_order), **var_writes},
+                      f'- {stamp()}　新增{lv} {no} {name}（{aid}）：{reason.strip() or "（未填写原因）"}'
+                      + (f'；新建变量 {"、".join(made)}' if made else ''))
     return {**res, 'id': aid, 'message': f'已新增{lv} {no} {name}（{aid}）' if res['ok'] else res['message']}
 
 

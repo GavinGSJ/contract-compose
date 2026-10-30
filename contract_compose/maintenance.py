@@ -97,8 +97,25 @@ def set_field(fm, key, value):
 PH = re.compile(r'\{\{([^}]+)\}\}')
 
 
-def check(lib, kind, aid, body):
-    """返回 (错误, 提醒)：错误时不能保存"""
+NON_VARIABLE = ('ref:', 'table:', 'block:', '附件:', '附件_en:', '附件号:', '选项:', '选项列表:')
+
+
+def unknown_variables(lib, body):
+    """正文里用到、但变量字典里还没有的变量名（按出现顺序）。这些变量可以在保存时一并登记"""
+    out = []
+    for k in PH.findall(body.replace('\r\n', '\n')):
+        k = k.strip()
+        if k.startswith(NON_VARIABLE) or k == '本节点比例':
+            continue
+        if k.startswith(('英文数字:', '中文数字:')):
+            k = k.split(':', 1)[1]
+        if k not in lib.V and k not in out:
+            out.append(k)
+    return out
+
+
+def check(lib, kind, aid, body, known=()):
+    """返回 (错误, 提醒)：错误时不能保存。known：保存时一并新建的变量名，视为已有"""
     errors, warns = [], []
     body = body.replace('\r\n', '\n')
     src = lib.annexes if kind == '附件' else lib.atoms
@@ -119,8 +136,8 @@ def check(lib, kind, aid, body):
             n = k.split(':', 1)[1]; n = n[:-3] if n.endswith('_en') else n
             if n not in lib.opts: errors.append(f'选项库中没有“{n}”')
         elif k.startswith(('英文数字:', '中文数字:')):
-            if k.split(':', 1)[1] not in lib.V: errors.append(f'变量“{k.split(":", 1)[1]}”不在变量字典中')
-        elif k not in lib.V and k != '本节点比例':
+            if k.split(':', 1)[1] not in lib.V and k.split(':', 1)[1] not in known: errors.append(f'变量“{k.split(":", 1)[1]}”不在变量字典中')
+        elif k not in lib.V and k not in known and k != '本节点比例':
             errors.append(f'变量“{k}”不在变量字典中（新增变量请先在变量字典中登记）')
     for i, line in enumerate(body.split('\n'), 1):
         for _, name, val in split_conditions(line)[0]:       # 段落条件 <仅当 选项名=取值>、<不出现于 选项名=取值>
@@ -172,10 +189,11 @@ def _inline(s):
     return s
 
 
-def preview_html(lib, kind, aid, body):
-    """简化的版面预览（样式近似 Word）：蓝底为变量的默认值，黄底为未填变量"""
+def preview_html(lib, kind, aid, body, no=None):
+    """简化的版面预览（样式近似 Word）：蓝底为变量的默认值，黄底为未填变量。no：显示的条款号（新增的条款还没有编号时由调用方给出）"""
     rows = {r['id']: r for r in items(lib, kind)}
-    no = rows[aid]['no'] if aid in rows else ''
+    if no is None:
+        no = rows[aid]['no'] if aid in rows else ''
     out, n1, n2, prev = [], 0, 0, 'P'
     letters = 'abcdefghijklmnopqrstuvwxyz'
     for line in preview_text(lib, kind, aid, body).split('\n'):
@@ -332,9 +350,15 @@ def stamp(now=None):
     return f'{(now or datetime.datetime.now()):%Y-%m-%d %H:%M}'
 
 
-def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=None, name_en=None):
-    """保存条款 / 附件正文（及名称；附件还可改英文名称）。返回 {'ok', 'message', 'backup', 'snapshots'}"""
-    errors, _ = check(lib, kind, aid, body)
+def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=None, name_en=None, variables=None):
+    """保存条款 / 附件正文（及名称；附件还可改英文名称）。variables：正文里用到的新变量 [{'name', 'default', 'desc', 'scope'}]，
+    与正文一起保存。返回 {'ok', 'message', 'backup', 'snapshots'}"""
+    from . import variable_admin as va
+    try:
+        var_writes, made = va.new_variable_writes(lib, variables, aid)
+    except ValueError as e:
+        return {'ok': False, 'message': str(e)}
+    errors, _ = check(lib, kind, aid, body, known=made)
     if errors:
         return {'ok': False, 'message': '；'.join(errors)}
     p = path_of(lib, kind, aid)
@@ -353,7 +377,9 @@ def save(lib, kind, aid, body, name=None, reason='', update_snapshots=True, now=
     extra = f'；名称“{old_name}”改为“{name}”' if name and name != old_name else ''
     if kind == '附件' and name_en is not None and name_en.strip() != old_en:
         extra += f'；英文名称“{old_en}”改为“{name_en.strip()}”'
-    res = transaction(lib, {p: new_text}, f'- {stamp(now)}　{no} {old_name}（{aid}）：{reason.strip() or "（未填写原因）"}{extra}',
+    if made:
+        extra += '；新建变量 ' + '、'.join(made)
+    res = transaction(lib, {p: new_text, **var_writes}, f'- {stamp(now)}　{no} {old_name}（{aid}）：{reason.strip() or "（未填写原因）"}{extra}',
                       update_snapshots)
     if not res['ok']:
         os.remove(bak)
